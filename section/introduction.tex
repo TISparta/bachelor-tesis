@@ -34,7 +34,9 @@ de igual tamaño distribuidos como una matrix.
 Luego, seleccionamos dos materiales y decimos que cada rectángulo puede ser de alguno de ellos. 
 De esta forma tenemos $2^{n \times m}$ posibles dispositivos \cite{Su2020}. 
 Definiendo un dispositivo de esta manera podemos llegar a tener, por ejemplo, $2^{10 \times 10}$ posibles diseños \cite{Malheiros-Silveira2020}.
-Pero, es imposible evaluar todas esas posibilidades.
+Pero, es imposible evaluar todas esas posibilidades. Además, las simulaciones computacionales son computacionalmente muy costosas, el espacio de búsqueda es altamente no convexo y no todos los diseños son fabricables \cite{Su2018, Su2020}.
+
+Así, existe una demanda crítica de un \emph{framework} capaz de optimizar dispositivos con un elevado número de parámetros dentro de un espacio de búsqueda no convexo \cite{Kudyshev2020}.
 
 \section{Justificación}
 En este apartado, el lector debe entender por qué es importante resolver el problema que plantean, desde el punto de vista social y especialmente, computacional. 
