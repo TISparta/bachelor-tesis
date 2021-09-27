@@ -1,17 +1,40 @@
 \chapter{Introducción}
 %\intro{
 
-\cite{citacion1}
-
-La introducción es una parte muy importante en todo documento en general, y por supuesto, en un trabajo de investigación. El objetivo de la introducción es hacer que el lector tenga una visión general de la tesis, desde el problema que intenta atacar, el porqué es relevante, como han intentado resolver el problema otros autores y cual o cuales son las diferencias principales con su propuesta, como usted propone resolver el problema,  e incluso los resultados más relevantes y el aporte del trabajo de investigación. \\
-
-Recuerde que una buena introducción permite dar, al lector, un panorama general, pero completo, de todo el trabajo de investigación. (Máximo 2 hojas)
-
 \section{Motivación y Contexto}
 
+La fotónica está atrayendo el interés de la industria debido a su potencial en términos de escalabilidad y los beneficios de costo-eficiencia. 
+Este potencial se evidencia, por ejemplo, con los siguientes tres puntos. 
+Primero, mantener la tendencia que cada 10 años se mejore en un factor de 1000 el \emph{performance} de los sistemas electrónicos parece ser posible solo con la convergencia de estos con sistemas fotónicos \cite{Glick2018}. 
+Segundo, existe una inversión billonaria en la fabricación de transistores cuyos procesos se están comenzando a lograr adaptar para fabricar circuitos fotónicos \cite{LukasChrostowski2010}.
+Tercero, el elevado ancho de banda que ofrece en comunicaciones digitales y el éxito de los cables ópticos \cite{LukasChrostowski2010, Glick2018}.
+De esta manera, es prometedor el futuro de los dispositivos fotónicos.
 
-\section{Descripción del  problema}
-En este apartado se espera que, mediante su redacción,   el lector pueda  comprenda, plenamente, cual es el problema que intenta resolver. Debe tener especial cuidado en la escritura, frases, oraciones y conectores pues es aquí donde el lector  se debe hace  una idea clara  del problema que usted intenta atacar.   
+Los dispositivos fotónicos se utilizan en grandes cantidades en los circuitos fotónicos integrados \cite{LukasChrostowski2010}. 
+Estos dispositivos trabajan en la escala de nanómetros y son diseñados para funcionar bajo ciertos requerimientos. 
+Así, para que estos dispositivos cumplan los requerimientos deseados existen dos estrategias comunes: diseño tradicional y diseño inverso \cite{Molesky2018}.
+
+
+En el diseño tradicional se define el dispositivo con geometrías simples que permiten obtener funciones analíticas de sus propiedades físicas. 
+Esto se realiza para poder optimizar la función obtenida a partir de los parámetros que la definan. Dicha optimización se suele realizar haciendo
+un barrido de los parámetros, con algoritmos genéticos o usando \emph{particle swarm optimization}. Es un enfoque simple, pero que ha obtenido
+buenos resultados. Sin embargo, existen dos grandes inconvenientes con este planteamiento. 
+Primero, solo estamos explorando una pequeña fracción de todos los posibles diseños.
+Segundo, por lo general no es conocido el límite del \emph{performance} del dispositivo \cite{Molesky2018, Su2020}.
+
+
+En el diseño inverso se busca hacer una mayor exploración de todos los posibles diseños. 
+Para ello, ya no nos limitamos a solo usar diseños intuitivos. Ahora, definimos geometrías arbitrarias y usamos simulaciones computacionales para determinar las propiedades físicas del dispositio \cite{Molesky2018, Su2020}. Este enfoque ha logrado conseguir mejores resultados que los obtenidos por el diseño tradicional en una variedad de dispositivos \cite{Su2018, Molesky2018}. Sin embargo, este planteamiento viene acompañado de nuevos desafíos.
+
+
+\section{Descripción del  Problema}
+
+Una estrategia común a la hora de hacer diseño inverso es seleccionar una región rectangular de diseño y dividirla en $n \times m$ rectángulos
+de igual tamaño distribuidos como una matrix. 
+Luego, seleccionamos dos materiales y decimos que cada rectángulo puede ser de alguno de ellos. 
+De esta forma tenemos $2^{n \times m}$ posibles dispositivos \cite{Su2020}. 
+Definiendo un dispositivo de esta manera podemos llegar a tener, por ejemplo, $2^{10 \times 10}$ posibles diseños \cite{Malheiros-Silveira2020}.
+Pero, es imposible evaluar todas esas posibilidades.
 
 \section{Justificación}
 En este apartado, el lector debe entender por qué es importante resolver el problema que plantean, desde el punto de vista social y especialmente, computacional. 
