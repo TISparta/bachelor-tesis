@@ -34,30 +34,41 @@ de igual tamaño distribuidos como una matrix.
 Luego, seleccionamos dos materiales y decimos que cada rectángulo puede ser de alguno de ellos. 
 De esta forma tenemos $2^{n \times m}$ posibles dispositivos \cite{Su2020}. 
 Definiendo un dispositivo de esta manera podemos llegar a tener, por ejemplo, $2^{10 \times 10}$ posibles diseños \cite{Malheiros-Silveira2020}.
-Pero, es imposible evaluar todas esas posibilidades. Además, las simulaciones computacionales son computacionalmente muy costosas, el espacio de búsqueda es altamente no convexo y no todos los diseños son fabricables \cite{Su2018, Su2020}.
+Pero, surgen algunas dificultades con esta estrategia:
 
-Así, existe una demanda crítica de un \emph{framework} capaz de optimizar dispositivos con un elevado número de parámetros dentro de un espacio de búsqueda no convexo \cite{Kudyshev2020}.
+\begin{enumerate}
+  \item Es imposible evaluar todas los posibles diseños.
+  \item Las simulaciones computacionales son muy costosas \cite{Kudyshev2020}.
+  \item El espacio de búsqueda es altamente no convexo \cite{Su2018}.
+  \item No todos los diseños son fabricables \cite{Su2020}.
+  \item Cada dispositivo es un problema distinto \cite{Molesky2018}
+\end{enumerate}
+
+
+Así, existe una demanda crítica de un \emph{framework} capaz de optimizar dispositivos con un elevado número de parámetros dentro de un espacio de búsqueda no convexo \cite{Kudyshev2020}. Este es un problema muy grande, por ello en el presente estudio nos centraremos en estudiar dos dispositivos: \emph{bend-90°} y \emph{2-splitter}.
 
 \section{Justificación}
-En este apartado, el lector debe entender por qué es importante resolver el problema que plantean, desde el punto de vista social y especialmente, computacional. 
 
-La idea es  justificar la razón por la cual  el problema que intenta resolver es importante y relevante. 
-Tenga en cuenta que el problema que intenta resolver puede ser de tipo aplicativo, y  en estos casos, se intenta aplicar algoritmos, métodos o técnicas para solucionar algún problema de otra área como
-biología, medicina, sociología, entre otros. \\
+El \emph{bend-90°} y \emph{2-splitter} se han escogido debido a que han sido estudiados usando diseño inverso desde el 2004, pero aún no han encontrado aplicación industrial \cite{Molesky2018}. 
+Así, con este estudio se espera contribuir dando una evaluación de las técnicas de optimización modernas aplicadas en estos dispositivos para poder guiar a futuras investigaciones.
 
-Por ejemplo, \textbf{Detección de covid19 en imágenes de resonancia magnética   mediante técnicas de \textit{deep learning}} es un tema netamente aplicativo y la justificación del problema será  más del tipo social. Sin embargo, si se plantea una nueva arquitectura de CNN que mejore el rendimiento del estado del arte para, específicamente, detección de covid, podemos decir que la justificación iría tanto desde el punto de vista social como de ciencia de la computación \\
-
-
-Por otro lado, si el problema que intenta resolver, es específicamente, de ciencia de la computación, como por ejemplo, mejorar alguna estructura de datos, modificar algún algoritmo para optimizar su eficiencia en RAM o velocidad, crear una nueva función de activación en el caso de redes neuronales, etc; entonces, la tesis está mas relacionada a ciencias básicas y por lo tanto la justificación será más desde el punto de ciencia de la computación.  \\
-
-Es importante determinar el tipo de investigación que está desarrollando, para según esto redactar la justificación.
+Por otro lado, desde el punto de vista computacional este problema es interesante porque ya hay estrategias computacionales conocidas para resolverlo, desde algoritmos evolutivos \cite{Hansen2016} hasta redes neuronales \cite{Goodfellow2015} y \emph{depth learning} \cite{Malkiel2018}. 
+Además, debido al alto costo computacional de las simulaciones \cite{Schneider2019} el trabajo requerirá de computación de alto desempeño.
+Así, es probable que se pueda obtener buenos resultados en la investigación aplicando el conocimiento ya existente en Computación.
 
 \section{Objetivos}
-Deberá redactar el objetivo general y los específicos de la tesis. Recuerde, que el objetivo general debe estar en concordancia con el título de la tesis.
 
+El objetivo general de esta tesis es evaluar y comparar el \emph{performance} y la convergencia de las técnicas modernas de optimización usadas para optimizar un \emph{bend-90°} y \emph{2-splitter}.
+
+El siguiente objetivo es implementar un modelo de \emph{deep learning} que pueda predecir el \emph{performance} de un \emph{bend-90°} y de un \emph{2-splitter} con un error cuadrático medio menor a [INVESTIGANDO CUANTO DEBERÍA SER]. 
+
+Por último, se espera lograr la fabricación del mejor diseño que se obtenga del \emph{bend-90°} y del \emph{2-splitter} para poder comparar las simulacionales computacionales con las mediciones físicas.
 
 \section{Aportes}
-Los aportes permiten visualizar la calidad de su trabajo. En general, para las tesis de pregrado no se piden trabajos que generen nuevo conocimiento, pero es posible realizar trabajos que innoven en alguna medida  mínima lo cual hace que su trabajo sea publicable.
 
+Con este estudio se espera contribuir brinbando una comparativa de las distintas técnicas que se aplican para optimizar un \emph{bend-90°} y un \emph{2-splitter}. 
+Se estima que la contribución será bien recibida por la falta de trabajos de este tipo en el área \cite{Schneider2019, Elsawy2020}.
+Además, la creación de un modelo para predecir el \emph{performance} de estos dispositivos podría ayudar a hacer más eficientes los tutoriales
+relacionados a optimización de dispositivos fotónicos, pues estos suelen usar un \emph{bend-90°} como ejemplo introductorio.
 
 %}
