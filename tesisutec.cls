@@ -1,3 +1,10 @@
+%
+% LaTeX Document Class File for UTEC thesis format.
+% Created by Victor Murray in collaboration with Oscar Ramos and Juan Carlos Barbaran.
+% June, 2021
+%
+%
+
 \NeedsTeXFormat{LaTeX2e}[1996/12/01]
 \ProvidesClass{tesisutec}[2017/05/03 v1.0 LaTeX document class]
 \def\baseclass{book}
@@ -34,6 +41,9 @@
 %\usepackage[tocflat]{tocstyle}
 %\usetocstyle{standard}
 
+%%%
+\newcommand{\orcid}[1]{\href{https://orcid.org/#1}{\includegraphics[width=10pt]{./image/ORCID128px.png}}}
+
 % ====================================================================
 \newcommand\Aprobado[1]{
   \setstretch{1.5}  % Set line spacing to 1.5
@@ -50,11 +60,15 @@
   \vspace{1.5cm}
   \hfill\rule[0.5em]{16.5em}{0.5pt} \\  % Line for the signature
   ${~}$\hfill \supname \\
-
+  
   \vspace{1.5cm}
   \hfill\rule[0.5em]{16.5em}{0.5pt} \\  % Line for the signature
   ${~}$\hfill \examname \\
 
+  \vspace{1.5cm}
+  \hfill\rule[0.5em]{16.5em}{0.5pt} \\  % Line for the signature
+  ${~}$\hfill \examnametwo \\
+  
   \clearpage
 }
 
@@ -102,17 +116,17 @@
 
 
 % ====================================================================
-\newcommand\conclusions[1]{
-  \btypeout{CONCLUSIONES}
-  \addtotoc{CONCLUSIONES}
-  \clearpage
-  \thispagestyle{plain}
-  \begin{center}{\Large \textbf{CONCLUSIONES} \par}\end{center}
-  \vspace{0.5cm}
-  {\normalsize #1}
-  \vfil\vfil\null
-  \clearpage
-}
+%\newcommand\conclusions[1]{
+%  \btypeout{CONCLUSIONES}
+%  \addtotoc{CONCLUSIONES}
+%  \clearpage
+%  \thispagestyle{plain}
+%  \begin{center}{\Large \textbf{CONCLUSIONES} \par}\end{center}
+%  \vspace{0.5cm}
+%  {\normalsize #1}
+%  \vfil\vfil\null
+%  \clearpage
+%}
 
 
 % ====================================================================
@@ -209,6 +223,7 @@
 }
 \newcommand*{\supervisor}[1]{\def\supname{#1}}
 \newcommand*{\examiner}[1]{\def\examname{#1}}
+\newcommand*{\examinertwo}[1]{\def\examnametwo{#1}}
 \newcommand*{\president}[1]{\def\presname{#1}}
 \newcommand*{\degree}[1]{\def\degreename{#1}}
 \renewcommand*{\author}[1]{\def\authornames{#1}}
@@ -223,7 +238,6 @@
 \author      {}
 \subject     {}
 \keywords    {}
-
 
 % ====================================================================
 \renewcommand\maketitle{
@@ -242,30 +256,33 @@
     %\vskip 60\p@
     \begin{center}
       \setlength{\parskip}{0pt}
-      \vspace{-0.5cm}
-      {\large \textbf{UNIVERSIDAD DE INGENIERÍA Y TECNOLOGÍA UTEC}\par}
+      \vspace{-1.5cm}
+      {\Large \textbf{UNIVERSIDAD DE INGENIERÍA Y TECNOLOGÍA}\par}
       \vspace{0.5cm}
-      {\Large \textbf{Carrera de \deptname }\par}
+      {\Large {CARRERA DE \deptname }\par}
       \vfill
       \vspace{0.5cm}
-      \includegraphics[height=2.34cm]{image/logo-utec.png}\\
+      %\includegraphics[height=2.34cm]{image/logo-utec.png}\\
+      \includegraphics[height=3.675cm]{image/UTEC-HORIZONTAL}\\
       \vfill
-      {\LARGE \bf \@title \par}
-      \vspace{0.5cm}
-      {\large Tesis para optar el título profesional de \degreename \par}
+      {\Large \bf \@title \par}
+      \vspace{1.5cm}
+      {\large \textbf{TESIS}\par}
+      {\large Para optar el título profesional de \degreename \par}
       \vfill
       \smallskip
-      {\large \bf \authornames \par}
       \vspace{0.5cm}
-      {\large \textbf{Código \studentid} \par}
-      \vspace{1.5cm}
-      {\large \bf Asesor \par}
+      {\large \textbf{AUTOR:}\par}
+      {\large \authornames \par}
       \vspace{0.5cm}
+%      {\large \textbf{Código \studentid} \par}
+      \vspace{0.5cm}
+      {\large \bf ASESOR \par}
       \smallskip
       {\large \supname \par}
       \vfill
+      \vspace{1.5cm}
       {\large Lima - Perú \par}
-      \vspace{0.5cm}
       {\large \dateMY \par}
     \end{center}
     \par

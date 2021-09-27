@@ -1,10 +1,9 @@
 \chapter{Introducción}
-%\intro{
 
 \section{Motivación y Contexto}
 
 La fotónica está atrayendo el interés de la industria debido a su potencial en términos de escalabilidad y los beneficios de costo-eficiencia. 
-Este potencial se evidencia, por ejemplo, con los siguientes tres puntos. 
+Este potencial es evidente, por ejemplo, con los siguientes tres puntos. 
 Primero, mantener la tendencia que cada 10 años se mejore en un factor de 1000 el \emph{performance} de los sistemas electrónicos parece ser posible solo con la convergencia de estos con sistemas fotónicos \cite{Glick2018}. 
 Segundo, existe una inversión billonaria en la fabricación de transistores cuyos procesos se están comenzando a lograr adaptar para fabricar circuitos fotónicos \cite{LukasChrostowski2010}.
 Tercero, el elevado ancho de banda que ofrece en comunicaciones digitales y el éxito de los cables ópticos \cite{LukasChrostowski2010, Glick2018}.
@@ -41,7 +40,7 @@ Pero, surgen algunas dificultades con esta estrategia:
   \item Las simulaciones computacionales son muy costosas \cite{Kudyshev2020}.
   \item El espacio de búsqueda es altamente no convexo \cite{Su2018}.
   \item No todos los diseños son fabricables \cite{Su2020}.
-  \item Cada dispositivo es un problema distinto \cite{Molesky2018}
+  \item Cada dispositivo es un problema distinto \cite{Molesky2018}.
 \end{enumerate}
 
 
@@ -50,10 +49,9 @@ Así, existe una demanda crítica de un \emph{framework} capaz de optimizar disp
 \section{Justificación}
 
 El \emph{bend-90°} y \emph{2-splitter} se han escogido debido a que han sido estudiados usando diseño inverso desde el 2004, pero aún no han encontrado aplicación industrial \cite{Molesky2018}. 
-Así, con este estudio se espera contribuir dando una evaluación de las técnicas de optimización modernas aplicadas en estos dispositivos para poder guiar a futuras investigaciones.
 
 Por otro lado, desde el punto de vista computacional este problema es interesante porque ya hay estrategias computacionales conocidas para resolverlo, desde algoritmos evolutivos \cite{Hansen2016} hasta redes neuronales \cite{Goodfellow2015} y \emph{depth learning} \cite{Malkiel2018}. 
-Además, debido al alto costo computacional de las simulaciones \cite{Schneider2019} el trabajo requerirá de computación de alto desempeño.
+Además, debido al alto costo computacional de las simulaciones \cite{Schneider2019}, el trabajo requerirá de computación de alto desempeño.
 Así, es probable que se pueda obtener buenos resultados en la investigación aplicando el conocimiento ya existente en Computación.
 
 \section{Objetivos}
@@ -62,13 +60,12 @@ El objetivo general de esta tesis es evaluar y comparar el \emph{performance} y 
 
 El siguiente objetivo es implementar un modelo de \emph{deep learning} que pueda predecir el \emph{performance} de un \emph{bend-90°} y de un \emph{2-splitter} con un error cuadrático medio menor a [INVESTIGANDO CUANTO DEBERÍA SER]. 
 
-Por último, se espera lograr la fabricación del mejor diseño que se obtenga del \emph{bend-90°} y del \emph{2-splitter} para poder comparar las simulacionales computacionales con las mediciones físicas.
+Por último, se espera lograr la fabricación del diseño con mejor \emph{performance} que se obtenga del \emph{bend-90°} y del \emph{2-splitter} para poder comparar las simulacionales computacionales con las mediciones físicas.
 
 \section{Aportes}
 
-Con este estudio se espera contribuir brinbando una comparativa de las distintas técnicas que se aplican para optimizar un \emph{bend-90°} y un \emph{2-splitter}. 
+Con este estudio se espera contribuir brinbando una comparativa de las distintas técnicas de optimización que se aplican para optimizar un \emph{bend-90°} y un \emph{2-splitter}. 
 Se estima que la contribución será bien recibida por la falta de trabajos de este tipo en el área \cite{Schneider2019, Elsawy2020}.
 Además, la creación de un modelo para predecir el \emph{performance} de estos dispositivos podría ayudar a hacer más eficientes los tutoriales
 relacionados a optimización de dispositivos fotónicos, pues estos suelen usar un \emph{bend-90°} como ejemplo introductorio.
 
-%}
