@@ -1,7 +1,120 @@
 \chapter{Trabajos relacionados}
 
-Usted deberá buscar, revisar, seleccionar y estudiar un conjunto de artículos  pertenecientes  al  estado del arte  y  que además, sean relevantes en su área de investigación. (Entre 2 a 3 páginas)\\
+Dentro de las investigaciones que buscan optimizar un dispositivo fotónico usando diseño inverso, podemos identificar cuatro grandes pasos que 
+estos trabajos siguen: i) parametrización, ii) definición de la figura de mérito (FOM), iii) optimización, iv) restricciones de fabricación.
+
+\section{Parametrización}
+
+En esta etapa se busca parametrizar la región de diseño con el objetivo de conseguir distintos dispositivos conforme variamos estos parámetros.
+Tres estrategias conocidas son: i) división por segmentos, ii) división por \emph{pixeles}, iii) división por conjuntos de nivel.
+
+\begin{enumerate}
+
+  \item \textbf{División por segmentos}
+
+  \cite{Prosopio-Galarza2019} utiliza esta estrategia para dividir un rectángulo de $2\mu m \times 1.5 \mu m$ en 13 rectángulos verticales idénticos que particionan la región de diseño.
+    Luego, parametriza esta región con 13 variables que representan la altura de cada rectángulo. 
+    Finalmente, centra cada rectángulo verticalmente y une los extremos de rectángulos consecutivos con un recta. 
+    De esta manera, se obtienen diseños compactos y con simetría respecto al eje $X$.
+    Esta región es unida a tres guías de onda fijas para formar un \emph{2-splitter}.
+
+  \item \textbf{División por \emph{pixeles}}
+
+    \cite{Su2020} divide una región cuadrada de $2.6 \mu m \times 2.6 \mu m$ en \emph{pixeles} de $40 nm \times 40 nm$ para diseñar un \emph{bend-90°}. 
+    A cada $pixel$ le asocia un valor dado por la fórmula \ref{permitivity-eq}:
+
+  \begin{equation}
+    \varepsilon_i = \varepsilon_{Si} + (1 - \lambda_i) \varepsilon_{SiO_2} \quad \lambda_i \in [0, 1]
+  \label{permitivity-eq}
+  \end{equation}
+
+  Donde $\varepsilon_{Si} = 3.48$ es la permitividad del $Si$ y $\varepsilon_{SiO_2} = 1.44$ es la permitividad del $SiO2$.
+  Con esta ecuación \citet{Su2020} mapea el intervalo $[0, 1]$ con el intervalo $[1.44, 3.48]$. 
+  Esto se realiza para determinar la permitividad que hay en la ubicación del \emph{pixel} y poder simular las ecuaciones de Maxwell en el dispositivo.
+  Con esta parametrización obtenemos una cantidad infinita de diseños, mas solo nos interesan aquellos donde $\lambda_i$ es entero, pues en caso contrario un \emph{pixel} se mapea a la permitividad de un material desconocido.
+  
+
+  \item \textbf{División por conjuntos de nivel}
+
+    \cite{Piggott2017} diseña un \emph{3-splitter} dividiendo una región de $3.8 \mu m \times 2.5 \mu m$ en \emph{pixeles} de $40 nm \times 40 nm$. A cada $pixel$ le asocia una permitividad dada por la siguiente fórmula:
+
+  \[ \varepsilon(x, y) =
+    \begin{cases}
+      \varepsilon_{Si}       & \quad \text{si } \phi(x, y) \leq 0\\
+      \varepsilon_{SiO_2}    & \quad \text{si } \phi(x, y) > 0
+    \end{cases}
+  \]
+
+  Así, \cite{Piggott2017} puede definir $\phi$ como una función contínua y obtener un diseño fabricable.
 
 
-La sección de trabajo relacionados, deberá contener un resumen, claro y conciso, de aquellos trabajos de investigación que están directamente relacionados con vuestro trabajo. Esto con el objetivo que el lector pueda darse cuenta de las diferencias entre su propuesta y las del estado del arte, además, permitirá saber como otros autores han intentado resolver un problema similar al suyo.
+\leonidas{TODO: Insertar imágenes para que se entienda mejor.}
+
+\end{enumerate}
+
+  Las distintas estrategias mostradas tienen sus propias características. 
+  \cite{Prosopio-Galarza2019} utiliza una parametrización que le asegura simetría y regiones compactas, pero tiene un espacio de búsqueda más reducido que las otras opciones.
+  Por otro lado, \cite{Su2020} usa \emph{pixeles} para trabajar con un espacio de búsqueda más grande a cambio de poder parametrizar diseños no fabricables.
+  De manera similar \cite{Piggott2017} usa \emph{pixeles}, pero estos representan un dispositivo fabricable a cambio de tener que definir una nueva función.
+
+
+\section{Definición de la FOM}
+
+La FOM es la función que nos permite determinar que diseños son mejores. Existen distintas estrategias para definirla, por ejemplo:
+
+\begin{itemize}
+
+  \item \cite{Prosopio-Galarza2019} busca optimizar la transmitancia.
+
+  \item \cite{Su2020} define un valor deseado de transmitancia.
+
+  \item \cite{Piggott2017} busca trabajar con 3 longitudes de onda y que con cada longitud la transmitancia se maximice en una guía de onda de salida y se minimice en las otras.
+
+\end{itemize}
+
+\leonidas{TODO: Tal vez escribirlo con fórmulas para dejarlo más claro.}
+
+\section{Optimización}
+
+En la etapa de optimización la forma a proceder depende de la parametrización realizada. Así, tenemos:
+
+\begin{itemize}
+
+  \item \cite{Prosopio-Galarza2019} define un rango en el que puede variar cada altura con lo cual limita el espacio de búsqueda.
+    Luego, por separado, utiliza tres algoritmos para explorar los posibles diseños: i) \emph{Particle Swarm Optimization}, ii) \emph{Shrinking Box algorithm}, iii) \emph{Steepest Ascent algorithm}. 
+    Para obtener el valor de la FOM utiliza como simulador ANSY Lumerical FDTD.
+
+  \item \cite{Su2020} ya tiene una parametrización donde cada \emph{pixel} tiene un rango definido de valores. 
+  Pero, para asegurar el obtener un diseño fabricable divide la optimización en dos pasos:
+
+  \begin{enumerate}
+    \item Optimización continua: Se varía el valor de $\lambda_i$ en el intervalo $[0, 1]$ sin importar si se obtiene dispositivos no fabricables.
+
+    \item Optimización discreta: Se considera el resultado de la optimización continua como punto inicial, se comienza a optimizar, pero se va aplicando transformaciones que permitan que cada \emph{pixel} vaya convergiendo a un valor entero.
+
+  \end{enumerate}
+
+  Como algoritmo de optimización utiliza $L-BFGS-B$ y $MMA$. Las simulaciones son realizadas en SPIN.
+
+  \item \cite{Piggott2017} trabaja sobre la función $\phi$ en un espacio de búsqueda no limitado. 
+    Luego, realiza la optimización con un algoritmo propio que está basado en \emph{gradient-descent} y \emph{line search}.
+    De igual manera que \cite{Su2020}, las simulaciones son realizadas en SPIN.
+
+\end{itemize}
+
+\leonidas{TODO: Agregar un párrafo sobre Scheneider y sobre Elsawy}
+
+\section{Restricciones de fabricación}
+
+El diseño obtenido por la fabricación por lo general aún debe pasar por una etapa donde se tenga en consideración aspectos de fabricación que tenga un buen desempeño al fabricarse. Así, tenemos:
+
+\begin{itemize}
+
+  \item \cite{Prosopio-Galarza2019} busca establecer un rango válido que deberían tener los ángulo formados entre rectángulos consecutivos.
+
+  \item \cite{Su2020} simplemente se aseguró que el tamaño de los \emph{pixeles} fuera más grande que el mínimo tamaño que se podía fabricar.
+
+  \item \cite{Piggott2017} consideró que su diseño tenga un radio de curvatura mayor a un valor dado y que no haya presencia de huecos que superen un tamaño determinado.
+
+\end{itemize}
 

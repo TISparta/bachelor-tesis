@@ -1,17 +1,16 @@
-\chapter{Introducción}
+\chapter{Motivación y Contexto}
 
-\section{Motivación y Contexto}
+\section{Introducción}
 
 La fotónica está atrayendo el interés de la industria debido a su potencial en términos de escalabilidad y los beneficios de costo-eficiencia. 
 Este potencial es evidente, por ejemplo, con los siguientes tres puntos. 
-Primero, si se quiere mantener la tendencia que cada 10 años se mejore en un factor de 1000 el \emph{performance} de los sistemas electrónicos, entonces parece ser indispensable la convergencia de estos con sistemas fotónicos \cite{Glick2018}. 
-Segundo, existe una inversión billonaria en la fabricación de transistores cuyos procesos se están comenzando a lograr adaptar para fabricar circuitos fotónicos \cite{LukasChrostowski2010}.
-Tercero, el elevado ancho de banda que ofrece en comunicaciones digitales y el éxito de los cables ópticos \cite{LukasChrostowski2010, Glick2018}.
-De esta manera, es prometedor el futuro de los dispositivos fotónicos.
+Primero, si se quiere mantener la tendencia que cada 10 años se mejore en un factor de 1000 el \emph{performance} de los sistemas electrónicos, entonces parece ser indispensable la convergencia de estos con sistemas fotónicos \citep{Glick2018}. 
+Segundo, existe una inversión billonaria en la fabricación de transistores cuyos procesos se están comenzando a lograr adaptar para fabricar circuitos fotónicos \citep{LukasChrostowski2010}.
+Tercero, el elevado ancho de banda que ofrece en comunicaciones digitales y el éxito de los cables ópticos \citep{LukasChrostowski2010, Glick2018}.
 
-Los dispositivos fotónicos se utilizan en grandes cantidades en los circuitos fotónicos integrados \cite{LukasChrostowski2010}. 
-Estos dispositivos trabajan en la escala de nanómetros y son diseñados para funcionar bajo ciertas especificaciones. 
-Así, para que estos dispositivos cumplan los requerimientos deseados existen dos estrategias comunes: diseño tradicional y diseño inverso \cite{Molesky2018}.
+Los dispositivos fotónicos se utilizan en grandes cantidades en los circuitos fotónicos integrados \citep{LukasChrostowski2010}. 
+Estos trabajan en la escala de nanómetros y son diseñados para funcionar bajo ciertas especificaciones. 
+Así, para que estos dispositivos cumplan los requerimientos deseados existen dos estrategias comunes: diseño tradicional y diseño inverso \citep{Molesky2018}.
 
 
 En el diseño tradicional se define el dispositivo con geometrías simples que permiten obtener funciones analíticas de sus propiedades físicas. 
@@ -19,51 +18,58 @@ Esto se realiza para poder optimizar la función obtenida a partir de los parám
 un barrido de los parámetros, con algoritmos genéticos o usando \emph{particle swarm optimization}. Es un enfoque simple, pero que ha obtenido
 buenos resultados. Sin embargo, existen dos grandes inconvenientes con este planteamiento. 
 Primero, solo estamos explorando una pequeña fracción de todos los posibles diseños.
-Segundo, por lo general no es conocido el límite del \emph{performance} del dispositivo \cite{Molesky2018, Su2020}.
+Segundo, por lo general no es conocido el límite del \emph{performance} del dispositivo \citep{Molesky2018, Su2020}.
 
 
 En el diseño inverso se busca hacer una mayor exploración de todos los posibles diseños. 
-Para ello, ya no nos limitamos a solo usar diseños intuitivos. Ahora, definimos geometrías arbitrarias y usamos simulaciones computacionales para determinar las propiedades físicas del dispositio \cite{Molesky2018, Su2020}. Este enfoque ha logrado conseguir mejores resultados que los obtenidos por el diseño tradicional en una variedad de dispositivos \cite{Su2018, Molesky2018}. Sin embargo, este planteamiento viene acompañado de nuevos desafíos.
+Para ello, ya no nos limitamos a solo usar diseños intuitivos. Ahora, definimos geometrías arbitrarias y usamos simulaciones computacionales para determinar las propiedades físicas del dispositivo \citep{Molesky2018, Su2020}. Este enfoque ha logrado conseguir mejores resultados que los obtenidos por el diseño tradicional \citep{Su2018, Molesky2018}. Sin embargo, este planteamiento viene acompañado de nuevos desafíos.
 
 
 \section{Descripción del  Problema}
 
-Una estrategia común a la hora de hacer diseño inverso es seleccionar una región rectangular a optimizar y dividirla en $n \times m$ rectángulos
-de igual tamaño distribuidos como una matrix. 
-Luego, seleccionamos dos materiales y decimos que cada rectángulo puede ser de alguno de ellos. 
-De esta forma tenemos $2^{n \times m}$ posibles dispositivos \cite{Su2020}. 
-Definiendo un dispositivo de esta manera podemos llegar a tener, por ejemplo, $2^{10 \times 10}$ posibles diseños \cite{Malheiros-Silveira2020}.
-Pero, surgen algunas dificultades con esta estrategia:
+Una estrategia común en diseño inverso es seleccionar una región rectangular a optimizar y dividirla en $n \times m$ \emph{
+  pixels} como si fuera una imagen. 
+Luego, a cada \emph{pixel} se le asocia el número $0$ o $1$. 
+Cero representa la presencia de $SiO_2$ en la ubicación del \emph{pixel} y uno la presencia de $Si$.
+De esta forma tenemos $2^{n \times m}$ posibles dispositivos \citep{Su2020}. 
+Con esta definición podemos llegar a tener, por ejemplo, $2^{10 \times 10}$ posibles diseños \citep{Malheiros-Silveira2020}.
+Así, surgen algunas dificultades con esta estrategia:
 
 \begin{enumerate}
   \item Es imposible evaluar todas los posibles diseños.
-  \item Las simulaciones computacionales son muy costosas \cite{Kudyshev2020}.
-  \item El espacio de búsqueda es altamente no convexo \cite{Su2018}.
-  \item No todos los diseños son fabricables \cite{Su2020}.
-  \item Cada dispositivo es un problema distinto \cite{Molesky2018}.
+  \item Las simulaciones computacionales son muy costosas \citep{Kudyshev2020}.
+  \item El espacio de búsqueda es altamente no convexo \citep{Su2018}.
+  \item No todos los diseños son fabricables \citep{Su2020}.
+  \item Cada dispositivo es un problema distinto \citep{Molesky2018}.
 \end{enumerate}
 
 
-Así, existe una demanda crítica de un \emph{framework} capaz de optimizar dispositivos con un elevado número de parámetros dentro de un espacio de búsqueda no convexo \cite{Kudyshev2020}. Este es un problema muy grande, por ello en la presente tesis nos centraremos en estudiar dos dispositivos: \emph{bend-90°} y \emph{2-splitter}.
+Así, existe una demanda crítica de un \emph{framework} capaz de optimizar dispositivos con un elevado número de parámetros dentro de un espacio de búsqueda no convexo \citep{Kudyshev2020}. Este es un problema muy grande, por ello en la presente tesis nos centraremos en optimizar un \emph{bend-90°} y un \emph{2-splitter}.
 
 \leonidas{TODO: Agregar una imagen que contenga un bend-90° y un 2-splitter tradicional y uno donde se haya realizado la división en cuadrados para optimizarlos}
 
 \section{Justificación}
 
-El \emph{bend-90°} y \emph{2-splitter} se han escogido debido a que han sido estudiados usando diseño inverso desde el 2004, pero aún no han encontrado aplicación industrial \cite{Molesky2018}. 
+El \emph{bend-90°} y \emph{2-splitter} se han escogido debido a que han sido estudiados usando diseño inverso desde el 2004, pero aún no han encontrado aplicación industrial \citep{Molesky2018}. 
 
-Por otro lado, desde el punto de vista computacional este problema es interesante porque ya hay estrategias computacionales conocidas para resolverlo, desde algoritmos evolutivos \cite{Hansen2016} hasta redes neuronales \cite{Goodfellow2015} y \emph{depth learning} \cite{Malkiel2018}. 
-Además, debido al alto costo computacional de las simulaciones \cite{Schneider2019}, el trabajo requerirá de computación de alto desempeño.
+Por otro lado, desde el punto de vista computacional este problema es interesante porque ya hay estrategias computacionales conocidas para resolverlo, desde algoritmos evolutivos \citep{Hansen2016} hasta redes neuronales \citep{Goodfellow2015} y \emph{depth learning} \citep{Malkiel2018}. 
+Además, debido al alto costo computacional de las simulaciones \citep{Schneider2019}, el trabajo requiere de computación de alto desempeño.
 Así, es probable que se pueda obtener buenos resultados en la investigación aplicando el conocimiento ya existente en computación.
 
 \section{Objetivos}
 
-El objetivo general de esta tesis es evaluar y comparar el \emph{performance} y la convergencia de las técnicas modernas de optimización usadas para optimizar un \emph{bend-90°} y \emph{2-splitter}.
+\begin{itemize}
 
-El siguiente objetivo es implementar un modelo de \emph{deep learning} que pueda predecir el \emph{performance} de un \emph{bend-90°} y de un \emph{2-splitter} con un error cuadrático medio menor a \leonidas{TODO: INVESTIGAR CUANTO DEBERÍA SER}. 
+  \item Evaluar y comparar el \emph{performance} y la convergencia de las técnicas modernas de optimización usadas para optimizar un \emph{bend-90°} y \emph{2-splitter}.
 
-Por último, se espera lograr la fabricación del diseño con mejor \emph{performance} que se obtenga del \emph{bend-90°} y del \emph{2-splitter} para poder comparar las simulacionales computacionales con las mediciones físicas.
+  \item Fabricar el diseño con mejor \emph{performance} que se obtenga del \emph{bend-90°} y del \emph{2-splitter} para poder comparar las simulacionales computacionales con las mediciones físicas.
+
+%El siguiente objetivo es implementar un modelo de \emph{deep learning} que pueda predecir el \emph{performance} de un \emph{bend-90°} y de un \emph{2-splitter} con un error cuadrático medio menor a \leonidas{TODO: INVESTIGAR CUANTO DEBERÍA SER}. 
+
+\end{itemize}
+
+
 
 \section{Aportes}
 
-Ante la reducida cantidad de trabajos similares en el área \cite{Schneider2019, Elsawy2020}, con este estudio se espera contribuir brinbando una comparativa de las distintas técnicas de optimización que se aplican para optimizar un \emph{bend-90°} y un \emph{2-splitter}. 
+Ante la reducida cantidad de trabajos similares en el área \citep{Schneider2019, Elsawy2020}, este trabajo busca aportar una comparativa de las distintas técnicas de optimización que se aplican para optimizar un \emph{bend-90°} y un \emph{2-splitter}. 

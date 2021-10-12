@@ -9,7 +9,7 @@
 %
 %
 
-\documentclass[a4paper, 10pt, oneside]{tesisutec}
+\documentclass[a4paper, 12pt, oneside]{tesisutec}
 
 % Color commands
 \usepackage{xcolor}
@@ -19,7 +19,7 @@
 \graphicspath{images/}
 
 % Include any extra LaTeX packages required
-\usepackage[square, numbers, comma, sort&compress]{natbib}
+\usepackage[comma, sort&compress]{natbib}
 \usepackage{verbatim}  %
 \usepackage[spanish]{babel}
 \selectlanguage{spanish}
@@ -35,11 +35,13 @@
 \hypersetup{urlcolor=blue, colorlinks=true}
 
 
+\usepackage{apalike}
+
 \usepackage{notoccite}  % Librería necesaria para arreglar el orden de referencias en overleaf.com
 \usepackage{hyperref} % Librería para hacer 'clickable' todas las referencias. OPCIONAL.
 
 % For Spanish
-\usepackage[utf8]{inputenc}
+%\usepackage[utf8]{inputenc}
 % For correct copy of tildes in PDF
 \usepackage[T1]{fontenc}
 
@@ -81,16 +83,16 @@
 \input{section/introduction}
 %\input{section/chapter_example}
 \input{section/related-works}
-\input{section/theory}
-\input{section/proposal}
-\input{section/preliminary-results}
+%\input{section/theory}
+%\input{section/proposal}
+%\input{section/preliminary-results}
 %\input{section/conclusions}
 %\input{section/recommendations}
 
 
 %% ============================================================================
 \renewcommand{\bibname}{\large\bf{REFERENCIAS BIBLIOGRÁFICAS}}
-\bibliographystyle{IEEEtran} % Use the IEEEtran style
+\bibliographystyle{apalike} % Use the IEEEtran style
 \bibliography{references}   % The references are in "referencias.bib"
 
 \end{document}
