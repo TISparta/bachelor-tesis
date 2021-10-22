@@ -1,130 +1,41 @@
 \chapter{Trabajos relacionados}
 
-Dentro de las investigaciones que buscan optimizar un dispositivo fotónico usando diseño inverso, podemos identificar cuatro grandes pasos que 
-estos trabajos siguen: i) parametrización, ii) definición de la figura de mérito (FOM), iii) optimización, iv) restricciones de fabricación.
+En el presente capítulo se resume los puntos principales de trabajos relacionados al problema de investigación.
+Para ello dividiremos el contenido en tres secciones. 
+En primer lugar, mostraremos trabajos que han usado parametrización por píxeles.
+En segundo lugar, veremos investigaciones que utilizan parametrización por conjuntos de nivel.
+En tercer lugar, describiremos publicaciones que emplearon parametrización por segmentos.
 
-\leonidas{TODO: Para la siguiente entrega pienso agregar el marco teórico antes de este capítulo, describir estos cuatro pasos y otros conceptos necesarios para entender el paper. Así, este capítulo seguiría la misma estructura, pero ya solo se centraría en mostrar las distintas estrategias seguidos por otros papers en cada paso. Creo que no debería ser un gran cambio por como lo he escrito.}
+\section{Parametrización por píxeles}
 
-\section{Parametrización}
+\cite{Su2020} divide una región cuadrada de $2.5 \mu m \times 2.5 \mu m$ en píxeles de $40 nm \times 40 nm$ y luego lo une a guías de onda de $40 nm$ para diseñar un \emph{bend-90°}. 
+La definición de su función objetivo es como la descrita en el marco teórico, pero además muestra ideas de como definir esta función de manera que la optimización intente acercarse a un valor de transmitancia deseado.
 
-En esta etapa se busca parametrizar la región de diseño con el objetivo de conseguir distintos dispositivos conforme variamos estos parámetros.
-Tres estrategias conocidas son: i) división por segmentos, ii) división por píxeles, iii) división por conjuntos de nivel.
+Como algoritmo de optimización se utiliza $L-BFGS-B$ y $MMA$ ejecutando 100 iteraciones en la etapa continua y 180 en la discreta.
+El proceso completo de optimización se realizó en SPINS demorando catorce horas y media al ser ejecutado en una computadora con 5 GPU, 2 CPU con 64 GB de RAM.
+Sin embargo, solo utilizó menos de 4 GB de RAM y cada simulación demoró alrededor de un minuto.
 
-\begin{enumerate}
+Para asegurar restricciones de fabricación, \cite{Su2020} se aseguró que el tamaño de cada píxel sea mayor al mínimo tamaño que se podía fabricar.
 
-  \item \textbf{División por segmentos}
+\section{Parametrización por conjuntos de nivel}
 
-  \cite{Prosopio-Galarza2019} utiliza esta estrategia para dividir un rectángulo de $2\mu m \times 1.5 \mu m$ en 13 rectángulos verticales idénticos que particionan la región de diseño.
-    Luego, parametriza esta región con 13 variables que representan la altura de cada rectángulo. 
-    Finalmente, centra cada rectángulo verticalmente y une los extremos de rectángulos consecutivos con un recta. 
-    De esta manera, se obtienen diseños compactos y con simetría respecto al eje $X$.
-    Esta región es unida a tres guías de onda fijas de $0.5 \mu m$ para formar un \emph{2-splitter} de un espesor de $2 \mu m$.
+\cite{Piggott2017} diseña un \emph{3-splitter} dividiendo una región de $3.8 \mu m \times 2.5 \mu m$ en píxeles de $40 nm \times 40 nm$.
+En la definición de su función objetivo busca trabajar con 3 longitudes de onda y que con cada longitud la transmitancia se maximice en una guía de onda de salida y se minimice en las otras, similar al trabajo de \cite{Su2020} en la optimización de un \emph{2-splitter}.
 
-  \item \textbf{División por píxeles}
+Luego, utilizando SPINS como simulador, realiza la optimización con un algoritmo propio que está basado en \emph{gradient-descent} y \emph{line search}. 
+Con este algoritmo se encarga de incorporar restricciones del mínimo radio de curvatura que puede contener el diseño y limita el tamaño máximo que pueden tener los huecos que se formen en el dispositivo.
 
-    \cite{Su2020} divide una región cuadrada de $2.5 \mu m \times 2.5 \mu m$ en píxeles de $40 nm \times 40 nm$ y luego lo une a guías de onda de $40 nm$ para diseñar un \emph{bend-90°}. 
-    A cada píxel le asocia un valor dado por la fórmula \ref{permitivity-eq}:
-
-  \begin{equation}
-    \varepsilon(x, y) = \varepsilon_{Si} + (1 - \lambda_{x,y}) \varepsilon_{SiO_2} \quad \lambda_{x, y} \in [0, 1], \lambda_{x, y} \in \mathbb{R} 
-  \label{permitivity-eq}
-  \end{equation}
-
-  Donde $\varepsilon_{Si} = 3.48$ es la permitividad del $Si$ y $\varepsilon_{SiO_2} = 1.44$ es la permitividad del $SiO2$.
-  Con esta ecuación \citet{Su2020} mapea el intervalo $[0, 1]$ con el intervalo $[1.44, 3.48]$. 
-  Esto se realiza para determinar la permitividad que hay en la ubicación del píxel y poder simular las ecuaciones de Maxwell en el dispositivo.
-  Con esta parametrización obtenemos una cantidad infinita de diseños, mas solo nos interesan aquellos donde $\lambda_{x,y}$ es entero, pues en caso contrario un píxel se mapea a la permitividad de un material desconocido lo cual lo volvería infabricable.
-  
-
-  \item \textbf{División por conjuntos de nivel}
-
-    \cite{Piggott2017} diseña un \emph{3-splitter} dividiendo una región de $3.8 \mu m \times 2.5 \mu m$ en píxeles de $40 nm \times 40 nm$. A cada píxel le asocia una permitividad dada por la siguiente fórmula:
-
-  \[ \varepsilon(x, y) =
-    \begin{cases}
-      \varepsilon_{Si}       & \quad \text{si } \phi(x, y) \leq 0\\
-      \varepsilon_{SiO_2}    & \quad \text{si } \phi(x, y) > 0
-    \end{cases}
-  \]
-
-  Así, \cite{Piggott2017} puede definir $\phi$ como una función contínua y obtener un diseño fabricable.
+\section{Parametrización por segmentos}
 
 
-\leonidas{TODO: Insertar imágenes para que se entienda mejor.}
-
-\end{enumerate}
-
-  Las distintas estrategias mostradas tienen sus propias características. 
-  \cite{Prosopio-Galarza2019} utiliza una parametrización que le asegura simetría y regiones compactas, pero tiene un espacio de búsqueda más reducido que las otras opciones.
-  Por otro lado, \cite{Su2020} usa píxeles para trabajar con un espacio de búsqueda más grande a cambio de poder parametrizar diseños no fabricables.
-  De manera similar \cite{Piggott2017} usa píxeles, pero mantiene la parametrización del dispositivo con curvas suaves.
+\cite{Prosopio-Galarza2019} utiliza esta estrategia para dividir un rectángulo de $2\mu m \times 1.5 \mu m$ en 13 rectángulos verticales idénticos que particionan la región de diseño.
+Luego, esto es unido a tres guías de onda fijas de $0.5 \mu m$ para formar un \emph{2-splitter} de un esperor de $0.2 \mu m$.
 
 
-\section{Definición de la FOM}
+Como función objetivo se establece maximizar la transmitancia. Seguidamente, por separado utiliza tres algoritmos para optimizar el diseño: i) \emph{Particle Swarm Optimization}, ii) \emph{Shrinking Box algorithm}, iii) \emph{Steepest Ascent algorithm}. 
 
-La FOM es la función que nos permite determinar que diseños son mejores. Existen distintas estrategias para definirla, por ejemplo:
-
-\begin{itemize}
-
-  \item \cite{Prosopio-Galarza2019} busca optimizar la transmitancia.
-
-  \item \cite{Su2020} muestra tres estrategias:
-
-    \begin{enumerate}
-      \item Definir un valor deseado de transmitancia.
-      \item Maximizar la transmitancia en una guía de onda y minimizar en la otra para una longitud de onda y lo contrario para otra longitud de onda.
-      \item Combinar la anterior definición considerando la fase del dispositivo.
-    \end{enumerate}
-
-  \item \cite{Piggott2017} busca trabajar con 3 longitudes de onda y que con cada longitud la transmitancia se maximice en una guía de onda de salida y se minimice en las otras.
-
-\end{itemize}
-
-\leonidas{TODO: Tal vez escribirlo con fórmulas para dejarlo más claro.}
-
-\section{Optimización}
-
-En la etapa de optimización la forma a proceder depende de la parametrización realizada. Así, tenemos:
-
-\begin{itemize}
-
-  \item \cite{Prosopio-Galarza2019} define un rango en el que puede variar cada altura con lo cual limita el espacio de búsqueda.
-    Luego, por separado, utiliza tres algoritmos para explorar los posibles diseños: i) \emph{Particle Swarm Optimization}, ii) \emph{Shrinking Box algorithm}, iii) \emph{Steepest Ascent algorithm}. 
-    Para obtener el valor de la FOM utiliza como simulador ANSY Lumerical FDTD.
-
-  \item \cite{Su2020} ya cuenta con una parametrización donde cada píxel tiene un rango definido de valores. 
-  Pero, para asegurar el obtener un diseño fabricable divide la optimización en dos pasos:
-
-  \begin{enumerate}
-    \item Optimización continua: Se varía el valor de $\lambda_i$ en el intervalo $[0, 1]$ sin importar si se obtiene dispositivos no fabricables.
-
-    \item Optimización discreta: Se considera el resultado de la optimización continua como punto inicial, se comienza a optimizar, pero se va aplicando transformaciones que permitan que cada \emph{pixel} vaya convergiendo a un valor entero.
-
-    \leonidas{TODO: Creo que aquí pondré la fórmula de la transformación usada por Su et al. y alguna diferente usada en otro paper. En general, describir más sobre la optimización discreta.}
-
-  \end{enumerate}
-
-  Como algoritmo de optimización utiliza $L-BFGS-B$ y $MMA$. Las simulaciones son realizadas en SPINS.
-
-  \item \cite{Piggott2017} trabaja sobre la función $\phi$ en un espacio de búsqueda no limitado. 
-    Luego, realiza la optimización con un algoritmo propio que está basado en \emph{gradient-descent} y \emph{line search}.
-    De igual manera que \cite{Su2020}, las simulaciones son realizadas en SPINS.
-
-\end{itemize}
-
-\leonidas{TODO: Aquí creo que agregaré una sección para hablar en más detalle sobre los algoritmos empleados en las optimizaciones y la configuración que usan. Para ello pienso basarme principalmente en los trabajos de Scheneide, Elsawy y Gregory}
-
-\section{Restricciones de fabricación}
-
-El diseño obtenido por la fabricación por lo general aún debe pasar por una etapa donde se tenga en consideración aspectos de fabricación para que los dispositivos fabricados tengan un buen rendimiento al fabricarse. Así, tenemos:
-
-\begin{itemize}
-
-  \item \cite{Prosopio-Galarza2019} busca establecer un rango válido que deberían tener los ángulos formados entre rectángulos consecutivos.
-
-  \item \cite{Su2020} se aseguró que el tamaño de los píxeles fuera más grande que el mínimo tamaño que se podía fabricar.
-
-  \item \cite{Piggott2017} consideró que su diseño tenga un radio de curvatura mayor a un valor dado y que no haya presencia de huecos que superen un tamaño determinado.
-
-\end{itemize}
+La simulación se realiza usando ANSY Lumerical FDTD. 
+Los experimentos solo se repitieron una vez y se ejecutó cada algoritmo durante 30 iteraciones.
+Probablemente, el usar este simulador mediante la interfaz gráfica limitó la automatización de los experimentos para conseguir una mayor cantidad de datos a comparar. 
+Pero, es destacable que en su investigación \cite{Prosopio-Galarza2019} logra determinar que los ángulo más agudos, los cuales son los más adecuados como regla práctica de diseño, son formados con la optimización mediante \emph{Particle Swarm Optimization}.
 

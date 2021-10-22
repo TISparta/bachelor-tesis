@@ -147,7 +147,7 @@ f_{obj}(p) = max \quad T(p)
 \label{eq:fom-bend}
 \end{equation}
 
-Es decir, la función objetivo a la parametrización $p$ es maximizar la transmitancia, ver equación \ref{eq:transmission}, asociada a esa parametrización.
+Es decir, la función objetivo asociada a la parametrización $p$ es maximizar la transmitancia, ver equación \ref{eq:transmission}, asociada a esa parametrización.
 
 \item \emph{2-splitter}
 
@@ -214,7 +214,7 @@ Pero, para asegurar el obtener un diseño fabricable se divide la optimización 
 
 \item{Parametrización por conjuntos de nivel}
 
-Como lo detalla \cite{Piggott2017}, con este tipo de parametrización es conviente utilizar una optimización basada en la gradiente y
+Como lo detalla \cite{Piggott2017}, con este tipo de parametrización es conveniente utilizar una optimización basada en la gradiente y
 asegurar convergencia con una búsqueda en línea.
 
 \item{Parametrización por segmentos}
@@ -226,13 +226,13 @@ Luego, ejecutar algún algoritmo de optimización, de preferencia uno de optimiz
 
 \subsection{Transformaciones}
 
-La aplicación de transformaciones a un diseño se realiza con el fin de obtener diseños con curvas suaves para asegurar un buen desempeño del dispositivo al momento de fabricarse \citep{Su2020}. 
+La aplicación de transformaciones a un diseño se realiza con el fin de obtener dispositivos con curvas suaves para asegurar un buen desempeño al momento de fabricarse \citep{Su2020}. 
 De acuerdo al tipo de parametrización utilizada, tenemos:
 
 \begin{itemize}
   \item Para el caso de la parametrización por segmentos, si queremos suavizar el diseño obtenido podemos considerar las alturas de los segmentos e interpolar una curva.
 
-  \item Para el caso de la parametrización por conjunto de nivel ya se cuenta con diseños con curvas suaves, así no es necesario aplicar transformaciones.
+  \item Para el caso de la parametrización por conjunto de nivel se define $\phi$ de forma que asegure curvas suaves, así no es necesario aplicar transformaciones.
 
   \item Para el caso de la parametrización por píxeles, una forma se suavizar las regiones punteagudas es aplicar una función de suavizado conforme va iterando el algoritmo de optimización aplicado. Basándonos en \cite{Zhang2021}, podemos aplicar la siguiente función:
 
