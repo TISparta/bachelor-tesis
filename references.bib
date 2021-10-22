@@ -231,3 +231,49 @@ volume = {57},
 year = {2015}
 }
 
+
+@book{Hohenester2020,
+   title =     {Nano and Quantum Optics: An Introduction to Basic Principles and Theory},
+   author =    {Ulrich Hohenester},
+   publisher = {Springer International Publishing},
+   isbn =      {3030305031; 9783030305031; 9783030305048; 303030504X},
+   year =      {2020},
+   series =    {Graduate Texts in Physics  },
+   edition =   {1st ed. 2020}
+}
+
+@article{Oskooi2010,
+abstract = {This paper describes Meep, a popular free implementation of the finite-difference time-domain (FDTD) method for simulating electromagnetism. In particular, we focus on aspects of implementing a full-featured FDTD package that go beyond standard textbook descriptions of the algorithm, or ways in which Meep differs from typical FDTD implementations. These include pervasive interpolation and accurate modeling of subpixel features, advanced signal processing, support for nonlinear materials via Pad{\'{e}} approximants, and flexible scripting capabilities. Program summary: Program title: Meep. Catalogue identifier: AEFU_v1_0. Program summary URL:: http://cpc.cs.qub.ac.uk/summaries/AEFU_v1_0.html. Program obtainable from: CPC Program Library, Queen's University, Belfast, N. Ireland. Licensing provisions: GNU GPL. No. of lines in distributed program, including test data, etc.: 151 821. No. of bytes in distributed program, including test data, etc.: 1 925 774. Distribution format: tar.gz. Programming language: C++. Computer: Any computer with a Unix-like system and a C++ compiler; optionally exploits additional free software packages: GNU Guile [1], libctl interface library [2], HDF5 [3], MPI message-passing interface [4], and Harminv filter-diagonalization [5]. Developed on 2.8 GHz Intel Core 2 Duo. Operating system: Any Unix-like system; developed under Debian GNU/Linux 5.0.2. RAM: Problem dependent (roughly 100 bytes per pixel/voxel). Classification: 10. External routines: Optionally exploits additional free software packages: GNU Guile [1], libctl interface library [2], HDF5 [3], MPI message-passing interface [4], and Harminv filter-diagonalization [5] (which requires LAPACK and BLAS linear-algebra software [6]). Nature of problem: Classical electrodynamics. Solution method: Finite-difference time-domain (FDTD) method. Running time: Problem dependent (typically about 10 ns per pixel per timestep). References: [1] GNU Guile, http://www.gnu.org/software/guile[2] Libctl, http://ab-initio.mit.edu/libctl[3] M. Folk, R.E. McGrath, N. Yeager, HDF: An update and future directions, in: Proc. 1999 Geoscience and Remote Sensing Symposium (IGARSS), Hamburg, Germany, vol. 1, IEEE Press, 1999, pp. 273-275.[4] T.M. Forum, MPI: A Message Passing Interface, in: Supercomputing 93, Portland, OR, 1993, pp. 878-883.[5] Harminv, http://ab-initio.mit.edu/harminv.[6] LAPACK, http://www.netlib.org/lapack/lug. {\textcopyright} 2009 Elsevier B.V. All rights reserved.},
+author = {Oskooi, Ardavan F. and Roundy, David and Ibanescu, Mihai and Bermel, Peter and Joannopoulos, J. D. and Johnson, Steven G.},
+doi = {10.1016/j.cpc.2009.11.008},
+issn = {00104655},
+journal = {Computer Physics Communications},
+keywords = {Computational electromagnetism,FDTD,Maxwell solver},
+number = {3},
+pages = {687--702},
+publisher = {Elsevier B.V.},
+title = {{Meep: A flexible free-software package for electromagnetic simulations by the FDTD method}},
+url = {http://dx.doi.org/10.1016/j.cpc.2009.11.008},
+volume = {181},
+year = {2010}
+}
+
+
+@article{Zhang2021,
+abstract = {Local-gradient-based optimization approaches lack nonlocal exploration ability required for escaping from local minima in non-convex landscapes. A directional Gaussian smoothing (DGS) approach was proposed in our recent work and used to define a truly nonlocal gradient, referred to as the DGS gradient, in order to enable nonlocal exploration in high-dimensional black-box optimization. Promising results show that replacing the traditional local gradient with the nonlocal DGS gradient can significantly improve the performance of gradient-based methods in optimizing highly multi-modal loss functions. However, the current DGS method is designed for unbounded and unconstrained optimization problems, making it inapplicable to real-world engineering design optimization problems where the tuning parameters are often bounded and the loss function is usually constrained by physical processes. In this work, we propose to extend the DGS approach to the constrained inverse design framework in order to find a better design. The proposed framework has its advantages in portability and flexibility to naturally incorporate the parameterization, physics simulation, and objective formulation together to build up an effective inverse design workflow. A series of adaptive strategies for smoothing radius and learning rate updating are developed to improve the computational efficiency and robustness. To enable a clear binarized design, a dynamic growth mechanism is imposed on the projection strength in parameterization. The methodology is demonstrated by an example of wavelength demultiplexer. Our method shows superior performance compared to the state-of-the-art approaches. By incorporating volume constraints, the optimized design achieves an equivalently high performance but significantly reduces the amount of material usage.},
+archivePrefix = {arXiv},
+arxivId = {2007.15079},
+author = {Zhang, Jiaxin and Bi, Sirui and Zhang, Guannan},
+doi = {10.1016/j.matdes.2020.109213},
+eprint = {2007.15079},
+issn = {18734197},
+journal = {Materials and Design},
+keywords = {Constrained optimization,Directional Gaussian smoothing,Fabrication constraint,Inverse design,Nanophotonics,Robustness},
+pages = {109213},
+publisher = {Elsevier Ltd},
+title = {{A directional Gaussian smoothing optimization method for computational inverse design in nanophotonics}},
+url = {https://doi.org/10.1016/j.matdes.2020.109213},
+volume = {197},
+year = {2021}
+}
+
