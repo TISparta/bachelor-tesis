@@ -1,24 +1,23 @@
 \chapter{Motivación y Contexto}
 
-Durante los últimos años distintas áreas de la industria han mostrado interés en la fotónica por el elevado ancho de banda que ofrece en comunicaciones.
-Sin darnos cuenta, esta tecnología se ha ido integrando a nuestro día a día comenzando con el éxito de los cables ópticos.
-Probablemente, la creciente popularidad de esta área es debido a que el siguiente paso lógico para mejorar el rendimiento de los dispositivos electrónicos, los cuales están llegando a sus límites físicos, parece ser la incorporación o acondicionamiento de estos con dispositivos fotónicos \citep{Glick2018, LukasChrostowski2010}.
-Sin embargo, la convergencia de estas tecnologías aún presenta muchos desafíos. Particularmente, existen dispositivos como el \emph{bend-90°} y \emph{2-splitter} que aún no logran aplicación industrial aún cuando son fundamentales para una variedad de circuitos fotónicos \citep{Molesky2018}.
+Durante los últimos años distintas áreas de la industria han mostrado interés en la fotónica por el elevado ancho de banda que ofrece en comunicaciones\joruge{b)bajo consumo energético, y c) traducir distance indepent interconnects CITE}.
+Sin darnos cuenta, esta tecnología se ha ido integrando a nuestro día a día comenzando con el éxito de los cables ópticos. \joruge{Rewrite: Por ejemplo, la adopción de interconexiones opticas en data centers.}
+\joruge{remover Probablemente}, la creciente popularidad \joruge{El creciente interes en fotonica es por ...} de esta área es debido a que el siguiente paso lógico para mejorar el rendimiento de los dispositivos electrónicos, los cuales están llegando a sus límites físicos, parece ser la incorporación o acondicionamiento de estos con dispositivos fotónicos \citep{Glick2018, LukasChrostowski2010}.
+Sin embargo, la convergencia \joruge{rewrite: la integracion en sistemas de computo} de estas tecnologías aún presenta muchos desafíos \joruge{como a) numero de devices en chip, b) fuente laser de bajo consumo c) interposer CITE para cada una}. 
 
-
-La dificultad de encontrar aplicación industrial en parte se debe que al trabajar en la escala de nanómetros los diseños intuitivos han mostrado un bajo rendimiento y poca flexibilidad para incorporar restricciones de fabricación. 
-Debido a ello se comenzó a aplicar el diseño inverso. 
+Particularmente \joruge{remover}, existen dispositivos como el \emph{bend-90°} y \emph{2-splitter} que aún no logran aplicación industrial \joruge{rewrite: La aplicacion industrial (talvez usar otro termino: Uso en aplicaciones comerciales? masificacion?) de estos dispositivos se debe a dos/tres principales desafios:} aún cuando son fundamentales para una variedad de circuitos fotónicos \citep{Molesky2018}. La dificultad de encontrar aplicación industrial \joruge{rewrite. Primero, ...} en parte se debe que al trabajar en la escala de nanómetros los diseños intuitivos han mostrado un bajo rendimiento y poca flexibilidad para incorporar restricciones de fabricación \joruge{CITE}. 
+Debido a ello se comenzó a aplicar el diseño inverso \joruge{El diseno inverso ayuda a superar estos desafios}. 
 Con esta metodología primero se define las propiedades deseadas de un dispositivo y luego se busca una geometría que las satisfaga.
 De esta manera se ha logrado obtener diseños no intuitivos pero con un buen rendimiento \citep{Su2020}.
 
 El diseño inverso ha recibido mucha atención en fotónica durante los últimos 20 años \citep{Molesky2018}. 
-Trabajos como los de \cite{Su2020} han logrado encontrar diseños de un \emph{bend-90°} y \emph{2-splitter} con un buen rendimiento de acuerdo a simulaciones.
-Luego, investigaciones como las de \cite{Su2018} y \cite{Piggott2017} intentan incorporar restricciones de fabricación para obtener dispositivos que al fabricarse mantengan un buen rendimiento. 
+Trabajos como los de \joruge{Los autores en} \cite{Su2020} han logrado encontrar diseños de un \emph{bend-90°} y \emph{2-splitter} con un buen rendimiento \joruge{clarificar, sobre rendimiento numerico si fuera posible} de acuerdo a simulaciones.
+\joruge{En cite\{paper1,paper1\}}Luego, investigaciones como las de \cite{Su2018} y \cite{Piggott2017} \joruge{remover:intentan} incorporar restricciones de fabricación para obtener dispositivos que al fabricarse mantengan un buen rendimiento. 
 No obstante, la búsqueda de estos diseños suele realizarse aplicando algoritmos cuya selección y configuración es mayormente debido a un tedioso proceso de prueba y error.
-Así, han surgido estudios como los de \cite{Schneider2019, Elsawy2020, Gregory2015} quienes buscan comparar distintos algoritmos de optimización en el diseño inverso de dispositivos fotónicos.
+Así, han surgido estudios como los de \cite{Schneider2019, Elsawy2020, Gregory2015} quienes buscan comparar distintos algoritmos de optimización en el diseño inverso de dispositivos fotónicos \joruge{ Otros trabajos como ... comparan...}.
 
 
-Aún cuando una cantidad considerable de investigaciones están usando el diseño inverso para optimizar dispositivos fotónicos, existe una carencia de estudios de comparación de algoritmos de optimización aplicados a un \emph{bend-90°} y \emph{2-splitter}. 
+Aún cuando una cantidad considerable \joruge{diversas} de investigaciones están usando el diseño inverso para optimizar dispositivos fotónicos, existe una carencia de estudios de comparación de algoritmos de optimización aplicados a un \emph{bend-90°} y \emph{2-splitter}. 
 Es importante la realización de ellos pues cada dispositivo es una clase distinta de problema \citep{Molesky2018}. 
 Así, el objetivo principal de este estudio es cubrir esta brecha evaluando el rendimiento y convergencia de algoritmos de optimización usados para estos dispositivos.
 
@@ -26,9 +25,9 @@ El presente trabajo está organizado de la siguiente manera:
 
 El capítulo 1 brinda una introducción al tema de investigación, describe el problema a detalle, justifica la relevancia de resolver el problema, define los objetivos y señala los aportes del trabajo.
 
-El capitulo 2 desarrolla conceptos y terminología necesaria para entender las siguientes capítulos.
+El capitulo 2 desarrolla conceptos \joruge{conceptos fundamentales en fotonica y } \joruge{remover: y terminología} necesaria para entender las siguientes capítulos.
 
-El capítulo 3 describe trabajos relacionados del estado del arte.
+El capítulo 3 \joruge{ presenta una revisión del estado del arte y discute sus principales características.}describe trabajos relacionados del estado del arte.
 
 \section{Introducción}
 
@@ -36,14 +35,14 @@ La fotónica está atrayendo el interés de la industria debido a su potencial e
 Este potencial es evidente, por ejemplo, con los siguientes tres puntos. 
 Primero, si se quiere mantener la tendencia que cada 10 años se mejore en un factor de 1000 el rendimiento de los sistemas electrónicos, entonces parece ser indispensable la convergencia de estos con sistemas fotónicos \citep{Glick2018}. 
 Segundo, existe una inversión billonaria en la fabricación de transistores cuyos procesos se están comenzando a lograr adaptar para fabricar circuitos fotónicos \citep{LukasChrostowski2010}.
-Tercero, el elevado ancho de banda que ofrece en comunicaciones digitales ha despertado el interés de cinco grandes sectores de producción: i) centrales de datos, ii) intenet de las cosas, iii) sector automotriz, iv) sensores, v) fotónica RF \citep{LukasChrostowski2010, Glick2018}.
+Tercero, el elevado ancho de banda que ofrece en comunicaciones digitales ha despertado el interés de \joruge{remover} cinco grandes sectores de producción: i) centrales de datos, ii) intenet de las cosas, iii) sector automotriz, iv) sensores, v) fotónica RF \joruge{remover numeracion, citacion para cada una, iot sensors y RF estan relaciones. revisar} \citep{LukasChrostowski2010, Glick2018}.
 
-Los dispositivos fotónicos se utilizan en grandes cantidades en los circuitos fotónicos integrados \citep{LukasChrostowski2010}. 
+\joruge{rewrite: reduntante, cual es la idea?} Los dispositivos fotónicos se utilizan en grandes cantidades en los circuitos fotónicos integrados \citep{LukasChrostowski2010}. 
 Estos trabajan en la escala de nanómetros y son diseñados para funcionar bajo ciertas especificaciones. 
 Así, para cumplir los requerimientos deseados existen dos estrategias comunes: diseño tradicional y diseño inverso \citep{Molesky2018}.
 
 
-En el diseño tradicional se define el dispositivo con geometrías simples que permiten obtener funciones analíticas de sus propiedades físicas. 
+En el diseño tradicional se define el dispositivo con geometrías simples que permiten obtener funciones analíticas de sus propiedades físicas \joruge{adicionar dos o tres citaciones}. 
 Esto se realiza para poder optimizar la función obtenida a partir de los parámetros que la definan. 
 Dicha optimización se suele ejecutar haciendo un barrido de los parámetros, con algoritmos genéticos o usando \emph{particle swarm optimization}. 
 Es un enfoque simple, pero que ha obtenido buenos resultados. 
@@ -85,8 +84,8 @@ Para ello, ya no nos limitamos a solo usar diseños intuitivos, ver figura \ref{
 \section{Descripción del  Problema}
 
 
-Para poder calcular las propiedades físicas de un dispositivo (e.g. campo eléctrico, transmitancia) se debe resolver las ecuaciones de Maxwell.
-Así, con el objetivo de evaluar las propiedades de cualquier geometría se suele utilizar métodos numéricos como elementos finitos (FEM) y diferencias finitas en el dominio de tiempo (FDTD) \citep{Schneider2019}.
+Para poder calcular las propiedades físicas de un dispositivo (\joruge{cambiar a espanol, es especifico (i.e.) no ejemplo} e.g. campo eléctrico, transmitancia) se debe resolver las ecuaciones de Maxwell.
+\joruge{remover}Así, con el objetivo de evaluar las propiedades de cualquier geometría \joruge{se utilizan} se suele utilizar métodos numéricos como elementos finitos (FEM) y diferencias finitas en el dominio de tiempo (FDTD) \citep{Schneider2019}.
 Con estos planteamientos se selecciona una región rectangular a optimizar y se la divide  en $n \times m$  píxeles como si fuera una imagen, ver Figure \ref{fig:bend-discretization}. 
 Luego, a cada píxel se le asocia el número $0$ o $1$.
 Típicamente, cero representa la presencia de $SiO_2$ en la ubicación del píxel y uno la presencia de $Si$ \citep{Molesky2018}.
@@ -104,23 +103,22 @@ Por otro lado, \cite{Su2020} con el objetivo de fabricar un dispositivo con buen
 Así, se presentan algunas dificultades con el diseño inverso:
 
 \begin{enumerate}
-  \item Es imposible evaluar todas los posibles diseños.
-  \item Las simulaciones computacionales son muy costosas \citep{Kudyshev2020}.
+  \item Es imposible evaluar todas los posibles diseños \joruge{no es posible evaluarlos a todos los posibles disenos por ser un numero muy alto}.
+  \item Las simulaciones computacionales son muy costosas \joruge{especificar son memory-bound y el tiempo de ejecucion es elevado} \citep{Kudyshev2020}.
   \item El espacio de búsqueda es altamente no convexo \citep{Su2018}.
-  \item No todos los diseños son fabricables \citep{Su2020}.
-  \item Cada dispositivo es una clase distinta de problema \citep{Molesky2018}.
+  \item No todos los diseños son fabricables \citep{Su2020} \joruge{justificar brevemente}.
+  \item Cada dispositivo es una clase distinta de problema \joruge{clarificar} \citep{Molesky2018}.
 \end{enumerate}
 
-
-De este modo, existe una demanda crítica de un \emph{framework} capaz de optimizar dispositivos con un elevado número de parámetros dentro de un espacio de búsqueda no convexo \citep{Kudyshev2020}. Este es un problema muy grande, por ello en la presente tesis nos centraremos en optimizar un \emph{bend-90°} y un \emph{2-splitter}.
+De este modo, existe una demanda crítica de un \emph{framework} capaz de optimizar dispositivos con un elevado número de parámetros dentro de un espacio de búsqueda no convexo \citep{Kudyshev2020}. Este es un problema muy grande, por ello en la presente tesis nos centraremos en optimizar un \emph{bend-90°} y un \emph{2-splitter}. \joruge{Refrasear: nosotros no proponemos un framework, da la impresión que ese es el objetivo}
 
 \section{Justificación}
 
-Deste el punto de vista industrial, el \emph{bend-90°} y \emph{2-splitter} se han escogido debido a que han sido estudiados usando diseño inverso desde el 2004, pero aún no han encontrado aplicación masiva en la industria \citep{Molesky2018}. 
+Deste el punto de vista industrial, el \emph{bend-90°} y \emph{2-splitter} se han escogido debido a que han sido estudiados usando diseño inverso desde el 2004, pero aún no han encontrado aplicación masiva en la industria \citep{Molesky2018}. \joruge{ rewrite: Es mejor justificar desde la perspectiva de que permite generar otros dispositivos mas complejos como moduladores, etc, o que son un basic-block en diseno y tienen aplicacion sobre sistemas HPC o datacenter CITE}
 
 Desde el punto de vista computacional, este problema es interesante porque ya hay estrategias computacionales conocidas para resolverlo, desde algoritmos evolutivos \citep{Hansen2016} hasta redes neuronales \citep{Goodfellow2015} y \emph{depth learning} \citep{Malkiel2018}. 
 Además, debido al alto costo computacional de las simulaciones \citep{Schneider2019}, el trabajo requiere de computación de alto desempeño.
-Así, es probable que se pueda obtener buenos resultados en la investigación aplicando el conocimiento ya existente en computación.
+Así, es probable que se pueda obtener buenos resultados en la investigación aplicando el conocimiento ya existente en computación. 
 
 \section{Objetivos}
 
@@ -139,3 +137,5 @@ Así, es probable que se pueda obtener buenos resultados en la investigación ap
 \section{Aportes}
 
 Este trabajo busca brindar una comparativa de las técnicas de optimización más relevantes que se aplican para optimizar un \emph{bend-90°} y un \emph{2-splitter} cuando estos son parametrizados con un elevado número de variables.
+
+\joruge{por ahora mantener, luego alinear al paper de JLT}
