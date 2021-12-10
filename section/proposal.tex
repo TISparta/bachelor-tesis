@@ -1,4 +1,143 @@
 \chapter{Propuesta}
 
-En la propuesta deberá colocar la o las ideas principales de lo que pretende realizar. Se sugiere  utilizar una figura a modo de \textit{pipeline} donde se muestre,  gráficamente, cada uno de los pasos que intervienen en su propuesta.  (4 a 5 páginas)
+Como se muestra en la figura \ref{fig:pipeline}, en esta investigación se seguirán los siguientes siete pasos:
+(i) parametrización, 
+(ii) función objetivo, 
+(iii) optimización continua,
+(iv) optimización discreta,
+(v) optimización de fabricación,
+(vi) preparación para fabricación y
+(vii) fabricación.
 
+Estos pasos son secuenciales ya que el resultado de uno es necesario para comenzar el siguiente.
+En las siguientes subsecciones se describirá cada uno de ellos.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{image/proposal/pipeline.png}
+  \caption{Metodología del trabajo de investigación}
+  \label{fig:pipeline}
+\end{figure}
+
+\subsection{Parametrización}
+
+El \emph{bend-90°} y \emph{demultiplexer} de dos canales se parametrizarán usando la parametrización basada en topología.
+La descripción detallada para los dos dispositivos de estudio se presentan en las siguientes dos subsecciones.
+
+\subsubsection{\emph{Bend-90°}}
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.8\textwidth]{image/proposal/bend.png}
+  \caption{Dimensiones del diseño del \emph{Bend-90°} a utilizar.}
+  \label{fig:dimensiones-bend}
+\end{figure}
+
+En la figura \ref{fig:dimensiones-bend} se muestra el diseño y dimensiones del \emph{bend-90°} a utilizar.
+Los rectángulo negros representan las guías de onda, estos tienen las mismas dimensiones aunque en distinta orientación.
+La región gris representa la región de diseño, esta región ha sido dividida en una cuadrícula de $20 \times 20$.
+Cada píxel tiene $60 nm$ de lado y una permitividad asociada dada por la ecuación \ref{eq:permitivity}.
+
+\subsubsection{\emph{Demultiplexer} de dos canales}
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=\textwidth]{image/proposal/demultiplexer.png}
+  \caption{Dimensiones del diseño del \emph{demultiplexer} de dos canales a utilizar.}
+  \label{fig:dimensiones-demultiplexer}
+\end{figure}
+
+En la figura \ref{fig:dimensiones-demultiplexer} se muestra el diseño y dimensiones del \emph{demultiplexer} de dos canales a utilizar.
+Los rectángulos negros representas las guías de onda, estos tienen las mismas dimensiones.
+La región gris representa la región de diseño, esta región ha sido dividida en una cuadrícula de $20 \times 20$.
+Cada píxel tiene $60 nm$ de lado y una permitividad asociada dada por la ecuación \ref{eq:permitivity}.
+
+\subsection{Función objetivo}
+
+Basándonos en el trabajo de \cite{Su2020}, para el \emph{bend-90°} usaremos como función objetivo la ecuación \ref{eq:fom-bend} y para el \emph{demultiplexer} de dos canales la ecuación \ref{eq:fom-splitter}.
+
+\subsection{Optimización}
+
+El proceso de optimización se dividirá en tres etapas: (i) optimización continua, (ii) optimización discreta y (iii) optimización de fabricación.
+Este proceso se realizará con los siguientes cinco algoritmos:
+
+\begin{enumerate}
+
+  \item L-BFGS-B
+  \item CMA-ES
+  \item PSO
+  \item GA
+  \item MMA
+
+\end{enumerate}
+
+Para poder comparar los resultados, el proceso se repetirá 6 veces por cada algoritmo y en cada repetición se fijará el valor de la semilla con el fin de asegurar reproducibilidad de los experimentos.
+Además, en cada etapa de la optimización se realizará un cambio de sus parámetros, en la medida de lo posible, para asegurar ir convergiendo a un resultado óptimo.
+Adicionalmente, se limitará la cantidad de posibles diseños a simular.
+Así se podrá hacer una comparación del desempeño de los algoritmos en base a la cantidad de evaluaciones de la función objetivo.
+Sin embargo, debido a que estos algoritmos trabajan de forma iterativa con sus propias particularidades, se considerará como condición de salida el estar en la primera iteración donde ya se haya realizado la cantidad máxima de simulaciones.
+
+A continuación, se describirá las características de cada etapa del proceso de optimización.
+
+\subsubsection{Optimización continua}
+
+En este primer paso se usará directamente la ecuación \ref{eq:permitivity} para buscar dispositivos óptimos de acuerdo al FOM definido.
+Así, es probable obtener diseños con muy buenos resultados, pero con permitividades no asociadas al $SiO_2$ o $Si$.
+Cada algoritmo comenzará con un diseño inicial aleatorio y se limitará en 5000 la cantidad de posibles diseños a simular. 
+Las simulaciones se realizarán en 2D.
+
+\subsubsection{Optimización discreta}
+
+Bajo la premisa que la anterior etapa obtuvo un buen resultado, cada algoritmo tomará como punto inicial el resultado de la optimización previa y tratará de configurar sus parámetros para realizar la búsqueda principalmente alrededor de ese punto.
+
+Además, se aplicará la ecuación \ref{eq:topo-smooth} al parámetro $\lambda$ de la ecuación \ref{eq:permitivity} para gradualmente terminar mapeando al $SiO_2$ o $Si$ en cada píxel. 
+Para ello se realizará 5 optimizaciones donde el resultado de una funcionará como punto inicial de la siguiente.
+En cada una de estas optimizaciones se limitará en 1000 la cantidad de posibles diseños a simular y se tomará como parámetro $\beta$ de la ecuación \ref{eq:topo-smooth} el valor dado por la siguiente recurrencia:
+
+\begin{equation}
+  \begin{split}
+    \beta_1 &= 2\\
+    \beta_n &= \beta_{n-1} \times 2
+  \end{split}
+  \label{eq:beta-param}
+\end{equation}
+
+Las simulaciones se realizarán en 2D.
+
+\subsubsection{Optimización de fabricación}
+
+Con la anterior etapa la ecuación \ref{eq:topo-smooth} nos asegura diseños que están convergiendo a dispositivos reales.
+Ahora, para asegurar un buen desempeño pese a los errores de fabricación, por cada parametrización $p$ se calculará:
+
+\begin{itemize}
+  \item $p_{ext}$ que representará el diseño como si el dispositivo se hubiera dilatado.
+  \item $p_{int}$ que representará el diseño como si el dispositivo se hubiera contraído.
+\end{itemize}
+
+Luego, se definirá como nueva función objetivo la siguiente ecuación:
+
+\begin{equation}
+  \begin{split}
+    F_{obj} &= \omega_1 f^2_{obj}(p) + \omega_2 (1 - |f_{obj}(p_{ext}) - f_{obj}(p_{int})|)^2\\
+    \omega_1 &= 0.85\\
+    \omega_2 &= 0.15
+  \end{split}
+  \label{eq:final-fom}
+\end{equation}
+
+Así, se buscará un diseño que tenga un buen desempeño y que sea resiliente a posibles errores de fabricación.
+Además, para asegurar que los resultados sean más congruentes con la realidad las simulaciones se realizarán en 3D con la ayuda de un GPU.
+
+\subsection{Preparación para fabricación}
+
+Para que nuestros diseños puedan ser fabricados, necesitamos representarlo en formato GDSII.
+Para ello, con los mejores resultados de cada algoritmo usaremos la distribución de la permitividad asociada a su parametrización, $\epsilon(p)$,
+para obtener la geometría del dispositivo.
+Así, nuestra tarea se reducirá a aproximar el contorno de esta geometría con polígonos para luego realizar la conversión al formato GDSII.
+Además, usaremos el resultado en formato GDSII para simular el funcionamiento del dispositivo y asegurar que siga manteniendo las propiedades deseadas.
+En caso no se tenga éxito, se volverá a iterar en la conversión
+
+\subsection{Fabricación}
+
+Se mandará a fabricar los mejores resultados hasta cubrir el área dispuesta para fabricación. 
+Luego, se esperará las mediciones de los dispositivos ya fabricados para compararlo con los resultados de las simulaciones computacionales.

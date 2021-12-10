@@ -1,21 +1,24 @@
 \chapter{Marco  Teórico}
 
 En el presente capítulo se explican conceptos y terminología relacionada al diseño inverso de dispositivos fotónicos.
-Para ello se desarrolla dos secciones. 
-En primer lugar, se describe las propiedades físicas de interés de un \emph{bend-90°} y \emph{2-splitter}.
+Para ello se desarrolla tres secciones. 
+En primer lugar, se describe las propiedades físicas de interés de un \emph{bend} y WDM.
 En segundo lugar, se desarrolla en cinco pasos como utilizar el diseño inverso para optimizar los dispositivos de estudio.
-En el primer paso se especifica tres estrategias comúnmente usadas para parametrizar la región de diseño.
-En el segundo paso se muestra como definir la función objetivo para un \emph{bend-90°} y \emph{2-splitter}.
-En el tercer paso se señala los programas donde se puede simular el comportamiento de los diseños que desarrollemos.
-El el cuarto paso se exponen como se puede preparar un plan de optimización de un dispositivo fotónico.
-El el quinto paso se da a conocer transformaciones que se pueden incluir al plan de optimización para incorporar restricciones de fabricación.
+  \begin{itemize}
+  \item Se especifica tres estrategias comúnmente usadas para parametrizar la región de diseño.
+  \item Se muestra como definir la función objetivo para un \emph{bend} y WDM.
+  \item Se señala los programas donde se puede simular el comportamiento de los diseños que desarrollemos.
+  \item Se expone como se explican estrategias de optimización para un dispositivo fotónico.
+  \item Se da a conocer transformaciones que se pueden incluir al plan de optimización para incorporar restricciones de fabricación.
+  \end{itemize}  
+En tercer lugar, se explica la conversión de los resultados de la optimización a un formato listo para ser fabricado.
 
 
 \section{Dispositivos de estudio}
 
-\subsection{\emph{Bend-90°}}
+\subsection{\emph{Bend}}
 
-Un \emph{bend-90°} es un dispositivo fotónico que se encarga de guiar un haz de ondas para que gire 90 grados.
+Un \emph{bend} es un dispositivo fotónico que se encarga de guiar un haz de ondas para que gire.
 
 En general, al estudiar dispositivos fotónicos es de especial interés la distribución del campo eléctrico. 
 Este campo se descompone en una componente transversal eléctrica (TE) y en una componente transversal magnética (TM) de acuerdo a la siguiente ecuación:
@@ -29,31 +32,32 @@ Donde $E^{TE}$ es la componente paralela al dispositivo y $E^{TM}$ es la compone
 
 La intensidad de estos campos es de especial interés pues nos dan una idea del rendimiento del dispositivo. 
 Por ejemplo, en la figura \ref{fig:efield} se muestra la intensidad del campo $E^{TE}$ cuando un haz de luz está pasándo por el dispositivo. 
-Como podemos observar, parte del campo está fuera del \emph{bend-90°} representado por color azul oscuro.
+Como podemos observar, parte del campo está fuera del \emph{bend} representado por color azul oscuro.
 Así, se visualiza de forma gráfica que el dispositivo está teniendo considerables pérdidas de energía lo cual es un indicador de un mal rendimiento.
 
 
-\begin{figure}[h]
+\begin{figure}[ht]
   \centering
   \includegraphics[scale=0.8]{image/theory/bend-field.png}
   \caption{Intensidad de campo eléctrico para un \emph{bend-90°} de radio interno de 0.25 $\mu m$}
   \label{fig:efield}
 \end{figure}
 
-Por otro lado, para evaluar el desempeño de un \emph{bend-90°} de forma numérica se suele calcular la transmitancia como la relación entre la intensidad del rayo que sale del dispositivo con la intensidad con la que entra. Esto se expresa mediante la ecuación \ref{eq:transmission}:
+Por otro lado, para evaluar el desempeño de un \emph{bend} de forma numérica se suele calcular la transmitancia como la relación entre la intensidad del haz que sale del dispositivo con la intensidad con la que entra. Esto se expresa mediante la ecuación \ref{eq:transmission}:
 
 \begin{equation}
   T = \frac{I}{I_0}
 \label{eq:transmission}
 \end{equation}
 
+Ahora, por temas de implementación, es común calcular lo que se conoce como \emph{overlap} ya que es un buen indicador de tener una buena transmitancia \citep{Su2020}.
 
-\subsection{\emph{2-splitter}}
+\subsection{\emph{Wavelength Demultiplexer} de dos canales (WDM)}
 
-Un \emph{2-splitter} es un dispositivo fotónico que se encarga de guiar un haz de ondas de acuerdo a su longitud de onda.
+Un WDM es un dispositivo fotónico que se encarga de guiar un haz de ondas de acuerdo a su longitud de onda.
 Así, estos suelen trabajar con dos longitudes de onda y guían las de un tipo por la guía de onda superior y las de otro tipo por la guía de onda inferior.
 
-Similar al caso del \emph{bend-90°} se estudia su campo eléctrico y su transmitancia para medir el rendimiento de estos dispositivos.
+Similar al caso del \emph{bend} se estudia su campo eléctrico y su transmitancia para medir el rendimiento de estos dispositivos.
 
 \section{Diseño inverso}
 
@@ -61,7 +65,7 @@ Similar al caso del \emph{bend-90°} se estudia su campo eléctrico y su transmi
 
 Tres estrategias comúnes para parametrizar un dispositivo fotónico son: i) parametrización por píxeles, ii) parametrización por conjuntos de nivel, iii) parametrización por segmentos.
 
-\subsubsection{Parametrización por píxeles}
+\subsubsection{Parametrización basada en topología}
 
 A cada píxel se le asocia un valor dado por la fórmula \ref{eq:permitivity} \citep{Su2020}:
 
@@ -116,10 +120,10 @@ Luego, los píxeles intentan cubrir la región definida por estas curvas para de
 
 Con esta estrategia se considera la región de diseño como un rectángulo y se lo divide en $n$ segmentos de igual tamaño. 
 Luego, el tamaño de cada segmento será un parámetro y la geometría se forma a partir de estos valores considerando ubicar cada segmento centrado verticalmente. 
-En la figura \ref{fig:splines} podemos observar como \cite{Prosopio-Galarza2019} utiliza esta parametrización con $13$ segmentos para diseñar un $2-splitter$.
+En la figura \ref{fig:splines} podemos observar como \cite{Prosopio-Galarza2019} utiliza esta parametrización con $13$ segmentos para diseñar un 2-splitter.
 
 
-\begin{figure}[h]
+\begin{figure}[ht]
   \centering
   \includegraphics[scale=0.8]{image/theory/parametrization-spline.png}
   \caption{Parametrización por 13 segmentos de un \emph{2-splitter}. Imagen extraída de \cite{Prosopio-Galarza2019}}
@@ -140,28 +144,28 @@ Basándonos en \cite{Su2020} se tiene que conviene definir la FOM de la siguient
 
 \begin{enumerate}
 
-\item \emph{Bend-90°}
+\item \emph{Bend}
 
 \begin{equation}
-f_{obj}(p) = max \quad T(p)
+  f_{obj}(p) = max \left \{ T(p) \right \}
 \label{eq:fom-bend}
 \end{equation}
 
 Es decir, la función objetivo asociada a la parametrización $p$ es maximizar la transmitancia, ver equación \ref{eq:transmission}, asociada a esa parametrización.
 
-\item \emph{2-splitter}
+\item WDM
 
 La función objetivo se define como:
 
 \begin{equation}
-  f_{obj}(p) = max \quad g_0(p, 0)^2 + (1 - g_0(p, 1))^2 + g_1(p, 1)^2 + (1 - g_1(p, 0))^2
+  f_{obj}(p) = max \left \{ g_0(p, 0)^2 + (1 - g_0(p, 1))^2 + g_1(p, 1)^2 + (1 - g_1(p, 0))^2 \right \}
 \label{eq:fom-splitter}
 \end{equation}
 
-Donde $g_0(p, i)$ representa la transmitancia asociada a la parametrización $p$ en la guía de onda $i$ para una longitude de onda de $1400 nm$ y 
+Donde $g_0(p, i)$ representa la transmitancia asociada a la parametrización $p$ en la guía de onda $i$ para una longitud de onda de $1400 nm$ y 
       $g_1(p, i)$ representa su análogo para una longitud de onda de $1550 nm$.
 
-La ecuación \ref{eq:fom-splitter} representa que se busca maximizar la transmitancia por la guía de onda superior y minimizarla para la guía de onda inferior cuando se recibe una longitud de onda de $1400 nm$ y lo contrario para una longitud de onda de $1550 nm$.
+La ecuación \ref{eq:fom-splitter} busca maximizar la transmitancia por la guía de onda superior y minimizarla para la guía de onda inferior cuando se recibe una longitud de onda de $1400 nm$ y lo contrario para una longitud de onda de $1550 nm$.
 
 \end{enumerate}
 
@@ -186,7 +190,7 @@ Una evaluación cualitativa de sus funcionalidades puede ser vista en la tabla \
 \end{table}
 
 
-\subsection{Plan de optimización}
+\subsection{Estrategias de optimización}
 
 La forma de optimizar un diseño depende de la parametrización utilizada. De esta forma, tenemos los siguientes casos:
 
@@ -219,7 +223,7 @@ asegurar convergencia con una búsqueda en línea.
 
 \item{Parametrización por segmentos}
 
-Basándonos en \cite{Prosopio-Galarza2019}, con este tipo de parametrización conviene definir un rango de posibles valores para cada segmentos.
+Basándonos en \cite{Prosopio-Galarza2019}, con este tipo de parametrización conviene definir un rango de posibles valores para cada segmento.
 Luego, ejecutar algún algoritmo de optimización, de preferencia uno de optimización global, para finalmente tratar de incorporar restricciones de fabricación en una etapa posterior.
 
 \end{enumerate}
@@ -230,7 +234,7 @@ La aplicación de transformaciones a un diseño se realiza con el fin de obtener
 De acuerdo al tipo de parametrización utilizada, tenemos:
 
 \begin{itemize}
-  \item Para el caso de la parametrización por segmentos, si queremos suavizar el diseño obtenido podemos considerar las alturas de los segmentos e interpolar una curva.
+  \item Para el caso de la parametrización por segmentos, si queremos suavizar el diseño obtenido podemos considerar las alturas de los segmentos e interpolar una curva \citep{Yangjin2013}.
 
   \item Para el caso de la parametrización por conjunto de nivel se define $\phi$ de forma que asegure curvas suaves, así no es necesario aplicar transformaciones.
 
@@ -242,8 +246,15 @@ De acuerdo al tipo de parametrización utilizada, tenemos:
 \end{equation}
 
     Donde $p$ es la parametrización del dispositivo, $\eta = 0.5$ y $\beta$ comienza con un valor de 1 y va incrementándose exponencialmente en cada iteración. 
-    La equación \ref{eq:topo-smooth} se encarga de ir haciendo converger los valores de la parametrización a $0$ o $1$ de acuerdo a cual esté más cercano. 
+    Como se observa en la figura \ref{fig:discretization}, la ecuación \ref{eq:topo-smooth} se encarga de ir haciendo converger los valores de la parametrización a $0$ o $1$ de acuerdo a cual esté más cercano. 
     Conforme aumenta el valor de $\beta$ esta convergencia es más rápida.
+
+    \begin{figure}[ht]
+      \centering
+      \includegraphics[scale=0.8]{image/theory/discretization.png}
+      \caption{Función de discretización con $eta = 0.5$ y distintos valores de $\beta$}
+      \label{fig:discretization}
+    \end{figure}
 
 \end{itemize}
 
