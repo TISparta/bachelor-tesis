@@ -32,7 +32,7 @@ Donde $E^{TE}$ es la componente paralela al dispositivo y $E^{TM}$ es la compone
 
 La intensidad de estos campos es de especial interés pues nos dan una idea del rendimiento del dispositivo. 
 Por ejemplo, en la figura \ref{fig:efield} se muestra la intensidad del campo $E^{TE}$ cuando un haz de luz está pasándo por el dispositivo. 
-Como podemos observar, parte del campo está fuera del \emph{bend} representado por color azul oscuro.
+Como podemos observar, parte del campo está fuera del \emph{bend} representado por color morado.
 Así, se visualiza de forma gráfica que el dispositivo está teniendo considerables pérdidas de energía lo cual es un indicador de un mal rendimiento.
 
 
@@ -43,21 +43,20 @@ Así, se visualiza de forma gráfica que el dispositivo está teniendo considera
   \label{fig:efield}
 \end{figure}
 
-Por otro lado, para evaluar el desempeño de un \emph{bend} de forma numérica se suele calcular la transmitancia como la relación entre la intensidad del haz que sale del dispositivo con la intensidad con la que entra. Esto se expresa mediante la ecuación \ref{eq:transmission}:
+Por otro lado, para evaluar el desempeño de un \emph{bend} de forma numérica se suele calcular la transmitancia como la relación entre la intensidad del haz que sale del dispositivo con la intensidad con la que entra \citep{Su2020}. Esto se expresa mediante la ecuación \ref{eq:transmission}:
 
 \begin{equation}
   T = \frac{I}{I_0}
 \label{eq:transmission}
 \end{equation}
 
-Ahora, por temas de implementación, es común calcular lo que se conoce como \emph{overlap} ya que es un buen indicador de tener una buena transmitancia \citep{Su2020}.
 
 \subsection{\emph{Wavelength Demultiplexer} de dos canales (WDM)}
 
 Un WDM es un dispositivo fotónico que se encarga de guiar un haz de ondas de acuerdo a su longitud de onda.
 Así, estos suelen trabajar con dos longitudes de onda y guían las de un tipo por la guía de onda superior y las de otro tipo por la guía de onda inferior.
 
-Similar al caso del \emph{bend} se estudia su campo eléctrico y su transmitancia para medir el rendimiento de estos dispositivos.
+Similar al caso del \emph{bend} se estudia su campo eléctrico y transmitancia para medir el rendimiento de estos dispositivos.
 
 \section{Diseño inverso}
 
@@ -120,21 +119,21 @@ Luego, los píxeles intentan cubrir la región definida por estas curvas para de
 
 Con esta estrategia se considera la región de diseño como un rectángulo y se lo divide en $n$ segmentos de igual tamaño. 
 Luego, el tamaño de cada segmento será un parámetro y la geometría se forma a partir de estos valores considerando ubicar cada segmento centrado verticalmente. 
-En la figura \ref{fig:splines} podemos observar como \cite{Prosopio-Galarza2019} utiliza esta parametrización con $13$ segmentos para diseñar un 2-splitter.
+%En la figura \ref{fig:splines} podemos observar como \cite{Prosopio-Galarza2019} utiliza esta parametrización con $13$ segmentos para diseñar un 2-splitter.
 
 
-\begin{figure}[ht]
-  \centering
-  \includegraphics[scale=0.8]{image/theory/parametrization-spline.png}
-  \caption{Parametrización por 13 segmentos de un \emph{2-splitter}. Imagen extraída de \cite{Prosopio-Galarza2019}}
-  \label{fig:splines}
-\end{figure}
+%\begin{figure}[ht]
+%  \centering
+%  \includegraphics[scale=0.8]{image/theory/parametrization-spline.png}
+%  \caption{Parametrización por 13 segmentos de un \emph{2-splitter}. Imagen extraída de \cite{Prosopio-Galarza2019}}
+%  \label{fig:splines}
+%\end{figure}
 
 
 Las distintas estrategias de parametrización mostradas tienen sus propias características.
 La parametrización por segmentos asegura simetría y regiones compactas, pero tiene un espacio de búsqueda más reducido que las otras opciones.
 Por otro lado, la parametrización por píxeles trabaja con un espacio de búsqueda mucho más grande a cambio de poder parametrizar diseños no fabricables.
-En cambio, la parametrización por niveles se encarga de mantener una función continua con el fin de mantener el diseño similar a como terminará el dispositivo fabricado.
+En cambio, la parametrización por niveles se encarga de mantener una curva continua con el fin de mantener el diseño similar a como terminará el dispositivo fabricado.
 
 \subsection{Definición de la función objetivo}
 
@@ -188,6 +187,12 @@ Una evaluación cualitativa de sus funcionalidades puede ser vista en la tabla \
     \caption{Evaluación cualitativa de las librerías MEEP y SPINS}
     \label{tab:simulation}
 \end{table}
+
+
+Ambas librerías se encargan de realizar la simulación en una región cuadrada, para ello dividan la región de simulación como si fuera una cuadrícula.
+Definiendo la resolución podemos especificar el tamaño de esta cuadrícula. 
+Entre más pequeña sean las divisiones de esta, más cercanos a los valores reales sean los resultados de la simulación.
+Sin embargo, esto implica un mayor tiempo de ejecución.
 
 
 \subsection{Estrategias de optimización}
@@ -252,9 +257,15 @@ De acuerdo al tipo de parametrización utilizada, tenemos:
     \begin{figure}[ht]
       \centering
       \includegraphics[scale=0.8]{image/theory/discretization.png}
-      \caption{Función de discretización con $eta = 0.5$ y distintos valores de $\beta$}
+      \caption{Función de discretización con $\eta = 0.5$ y distintos valores de $\beta$}
       \label{fig:discretization}
     \end{figure}
 
 \end{itemize}
 
+\section{Preparación para fabricación}
+
+Para poder fabricar nuestros diseños necesitamos representarlos en formato GDSII.
+En este formato se especifica los polígonos que representan a nuestro dispositivo.
+Independientemente de la parametrización utilizada, mediante la simulación con SPINS o MEEP se puede obtener los puntos asociados al contorno del dispositivo.
+Así, utilizando lo anterior se construye los polígonos \citep{Bogaerts2018}.
