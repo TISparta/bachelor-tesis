@@ -58,6 +58,8 @@ Así, estos suelen trabajar con dos longitudes de onda y guían las de un tipo p
 
 Similar al caso del \emph{bend} se estudia su campo eléctrico y transmitancia para medir el rendimiento de estos dispositivos.
 
+Un dispositivo similar al WDM es un \emph{splitter}. Este dispositivo tiene la misma geometría, pero trata de dividir lo que recibe.
+
 \section{Diseño inverso}
 
 \subsection{Parametrización}
@@ -79,7 +81,7 @@ Esto se realiza para determinar la permitividad que hay en la ubicación del pí
 Con esta parametrización obtenemos una cantidad infinita de diseños, mas solo nos interesan aquellos donde $\lambda_{x,y}$ es entero, pues en caso contrario un píxel se mapea a la permitividad de un material desconocido lo cual lo volvería infabricable.
 
 
-En la figura \ref{fig:pixeles} se muestra la parametrización por píxeles de un \emph{bend-90°}. 
+En la figura \ref{fig:pixeles} se muestra la parametrización topológica de un \emph{bend-90°}. 
 Las píxeles en gris representan regiones donde se está usando una permitividad desconocida, es decir se ha tomado un $\lambda_{x,y}$ no entero.
 
 \begin{figure}[h]
@@ -132,7 +134,7 @@ Luego, el tamaño de cada segmento será un parámetro y la geometría se forma 
 
 Las distintas estrategias de parametrización mostradas tienen sus propias características.
 La parametrización por segmentos asegura simetría y regiones compactas, pero tiene un espacio de búsqueda más reducido que las otras opciones.
-Por otro lado, la parametrización por píxeles trabaja con un espacio de búsqueda mucho más grande a cambio de poder parametrizar diseños no fabricables.
+Por otro lado, la parametrización topológica trabaja con un espacio de búsqueda mucho más grande a cambio de poder parametrizar diseños no fabricables.
 En cambio, la parametrización por niveles se encarga de mantener una curva continua con el fin de mantener el diseño similar a como terminará el dispositivo fabricado.
 
 \subsection{Definición de la función objetivo}
@@ -202,7 +204,7 @@ La forma de optimizar un diseño depende de la parametrización utilizada. De es
 \begin{enumerate}
 
 
-\item{Parametrización por píxeles}
+\item{Parametrización topológica}
 
 
 La ecuación \ref{eq:permitivity} ya señala un rango de valores asociados a cada píxel. 
@@ -243,7 +245,7 @@ De acuerdo al tipo de parametrización utilizada, tenemos:
 
   \item Para el caso de la parametrización por conjunto de nivel se define $\phi$ de forma que asegure curvas suaves, así no es necesario aplicar transformaciones.
 
-  \item Para el caso de la parametrización por píxeles, una forma se suavizar las regiones punteagudas es aplicar una función de suavizado conforme va iterando el algoritmo de optimización aplicado. Basándonos en \cite{Zhang2021}, podemos aplicar la siguiente función:
+  \item Para el caso de la parametrización topológica, una forma se suavizar las regiones punteagudas es aplicar una función de suavizado conforme va iterando el algoritmo de optimización aplicado. Basándonos en \cite{Zhang2021}, podemos aplicar la siguiente función:
 
 \begin{equation}
   s(p) = \frac{\tanh (\beta \times \eta) + \tanh (\beta \times (p - \eta))}{\tanh (\beta \times \eta) + \tanh (\beta \times (1 - \eta))}

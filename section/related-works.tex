@@ -1,23 +1,24 @@
 \chapter{Trabajos relacionados}
 
-En el presente capítulo se resume los puntos principales de trabajos relacionados al problema de investigación.
-Para ello dividiremos el contenido en tres secciones. 
-En primer lugar, mostraremos trabajos que han usado parametrización por píxeles.
-En segundo lugar, veremos investigaciones que utilizan parametrización por conjuntos de nivel.
-En tercer lugar, describiremos publicaciones que emplearon parametrización por segmentos.
+En el presente capítulo se resume los puntos principales de cinco trabajos relacionados al problema de investigación.
 
-\section{Parametrización basada en topología}
+\section{\cite{Su2020}}
 
-\cite{Su2020} divide una región cuadrada de $2.5 \mu m \times 2.5 \mu m$ en píxeles de $40 nm \times 40 nm$ y luego lo une a guías de onda de $40 nm$ para diseñar un \emph{bend-90°}. 
-La definición de su función objetivo es como la descrita en el marco teórico, pero además muestra ideas de como definir esta función de manera que la optimización intente acercarse a un valor de transmitancia deseado.
+\cite{Su2020} divide una región cuadrada de $2.5 \mu m \times 2.5 \mu m$ en píxeles de $40 nm \times 40 nm$ y luego lo une a guías de onda de $40 nm$ para diseñar un WDM. 
+La definición de su función objetivo es como la descrita en la ecuación \ref{eq:fom-splitter}, pero además muestra ideas de como definir esta función de manera que la optimización intente acercarse a un valor de transmitancia deseado.
 
-Como algoritmo de optimización se utiliza $L-BFGS-B$ y $MMA$ ejecutando 100 iteraciones en la etapa continua y 180 en la discreta.
-El proceso completo de optimización se realizó en SPINS demorando catorce horas y media al ser ejecutado en una computadora con 5 GPU, 2 CPU con 64 GB de RAM.
+Como algoritmo de optimización se utiliza $L-BFGS-B$ ejecutando 100 iteraciones en la etapa continua y 180 en la discreta.
+El proceso completo de optimización se realizó en SPINS demorando catorce horas y media al ser ejecutado en una computadora con 4 GPU \emph{Titan Black} y 2 CPU con 64 GB de RAM.
 Sin embargo, solo utilizó menos de 4 GB de RAM y cada simulación demoró alrededor de un minuto.
 
 Para asegurar restricciones de fabricación, \cite{Su2020} se aseguró que el tamaño de cada píxel sea mayor al mínimo tamaño que se podía fabricar.
 
-\section{Parametrización por conjuntos de nivel}
+Desde el punto de vista computacional hay dos aspectos mejorables en este trabajo. 
+Primero, se podría incrementar la cantidad de iteraciones, realizar las optimizaciones más de una vez y probar más algoritmos.
+Los anteriores puntos aumentarían las posibilidades de obtener mejores resultados.
+Segundo, la arquitectura utilizada se podría reemplazar por un sistema HPC para acelerar la optimización.
+
+\section{\cite{Piggott2017}}
 
 \cite{Piggott2017} diseña un \emph{3-splitter} dividiendo una región de $3.8 \mu m \times 2.5 \mu m$ en píxeles de $40 nm \times 40 nm$.
 En la definición de su función objetivo busca trabajar con 3 longitudes de onda y que con cada longitud la transmitancia se maximice en una guía de onda de salida y se minimice en las otras, similar al trabajo de \cite{Su2020} en la optimización de un \emph{2-splitter}.
@@ -25,11 +26,14 @@ En la definición de su función objetivo busca trabajar con 3 longitudes de ond
 Luego, utilizando SPINS como simulador, realiza la optimización con un algoritmo propio que está basado en \emph{gradient-descent} y \emph{line search}. 
 Con este algoritmo se encarga de incorporar restricciones del mínimo radio de curvatura que puede contener el diseño y limita el tamaño máximo que pueden tener los huecos que se formen en el dispositivo.
 
-\section{Parametrización por segmentos}
+En este trabajo, una estrategia alternativa podría haber sido aplicar algún algoritmo de optimización global en la etapa de optimización continua para luego recién utilizar uno basado en la gradiente.
+Considerando que los resultados de los algoritmos basados en la gradiente suelen ser dependientes del diseño inicial, esta estrategia hubiera sido interesante de evaluar.
+
+\section{\cite{Prosopio-Galarza2019}}
 
 
-\cite{Prosopio-Galarza2019} utiliza esta estrategia para dividir un rectángulo de $2\mu m \times 1.5 \mu m$ en 13 rectángulos verticales idénticos que particionan la región de diseño.
-Luego, esto es unido a tres guías de onda fijas de $0.5 \mu m$ para formar un \emph{2-splitter} de un esperor de $0.2 \mu m$.
+\cite{Prosopio-Galarza2019} utiliza parametrización por segmentos para dividir un rectángulo de $2\mu m \times 1.5 \mu m$ en 13 rectángulos verticales idénticos que particionan la región de diseño.
+Luego, esto es unido a tres guías de onda fijas de $0.5 \mu m$ para formar un \emph{splitter} de un esperor de $0.2 \mu m$.
 
 
 Como función objetivo se establece maximizar la transmitancia. Seguidamente, por separado utiliza tres algoritmos para optimizar el diseño: i) \emph{Particle Swarm Optimization}, ii) \emph{Shrinking Box algorithm}, iii) \emph{Steepest Ascent algorithm}. 
@@ -37,5 +41,32 @@ Como función objetivo se establece maximizar la transmitancia. Seguidamente, po
 La simulación se realiza usando ANSY Lumerical FDTD. 
 Los experimentos solo se repitieron una vez y se ejecutó cada algoritmo durante 30 iteraciones.
 Probablemente, el usar este simulador mediante la interfaz gráfica limitó la automatización de los experimentos para conseguir una mayor cantidad de datos a comparar. 
-Pero, es destacable que en su investigación \cite{Prosopio-Galarza2019} logra determinar que los ángulo más agudos, los cuales son los más adecuados como regla práctica de diseño, son formados con la optimización mediante \emph{Particle Swarm Optimization}.
+Pero, es destacable que en su investigación \cite{Prosopio-Galarza2019} logra determinar que los ángulo más agudos, los cuales son los más adecuados como regla práctica de diseño, son formados con la optimización mediante \emph{Particle Swarm Optimization} (PSO).
 
+\section{\cite{Hammond20}}
+
+\cite{Hammond20} utiliza MEEP para optimizar un \emph{splitter} utilizando parametrización topológica.
+Lo más relevante de su trabajo es que a cada diseño le aplica transformaciones para simular la posible contracción o dilatación de estos al fabricarse.
+Con lo anterior hace un intento de detectar errores de fabricación.
+Sin embargo, el trabajo carece de la fabricación de los resultados para validar la propuesta.
+
+\section{\cite{Schneider2019, Elsawy2020, Gregory2015}}
+
+\cite{Schneider2019} compara cinco algoritmos de optimización para optimizar dos dispositivos fotónicos. 
+Los algorimos usados son (i) L-BFGS-B, (ii) PSO, (iii) \emph{differential evolution} (DE), (iv) optimización bayesiana, (v) búsqueda aleatoria.
+Para ello parametriza los dispositivos con menos de 15 parámetros.
+Cada algoritmo tiene sus propias particularidas, por eso utiliza limita la cantidad de evaluaciones a 2500.
+Esto le permite comparar la cantidad de simulaciones con el FOM obtenido.
+Además, realiza la optimización 6 veces por cada algoritmo para terminar comparando los valores medios.
+
+Los resultados de \cite{Schneider2019} muestran que la optimización bayesiana supera a los otros algoritmos en términos de FOM y de rapidez de convergencia.
+Además, logra confirmar que la optimización de dispositivos fotónicos requiere de un elevado número de simulaciones.
+Sin embargo, los algoritmos solo son ejecutados con valores por defecto debido a que la optimización de sus parámetros no es viable por el costo computacional implicado.
+
+
+\cite{Gregory2015} realiza una investigación similar a la de \cite{Schneider2019}, pero se centra en un solo algoritmo: covariance matrix adaptation evolution strategy (CMA-ES).
+También logra concluir la importancia de realizar un elevado número de simulaciones y por ello propone al CMA-ES como un buen algoritmo a utilizarse en fotónico.
+Esto se debe a que este algoritmo solo requiere un punto inicial sobre el cual comenzar, es un método de optimización global y cambiando el parámetro $\sigma$ podemos limitar la búsqueda alrededor de un diseño.
+
+Por otro lado, \cite{Elsawy2020} hace una revisión de cuatro algoritmos populares en la optimización de dispositivos fotónicos: (i) algoritmos genéticos (GA), (ii) PSO, (iii) CMA-ES, (iv) optimización bayesiana.
+Similar al trabajo de \cite{Schneider2019}, sus conclusiones sugieren que la optimización bayesiana logra superar a otras algoritmos de optimización en distintos escenarios.
