@@ -1,75 +1,81 @@
 \chapter{Motivación y Contexto}
 
-La fotónica es una ciencia que utilizamos diariamente, por ejemplo, mediante los cables ópticos.
-Los principales beneficios que ofrece son (i) elevado ancho de banda en comunicaciones, (ii) bajo consumo energético, (iii) interconexiones ópticas independientes de la distancia \citep{Glick2018}.
-El potencial de la fotónica se logra evidenciar en aplicaciones que aprovechan estos beneficios; por ejemplo,
-(i) interconexiones ópticas en centrales de datos \citep{Shen2019}, 
-(ii) redes neuronales ópticas \citep{Shen2017}, 
-(iii) internet de las cosas \citep{Glick2018}.
+\jorge{definir fotonica es la ciencia que estudia y manipula luz... etc y es usado en aplicaciones diarias como .... dar otros ejemplos}.
+\jorge{rewrite: La fotónica es una ciencia que utilizamos diariamente, por ejemplo, mediante los cables ópticos.}
+Los principales beneficios que ofrece \jorge{son \citep{Glick2018}:} (i) elevado ancho de banda en comunicaciones, (ii) bajo consumo energético, (iii) interconexiones ópticas independientes de la distancia.
+\jorge{ mover al inicio a la, estos serían los ejemplos}.
+\jorge{rewrite:El potencial de la fotónica se logra evidenciar en aplicaciones que aprovechan estos beneficios;} por ejemplo,
+(i) interconexiones ópticas en centrales de datos \jorge{ usar un paper de Keren}\citep{Shen2019}, 
+(ii) redes neuronales ópticas \jorge{paper keren, natalie dnn with optical switches} \citep{Shen2017}, 
+(iii) internet de las cosas \jorge{cambiar de citacion} \citep{Glick2018}.
 
 
-La importancia de estas aplicaciones en computación se evidencia aún más en la computación de alto rendimiento (HPC).
+\jorge{ser directo: La fotónica es una de las principales alternativas de interconexión para los sistemas de comp alto desem (del ingles, High Performance Computing)}
+\jorge{remover}La importancia de estas aplicaciones en computación se evidencia aún más en la computación de alto rendimiento (HPC).
+\jorge{ Desde el 2010, el ratio entre el ancho de banda entre nodos y el poder de procesamiento por nodo ($byte / FLOP$) en sistemas HPC ha decrecido en un factor de seis. EXPLICAR simple: es necesario mantener la data en el nodo evitando transferencia, o algo similar}.
 Un problema presentado en el Top500 sistemas HPC es que desde el año 2010, el ratio entre el ancho de banda entre nodos y el poder de procesamiento por nodo ($byte / FLOP$) ha decrecido en un factor de seis.
-Así, se está llegando a un punto donde la capacidad para interconectar nodos está limitando el desempeño de sistemas HPC en programas que hacen uso extensivo de transferencias de memoria.
-Ante este problema se han propuesto arquitecturas que aprovechan la transmitancia óptica porque esta puede realizar interconexiones a distancias del orden de metros. 
-De esta manera se logra la transferencia de grandes cantidades de información con un bajo consumo energético y manteniendo un elevado ancho de banda \citep{Shen2019, Anderson2018}.
+\jorge{remover:Así,} se está llegando a un punto donde la capacidad para interconectar nodos está limitando el desempeño de sistemas HPC en programas que hacen uso extensivo de transferencias de memoria.
+Ante este problema se han propuesto arquitecturas que aprovechan \jorge{el contexto de transmitancia es incorrecto, reescribir, usar interconexión óptica} la transmitancia óptica porque esta puede realizar interconexiones a distancias del orden de metros. 
+\jorge{remover: repeating yourself con el primer párrafo}De esta manera se logra la transferencia de grandes cantidades de información con un bajo consumo energético y manteniendo un elevado ancho de banda \citep{Shen2019, Anderson2018}.
 
-
-Las aplicaciones señaladas anteriormente demuestran el potencial de la fotónica, mas estas aún no logran ponerse en práctica. 
+\jorge{esta afirmación es categòrica y equivocada, existen sistemas con moduladores y qsfp+ desde hace años} Las aplicaciones señaladas anteriormente demuestran el potencial de la fotónica, mas estas aún no logran ponerse en práctica. 
+\jorge{ reescribir: la alta densidad de fabricación es un desafío porque se requiere mantener eficiencia en el chipo a nivel de sistema fotónico}
 Para que cada una de ellas funcione se necesita fabricar chips de fotónica integrada con una elevada eficiencia y densidad.
+\jorge{ necesita contexto de eficiencia, a que te refieres?}
 Pero los diseños actuales aún son muy ineficientes por lo cual sigue conviniendo utilizar dispositivos electrónicos \citep{Glick2018, Vuckovic2019}. 
 Ante esta dificultad, la fotónica en silicio (SiP) se presenta como un buen candidato para fabricar estos chips.
 La idea se refuerza por la adaptación de procesos de semiconductor complementario de óxido metálico (CMOS) para fabricar dispositivos SiP.
 Esto es un gran beneficio porque los procesos CMOS son una tecnología bien establecida y con precios accesibles \citep{Glick2018, Shen2019, LukasChrostowski2010}.
 
 
+\jorge{reescribir y aprovechar para introducir tu contexto: diversos o múltiples trabajos son orientados al diseño de geometrías de dispositivos fotónicos, si haces esta afirmación debes citar realmente múltiples trabajos CITE}
 Por estos motivos, una cantidad considerable de investigaciones estudian dispositivos SiP \citep{Molesky2018}.
-El presente trabajo se centrará en dos de ellos: \emph{bend-90°} y \emph{wavelength demultiplexer} de dos canales.
-De aquí en adelante nos referiremos a estos simplemente como \emph{bend} y WDM, respectivamente.
+El presente trabajo se centrará en dos de ellos: \jorge{(i)} \emph{bend-90°} y \jorge{(ii)}\emph{wavelength demultiplexer} de dos canales.
+\jorge{footnote:} De aquí en adelante nos referiremos a estos simplemente como \emph{bend} y WDM \jorge{WDM es wavelength division multiplexing, el término comun en literatura es WDM mux/demus corregir}, \jorge{remover:respectivamente}.
 
 
 El documento está organizado de la siguiente manera:
 
 El capítulo 1 brinda una introducción al tema de investigación, describe el problema a detalle, justifica la relevancia de resolverlo, define los objetivos y señala los aportes del trabajo.
 
-El capítulo 2 desarrolla conceptos fundamentales en fotónica necesarios para entender el resto del documento.
+El capítulo 2 desarrolla conceptos fundamentales en fotónica necesarios para entender el resto del documento. \jorge{listar cuales}
 
-El capítulo 3 presenta una revisión del estado del arte y discute sus principales características.
+El capítulo 3 presenta una revisión del estado del arte y discute sus principales características. \jorge{ el estado del arte en que? en geometrias? todas? especificar}
 
-El capítulo 4 expone la metodología usada en la investigación.
+El capítulo 4 expone la metodología usada en la investigación. \jorge{presenta nuestra propuesta de ... especificar}
 
-El capítulo 5 muestra los resultados preliminares obtenidos con los experimentos.
+El capítulo 5 muestra los resultados \jorge{remover}preliminares obtenidos con los experimentos.\jorge{presenta nuestros casos de estudio y el setup experimental, así como los resultados obtenidos}.
 
 \section{Introducción}
 
-La fotónica está atrayendo el interés de la industria debido a su potencial en términos de escalabilidad y los beneficios de costo-eficiencia. 
-Este potencial es evidente, por ejemplo, con los siguientes tres puntos. 
-Primero, si se quiere mantener la tendencia que cada 10 años se mejore en un factor de 1000 el rendimiento de los sistemas electrónicos, entonces parece ser indispensable la convergencia de estos con sistemas fotónicos \citep{Glick2018}. 
-Segundo, existe una inversión billonaria en la fabricación de transistores cuyos procesos se están adaptando para fabricar chips de fotónica integrada \citep{LukasChrostowski2010}.
-Tercero, hay prometedoras aplicaciones en (i) interconexiones ópticas \citep{Shen2019}, (ii) redes neuronales ópticas \citep{Shen2017}, (iii) internet de las cosas \citep{Glick2018}.
+La fotónica está atrayendo el interés de la industria debido a su potencial en términos de escalabilidad y los beneficios de costo-eficiencia \jorge{CITE, CITE, CITE}. 
+\jorge{Existen tres razones principales. remover:}Este potencial es evidente, por ejemplo, con los siguientes tres puntos. 
+Primero, si se quiere mantener la tendencia que cada 10 años se mejore en un factor de 1000 el rendimiento de los sistemas electrónicos, entonces parece ser indispensable la convergencia de estos con sistemas fotónicos \jorge{ reescribir: por que? no está claro, no hay una razón real...} \citep{Glick2018}. 
+Segundo, \jorge{reescribir, al ser el dinero la justificación necesitamos valores, existe un infográfico de un instituto en francia lo buscaré tambien.. } existe una inversión billonaria en la fabricación de transistores cuyos procesos se están adaptando para fabricar chips de fotónica integrada \citep{LukasChrostowski2010}.
+Tercero, hay prometedoras aplicaciones en \jorge{necesitas papers de la aplicación, no papers que citen otros trabajos, busca en nature} (i) interconexiones ópticas \citep{Shen2019}, (ii) redes neuronales ópticas \citep{Shen2017}e, (iii) internet de las cosas \citep{Glick2018}.
  
 
-SiP se está estudiando con el fin de mostrar el potencial de la fotónica, pero esta tecnología aún se encuentra en la misma etapa de expansión que tenía la electrónica en los años 1970s.
-Afortunadamente, ya existen \emph{foundries} y procesos como el CMOS que se pueden emplear como infraestructura para la fabricación de chips SiP \citep{LukasChrostowski2010}.
-Pero, los chips SiP siguen siendo ineficientes por lo cual se está buscando optimizar dispositivos fundamentales que lo componen \citep{Vuckovic2019}.
-Para esto existen dos estrategias: diseño tradicional y diseño inverso.
+SiP \jorge{ El diseño de dispositivos SiP} \jorge{ se estudia para aumentar la ciencia, el potencial mostrado es una consecuencia reescribir:} se está estudiando con el fin de mostrar el potencial de la fotónica, \jorge{ reescribir: a pesar del avance en diseño e integración de SiP dispositivos, la óptica integrada aun se encuentra en la misma etapa de expansio... recordar que esto es a nivel de densidad (Cantidad de devices sip en chip} pero esta tecnología aún se encuentra en la misma etapa de expansión que tenía la electrónica en los años 1970s.
+Afortunadamente,\jorge{ cambiar por Actualmente, } ya existen \jorge{procesos de fabriación estandar en foundries CITE para integración con dispositivos CMOS a través de process design kit (PDK)}.  \emph{foundries} y procesos como el CMOS que se pueden emplear como infraestructura para la fabricación de chips SiP \citep{LukasChrostowski2010}.
+Pero, \jorge{no comenzar las oraciones con pero, puede ser sin embargo,} los chips SiP siguen siendo ineficientes \jorge{esta aseveración es categòrica y equivocada. reescribir: } por lo cual se está buscando optimizar dispositivos fundamentales que lo componen \citep{Vuckovic2019}.
+Para esto existen dos estrategias \jorge{principales}: \jorge{(i) diseño tradicional CITACIONES} y (ii) diseño inverso \jorge{citaciones}.
 
-
+\jorge{La Figura XX presenta una comparación de los dos tipos de diseño (Tradicional e inverso) en dos devices (bend y MUX)}
 En el diseño tradicional se define el dispositivo con geometrías simples que permiten obtener funciones analíticas de sus propiedades físicas \citep{Hughes2016, Song2008}. 
 Esto se realiza para poder optimizar la función obtenida a partir de los parámetros que la definan. 
 Dicha optimización se suele ejecutar haciendo un barrido de los parámetros, con algoritmos genéticos o usando \emph{particle swarm optimization}. 
-Es un enfoque simple, pero que ha obtenido buenos resultados. 
+Es un enfoque simple, pero que ha obtenido buenos resultados. \jorge{escribir algo como: se observa en la Fig. XX (izquierda) geometrías regulares o de un patrón casi uniforme para ambos devices...}
 Sin embargo, existen tres grandes inconvenientes con este planteamiento. 
-Primero, solo estamos explorando una pequeña fracción de todos los posibles diseños.
+Primero, \jorge{ solamente se explora} solo estamos explorando una pequeña fracción de todos los posibles diseños.
 Segundo, por lo general no es conocido el límite de rendimiento del dispositivo.
 Tercero, al trabajar en la escala de nanómetros, existen casos como el \emph{bend} y WDM que presentan un bajo rendimiento con diseños tradicionales \citep{Molesky2018, Su2020}.
 
 
 En el diseño inverso se busca hacer una mayor exploración de todos los posibles diseños. 
-Para ello, ya no nos limitamos a solo usar diseños intuitivos, ver figura \ref{fig:devices}. 
-Ahora, definimos geometrías arbitrarias y usamos simulaciones computacionales para determinar las propiedades físicas del dispositivo \citep{Molesky2018, Su2020}. 
-Este enfoque ha logrado conseguir mejores resultados que los obtenidos por el diseño tradicional \citep{Su2018, Molesky2018}. 
-Sin embargo, este planteamiento viene acompañado de nuevos desafíos.
+\jorge{La Figura xx (derecha) muestra que el diseño inverso las geometrías resultantes no están limitadas a diseños intuitivos o regulares}
+\jorge{remover:Para ello, ya no nos limitamos a solo usar diseños intuitivos, ver figura \ref{fig:devices}}. 
+\jorge{ Se definen geometrias arbitrarias generadas a partir de simulaciones computaciones (el diseño tradicional no usa simulación o cálculo? tener cuidado con esto reescribir...}Ahora, definimos geometrías arbitrarias y usamos simulaciones computacionales para determinar las propiedades físicas del dispositivo \citep{Molesky2018, Su2020}. 
+
 
 
 \begin{figure}[ht]
@@ -97,17 +103,19 @@ Sin embargo, este planteamiento viene acompañado de nuevos desafíos.
 
 \end{figure}
 
+Este enfoque ha logrado conseguir mejores resultados que los obtenidos por el diseño tradicional \citep{Su2018, Molesky2018} \jorge{juntar con: por lo que ha ganado spotlight en fotónica durante los} últimos 20 años \citep{Molesky2018} \jorge{se necesitan mas papers CITE}.
+Sin embargo, este planteamiento viene acompañado de nuevos desafíos.
 
-El diseño inverso ha recibido mucha atención en fotónica durante los últimos 20 años \citep{Molesky2018}. 
-Los autores en \cite{Su2020} muestran estrategias para optimizar un \emph{bend} y \emph{WDM}.
-En \cite{Su2018, Piggott2017} se incorporan restricciones de fabricación para obtener dispositivos que al fabricarse mantengan un buen rendimiento. 
-No obstante, la búsqueda de estos diseños suele realizarse aplicando algoritmos cuya selección y configuración es mayormente debido a un tedioso proceso de prueba y error.
-Otros trabajos como los de \cite{Schneider2019, Elsawy2020, Gregory2015} comparan distintos algoritmos de optimización en el diseño inverso de dispositivos fotónicos.
+%El diseño inverso ha recibido mucha atención en fotónica durante los últimos 20 años \citep{Molesky2018}. 
+%Los autores en \cite{Su2020} muestran estrategias para optimizar un \emph{bend} y \emph{WDM}.
+\jorge{ Se deben incorporar restricciones ... CITE} \jorge{reescribir: están dándose razones de dificultad o desafíos del diseño inverso, cada uno debe tener citaciones} \cite{Su2018, Piggott2017} se incorporan restricciones de fabricación para obtener dispositivos que al fabricarse mantengan un buen rendimiento. 
+No obstante, la búsqueda de estos diseños suele realizarse aplicando algoritmos cuya selección y configuración es mayormente debido a un tedioso proceso de prueba y error \jorge{ CITE}.
+Otros trabajos como los de \cite{Schneider2019, Elsawy2020, Gregory2015} comparan distintos algoritmos de optimización en el diseño inverso de dispositivos fotónicos. \jorge{esta parrafo anterior debe ser reescrito, parece una revisión de trabajos, necesitamos resaltar los desafíon principales, y que sobre todo si hay viabilidad de superarlos}
 
 
-Aún cuando una cantidad considerable de investigaciones están usando el diseño inverso para optimizar dispositivos fotónicos, el \emph{bend} y WDM, dispositivos fundamentales para los circuitos fotónicos, aún no logran aplicación comercial \citep{Molesky2018}.
-Además, existe una carencia de estudios con un enfoque computacional que intenten abordar el problema.
-Asi, el objetivo de esta tesis es aplicar el conocimiento en computación para optimizar estos dispositivos y conseguir diseños que al fabricarse muestren un desempeño elevado.
+Aún \jorge{remover: cuando una cantidad considerable} de investigaciones están usando el diseño inverso para optimizar dispositivos fotónicos, el \emph{bend} y WDM, dispositivos fundamentales para los circuitos fotónicos, aún no logran aplicación comercial \citep{Molesky2018}. \jorge{ A pesar qaue múltiples trabajos ...}
+Además, existe una carencia de estudios con un enfoque computacional que intenten abordar el problema. \jorge{citacion}
+Asi, \jorge{remover así,  directo} el objetivo de esta tesis es aplicar el conocimiento en computación para optimizar estos dispositivos y conseguir diseños que al fabricarse muestren un desempeño elevado.
 
 
 \section{Descripción del Problema}
