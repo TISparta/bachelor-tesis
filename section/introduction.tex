@@ -1,6 +1,6 @@
 \chapter{Motivación y Contexto}
 
-\section{Introduction}
+\section{Introducción}
 
 La fotónica es la ciencia que estudia la generación, detección y manipulación de la luz. 
 Los principales beneficios que ofrece son \citep{Shen2019}:
@@ -10,7 +10,7 @@ Los principales beneficios que ofrece son \citep{Shen2019}:
 (iii) interconexiones ópticas independientes de la distancia.
 Asimismo, existen propuestas que aprovechan estos beneficios, por ejemplo:
 (i) interconexiones ópticas en centrales de datos \citep{Shen2019}, % Este paper es de la profesora Keren
-(ii) redes neuronales ópticas \citep{Shen2017}, %Este paper ya es de la prof. Keren
+(ii) redes neuronales ópticas \citep{Shen2017} e %Este paper ya es de la prof. Keren
 (iii) internet de las cosas \citep{Li2021}.
 
 
@@ -25,7 +25,7 @@ Asimismo, existen propuestas que aprovechan estos beneficios, por ejemplo:
 
 Un problema presentado en el Top500 sistemas de computación de alto desempeño (HPC, por sus siglas en Inglés) es que desde el año 2010, 
 el ratio entre el ancho de banda entre nodos y el poder de procesamiento por nodo ($byte / FLOP$) ha decrecido en un factor de seis.
-Se está llegando a un punto donde la capacidad para interconectar nodos está
+Es decir, se está llegando a un punto donde la capacidad para interconectar nodos está
 limitando el desempeño de sistemas HPC en programas que hacen uso extensivo de transferencias de memoria.
 Ante este problema, los avances en la fotónica en silicio (SiP) integrada se presenta como una de las principales alternativas de solución. 
 Esta propuesta puede realizar interconexiones a distancias del orden de metros,
@@ -70,6 +70,36 @@ Para esto existen dos estrategias principales: (i) diseño tradicional
 %Ante esta dificultad, la fotónica en silicio (SiP) se presenta como un buen candidato para fabricar estos chips.
 %La idea se refuerza por la adaptación de procesos de semiconductor complementario de óxido metálico (CMOS) para fabricar dispositivos SiP.
 %Esto es un gran beneficio porque los procesos CMOS son una tecnología bien establecida y con precios accesibles \citep{Glick2018, Shen2019, LukasChrostowski2010}.
+
+
+\begin{figure}[ht]
+  \centering
+  % 1° row
+  % Traditional bend
+  \subfigure[\emph{Bend} con diseño
+  tradicional.]{\includegraphics[width=0.4\textwidth]{image/introduction/traditional-bend.png}}
+  \hfill
+  % Inverse design bend
+  \subfigure[\emph{Bend} obtenido con diseño inverso. Extraído de
+  \citep{Su2020}.]{
+    \includegraphics[width=0.4\textwidth]{image/introduction/inverse-design-bend.png}
+  }
+
+  % 2° row
+  % Traditional splitter
+  \subfigure[WDM con diseño tradicional.]{\includegraphics[width=0.4\textwidth]{image/introduction/traditional-splitter.png}}
+  \hfill
+  % Inverse design splitter
+  \subfigure[WDM obtenido con diseño inverso. Extraído de \citep{Su2020}.]{
+    \includegraphics[width=0.4\textwidth]{image/introduction/inverse-design-splitter.png}
+  }
+
+  \caption{Diseños tradicionales y obtenidos a partir de diseño inverso de un
+  \emph{bend} y un WDM.}
+  \label{fig:devices}
+
+\end{figure}
+
 
 La figura \ref{fig:devices} presenta una comparación de los dos tipos de diseño
 (tradicional e inverso) en dos dispositivos: (i) \emph{bend-90°} y (ii)
@@ -123,7 +153,7 @@ los últimos 20 años \citep{Su2018, Molesky2018, Campbell2019}.
 Sin embargo, existen cuatro grandes desafíos con este planteamiento:
 (i) el espacio de búsqueda es exponencial \citep{Vuckovic2019}, 
 (ii) las simulaciones computacionales son costosas en términos de tiempo y memoria \citep{Kudyshev2020}, 
-(iii) el espacio de búsqueda es no convexo \citep{Su2018},
+(iii) el espacio de búsqueda es no convexo \citep{Su2018} y
 (iv) no todos los diseños son fabricables \citep{Su2020}.
 
 
@@ -131,37 +161,12 @@ Sin embargo, existen cuatro grandes desafíos con este planteamiento:
 %Sin embargo, este planteamiento viene acompañado de nuevos desafíos.
 
 
-\begin{figure}[ht]
-  \centering
-  % 1° row
-  % Traditional bend
-  \subfigure[\emph{Bend} con diseño tradicional]{\includegraphics[width=0.4\textwidth]{image/introduction/traditional-bend.png}}
-  \hfill
-  % Inverse design bend
-  \subfigure[\emph{Bend} obtenido con diseño inverso. Extraído de \citep{Su2020}]{
-    \includegraphics[width=0.4\textwidth]{image/introduction/inverse-design-bend.png}
-  }
-
-  % 2° row
-  % Traditional splitter
-  \subfigure[WDM con diseño tradicional]{\includegraphics[width=0.4\textwidth]{image/introduction/traditional-splitter.png}}
-  \hfill
-  % Inverse design splitter
-  \subfigure[WDM obtenido con diseño inverso. Extraído de \citep{Su2020}]{
-    \includegraphics[width=0.4\textwidth]{image/introduction/inverse-design-splitter.png}
-  }
-
-  \caption{Diseños tradicionales y obtenidos a partir de diseño inverso de un \emph{bend} y un WDM}
-  \label{fig:devices}
-
-\end{figure}
-
 
 %\jorge{ Se deben incorporar restricciones ... CITE} \jorge{reescribir: están dándose razones de dificultad o desafíos del diseño inverso, cada uno debe tener citaciones} \cite{Su2018, Piggott2017} se incorporan restricciones de fabricación para obtener dispositivos que al fabricarse mantengan un buen rendimiento. 
 %No obstante, la búsqueda de estos diseños suele realizarse aplicando algoritmos cuya selección y configuración es mayormente debido a un tedioso proceso de prueba y error \jorge{ CITE}.
 %Otros trabajos como los de \cite{Schneider2019, Elsawy2020, Gregory2015} comparan distintos algoritmos de optimización en el diseño inverso de dispositivos fotónicos. \jorge{esta parrafo anterior debe ser reescrito, parece una revisión de trabajos, necesitamos resaltar los desafíon principales, y que sobre todo si hay viabilidad de superarlos}
 
-Aún cuando una cantidad considerable de investigaciones estudian dispositivos
+Y aún cuando una cantidad considerable de investigaciones estudian dispositivos
 SiP \citep{Su2018, Malheiros-Silveira2020}, sigue siendo necesario estudiar dispositivos SiP
 fundamentales para conseguir chips de SiP integrada densos y eficientes.
 Los avances en esta área benefiarán indirectamente al desarrollo de Ciencia de
@@ -174,7 +179,7 @@ De este modo, el presente trabajo se centra en estudiar dos dispositivos SiP
 fundamentales:
 (i) \emph{bend-90°} y (ii) \emph{wavelength demultiplexer} de dos canales.
 De aquí en adelante nos referiremos a estos simplemente como \emph{bend} y WDM.
-Así, el objetivo de esta tesis es aplicar el conocimiento en computación para
+Por lo tanto, el objetivo de esta tesis es aplicar el conocimiento en computación para
 encontrar diseños de estos dispositivos con eficiencias mayores al 90\%
 y resilientes a errores de fabricación, trabajando en la escala de nanómetros.
 Con el fin de solucionar este problema se empleará diseño inverso para encontrar geometrías con las eficiencias deseadas, 
@@ -197,7 +202,7 @@ que, potencialmente, muestren propiedades similares al fabricarse.
 %El presente trabajo se centrará en dos de ellos: \jorge{(i)} \emph{bend-90°} y \jorge{(ii)}\emph{wavelength demultiplexer} de dos canales.
 %\jorge{footnote:} De aquí en adelante nos referiremos a estos simplemente como \emph{bend} y WDM \jorge{WDM es wavelength division multiplexing, el término comun en literatura es WDM mux/demus corregir}, \jorge{remover:respectivamente}.
 
-El documento está organizado de la siguiente manera:
+El presente documento está organizado de la siguiente manera:
 
 El capítulo 1 brinda una introducción al tema de investigación, describe el problema a detalle, justifica la relevancia de resolverlo, define los objetivos y señala los aportes del trabajo.
 
@@ -214,7 +219,7 @@ El capítulo 4 desbribe la metodología usada en la investigación.
 
 %El capítulo 4 desbrine la metodología usada en la investigación. \jorge{presenta nuestra propuesta de ... especificar}
 
-El capítulo 5 muestra los resultados obtenidos con los distintos casos de estudio. 
+Por último, el capítulo 5 muestra los resultados obtenidos con los distintos casos de estudio. 
 
 %El capítulo 5 muestra los resultados \jorge{remover}preliminares obtenidos con los experimentos.\jorge{presenta nuestros casos de estudio y el setup experimental, así como los resultados obtenidos}.
 
@@ -272,7 +277,9 @@ Luego, cada píxel se rellena con dos posibles materiales: óxido de silicio ($S
 \begin{figure}[ht]
   \centering
   \includegraphics[scale=0.6]{image/introduction/bend-discretization.png}
-  \caption{\emph{Bend} con una región de diseño discretizada en $18 \times 18$ píxeles. Cada píxel negro representa la presencia de $Si$ y cada píxel blanco de $SiO_2$}
+  \caption{\emph{Bend} con una región de diseño discretizada en $18 \times 18$
+  píxeles. Cada píxel negro representa la presencia de $Si$ y cada píxel blanco
+  de $SiO_2$.}
   \label{fig:bend-discretization}
 \end{figure}
 
@@ -313,7 +320,7 @@ Así, es probable que se pueda obtener buenos resultados en la investigación ap
 
 \begin{itemize}
 
-  \item Diseñar un \emph{bend} y WDM con eficiencias mayores al noventa por ciento y resiliente a errores de fabricación.
+  \item Diseñar un \emph{bend} y WDM con eficiencias mayores al 90\% y resiliente a errores de fabricación.
 
   \begin{itemize}
 
