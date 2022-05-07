@@ -1,6 +1,6 @@
 \chapter{Marco  Teórico}
 
-En el presente capítulo se introducen conceptos fundamentale relacionados al diseño inverso de dispositivos fotónicos.
+En el presente capítulo se introducen conceptos fundamentales relacionados al diseño inverso de dispositivos fotónicos.
 Para ello se desarrolla seis secciones. 
 Primero, se describen las propiedades físicas de interés de un \emph{bend} y WDM.
 Segundo, se explica como parametrizar la región de diseño de estos
@@ -68,9 +68,9 @@ también conocido en el área como figura de mérito (FOM), mediante la siguient
 Así, dentro de todas las posibles combinaciones de los parámetros $p$, la
 equación $\ref{eq:fom-bend}$ busca encontrar aquellos diseños con la mayor transmitancia.
 Distintas estrategias para definir los parámetros $p$ se presentan en la
-sección de \textbf{parametrización} y 
+\autoref{sec:parametrization} y 
 los procedimientos para optimizar la función $f_{obj}$ se presentan en la
-sección de \textbf{algoritmos de optimización}.
+\autoref{sec:alg-opt}.
 
 \subsection{\emph{Wavelength Demultiplexer} de dos canales (WDM)}
 
@@ -96,7 +96,7 @@ Un dispositivo similar al WDM es un \emph{splitter}. Este dispositivo tiene la
 misma geometría, pero lo que recibe lo trata de dividir en la misma proporción
 para ambas guías de onda (superior e inferior).
 
-\section{Parametrización}
+\section{Parametrización}\label{sec:parametrization}
 
 Tanto para el \emph{bend} como para el WDM se define una región de diseño
 mediante ciertos parámetros que puedan mapear un gran conjunto de dispositivos a considerar.
@@ -115,7 +115,7 @@ Por ejemplo, en la figura \ref{fig:pixeles} se ha definido una región cuadrangu
 diseño que podemos ver como una imagen de $18 \times 18$ píxeles.
 Aquí estamos usando los píxeles negros para representar la presencia de $Si$,
 los blancos para indicar que hay $SiO_2$ y los grises para materiales (no
-necesariamente reales) que tengan una permitividad intermedia entre el $Si$
+necesariamente reales) que tengan una permitividad ($\varepsilon(x, y)$) intermedia entre el $Si$
 y $SiO_2$. Matemáticamente expresamos esto como
 
 \begin{equation}
@@ -192,7 +192,7 @@ para realizar estos cálculos.
 
 \section{Estrategia de optimización}
 
-Como fue descrito en la sección de \textbf{parametrización}, podemos
+Como fue descrito en la \autoref{sec:parametrization}, podemos
 tener diseños que no puedan ser fabricados.
 Para evitar esto se necesita obtener que $\lambda_{x, y}$ de la ecuación \ref{eq:permitivity} tenga valores enteros.
 Sin embargo, al optimizar la función $f_{obj}$ no podemos asegurar esta condición.
@@ -204,7 +204,7 @@ Ante esta dificultad, \cite{Su2020} trabaja en dos etapas:
 \item{\textbf{Optimización continua}}
 
 En esta etapa se optimiza la función $f_{obj}$ sin imponer ninguna restricción.
-En la siguiente sección, \textbf{algoritmos de optimización}, se detallará algoritmos que suelen usarse para este fin.
+    En la \autoref{sec:alg-opt} se detallará algoritmos que suelen usarse para este fin.
 
 \item{\textbf{Optimización discreta}}
 
@@ -213,20 +213,20 @@ Luego, se trabaja por iteraciones.
 En cada iteración se aplica una transformación a cada diseño antes de evaluar su FOM.
 Esta transformación se escoge de tal manera que asegure que una
 parametrización vaya convergiendo a un diseño fabricable, es decir,
-a tener $\lambda_{x, y} = 0$ o $\lambda_{x, y} = 1$, más detalles en la sección \textbf{transformaciones}.
+a tener $\lambda_{x, y} = 0$ o $\lambda_{x, y} = 1$, más detalles en la \autoref{sec:transformations}.
 Así, la idea de realizarlo por iteraciones es para ir discretizando nuestro diseño
 de forma suave e intentando mantener un buen valor del FOM.
 Por ello es crucial usar el resultado de una iteración como punto inicial de la próxima
 
 \end{enumerate}
 
-\section{Algoritmos de optimización}
+\section{Algoritmos de optimización}\label{sec:alg-opt}
 
 Como observamos en la anterior sección, es necesario escoger algún algoritmo
 que nos permita optimizar la función $f_{obj}$. 
 Por este motivo, se presentan los siguientes tres algoritmos que serán usados en el presente trabajo.
 
-\subsection{\emph{Algoritmos genéticos} (GA)}
+\subsection{\emph{Genetic Algorithms} (GA)}
 
 Como se describe en el algoritmo \ref{alg:GA} \citep{Mykel2019}, la idea es  
 comenzar generando una población (\emph{population}) de $n$ individuos representados por $p$
@@ -274,7 +274,7 @@ Entrando en más detalle, para nuestro caso tenemos:
 
     \item $mutation(children):$ retorna lo que recibe, pero a cada atributo de
       cada individuo se le agrega un valor en $U(-range\_GA, range\_GA)$ con
-      probabilidad de 1 sobre 2.
+      probabilidad de 0.5.
 
 \end{itemize}
 
@@ -333,10 +333,8 @@ La idea general de esta estrategia evolutiva, mostrada en el algoritmo
 \ref{alg:CMA}, es mantener:
 (i) un vector $\mu$ $p$-dimensional,
 (ii) una matriz $\Sigma$ y
-(iii) un número $\sigma$ para ir generando $n$ puntos aleatorios de una
-distribución $\mathcal{N}(\mu,\,\sigma^{2} \Sigma)$.
-Donde $n$ es la cantidad de individuos a considerar definidos por $p$
-parámetros.
+(iii) un número $\sigma$ para ir generando $n$ inviduos $p$-dimensionales
+a partir una distribución $\mathcal{N}(\mu,\,\sigma^{2} \Sigma)$.
 
 
 Tomar puntos de esta distribución limita el espacio de búsqueda a una
@@ -373,7 +371,7 @@ En la línea 3 actualizamos la media $\mu$ usando una promedio ponderado dado
 por
 
 \begin{equation}
-    \mu^{(t + 1)} \gets \sum_{i=1}^{n} w_i x_i
+    \mu^{(t + 1)} \gets \sum_{i=1}^{n} w_i x_i,
 \label{cma-average}
 \end{equation},
 
@@ -386,11 +384,16 @@ hiperelipse en la siguiente iteración. Por este motivo, la línea 4 controla
 este valor mediante las ecuaciones
 
 \begin{equation}
-    \sigma^{(t + 1)} \gets \sigma^{(t)} \exp\bigg(\frac{c_{\sigma}}{d_{\sigma}} \underbrace{\left(\frac{||p_{\sigma}||}{\mathbb{E}||\mathcal{N}(0, \mathbf{I})||} - 1 \right)}_{\text{evolution path comparison}} \bigg)
+    \sigma^{(t + 1)} \gets \sigma^{(t)} \exp\bigg(\frac{c_{\sigma}}{d_{\sigma}}
+    \underbrace{\left(\frac{||p_{\sigma}||}{\mathbb{E}||\mathcal{N}(0,
+    \mathbf{I})||} - 1 \right)}_{\text{evolution path comparison}} \bigg),
 \label{cma-control}
 \end{equation}
+
 \begin{equation}
-\mathbb{E}||\mathcal{N}(0, \mathbf{I})|| = \sqrt{2} \left( \frac{\Gamma\left(\frac{p + 1}{2}\right)}{\Gamma\left({\frac{p}{2}}\right)} \right)
+\mathbb{E}||\mathcal{N}(0, \mathbf{I})|| = \sqrt{2} \left(
+  \frac{\Gamma\left(\frac{p + 1}{2}\right)}{\Gamma\left({\frac{p}{2}}\right)}
+  \right),
 \label{cma-E}
 \end{equation}
 
@@ -406,8 +409,10 @@ incrementarse, disminuirse o permanecer igual.
 Finalmente, en la línea 5 cambiamos $\Sigma$ a una dirección favorable usando
 
 \begin{multline}
-    \Sigma^{(t + 1)} = \overbrace{\bigg(1 - c_1 c_c (1 - h_{\sigma})(2 - c_c) - c_1 - c_{\mu}\bigg) \Sigma^{(t)}}^{\text{cumulative update}} \\
-    + \underbrace{c_{1} p_{\Sigma} p_{\Sigma}^{T}}_{\text{rank-one update}} + \underbrace{c_{\mu}\sum_{i=1}^{n}w'_{i} \delta^{(i)}\left(\delta^{(i)}\right)^{T}}_{\text{rank-}\mu\text{ update}}
+    \Sigma^{(t + 1)} \gets \overbrace{\bigg(1 - c_1 c_c (1 - h_{\sigma})(2 - c_c) - c_1 - c_{\mu}\bigg) \Sigma^{(t)}}^{\text{cumulative update}} \\
+    + \underbrace{c_{1} p_{\Sigma} p_{\Sigma}^{T}}_{\text{rank-one update}}
+    + \underbrace{c_{\mu}\sum_{i=1}^{n}w'_{i}
+    \delta^{(i)}\left(\delta^{(i)}\right)^{T}}_{\text{rank-}\mu\text{ update}},
 \label{cma-adapt}
 \end{multline}
 
@@ -430,7 +435,7 @@ donde es probable encontrar buenas soluciones.
 La combinación de estos tres términos actualiza $\Sigma$ de tal manera que
 mueva la hiperelipse en una dirección favorable.
 
-\section{Transformaciones}
+\section{Transformaciones}\label{sec:transformations}
 
 La aplicación de transformaciones a un diseño se realiza con el fin de obtener
 dispositivos que se puedan fabricar con mayor facilidad \citep{Su2020}. 
