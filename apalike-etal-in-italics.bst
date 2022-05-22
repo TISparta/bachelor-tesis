@@ -848,7 +848,7 @@ FUNCTION {format.lab.names}
         'skip$
         { s #2 "{ff }{vv }{ll}{ jj}" format.name$ "others" =
             { " \emph{et~al.}" * }
-            { " and " * s #2 "{vv~}{ll}" format.name$ * }
+            { " y " * s #2 "{vv~}{ll}" format.name$ * }
           if$
         }
       if$
