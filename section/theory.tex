@@ -11,7 +11,7 @@ Cuarto, se explica la estrategia de optimización a seguir con la
 parametrización señalada.
 Quinto, se describen tres algoritmos que se usaran en el presente trabajo: (i)
 algoritmos genéticos (GA), (ii) \emph{particle swarm optimization} (CMA), (iii)
-\emph{covariance matrix adaptation evolution strategy}(CMA-ES).
+\emph{covariance matrix adaptation evolution strategy} (CMA-ES).
 Finalmente, se expone que transformaciones se puede aplicar dentro de la
 estrategia a seguir.
 
@@ -41,8 +41,8 @@ donde $E^{TE}$ es la componente paralela al dispositivo y $E^{TM}$ es el compone
 \end{figure}
 
 La intensidad de estos campos es de especial interés pues nos dan una idea del rendimiento del dispositivo. 
-Por ejemplo, en la figura \ref{fig:efield} se muestra la intensidad del campo
-$E^{TE}$ cuando un haz de luz está pasándo por el \emph{bend}. 
+Por ejemplo, en la \autoref{fig:efield} se muestra la intensidad del campo
+$E^{TE}$ cuando un haz de luz está pasando por el \emph{bend}. 
 Como podemos observar, parte del campo (representando por color morado) está
 fuera del dispositivo.
 Así se visualiza de forma gráfica la pérdida de energía, lo cual es un indicador de mal rendimiento.
@@ -66,7 +66,7 @@ también conocido en el área como figura de mérito (FOM), mediante la siguient
 \end{equation}
 
 Así, dentro de todas las posibles combinaciones de los parámetros $p$, la
-equación $\ref{eq:fom-bend}$ busca encontrar aquellos diseños con la mayor transmitancia.
+ \autoref{eq:fom-bend} busca encontrar aquellos diseños con la mayor transmitancia.
 Distintas estrategias para definir los parámetros $p$ se presentan en la
 \autoref{sec:parametrization} y 
 los procedimientos para optimizar la función $f_{obj}$ se presentan en la
@@ -90,7 +90,7 @@ Basándonos en \cite{Su2020}, conviene definir su FOM como
 donde $g_0(p, i)$ representa la transmitancia asociada a la parametrización $p$ en la guía de onda $i$ para una longitud de onda de $1400 nm$ y 
       $g_1(p, i)$ representa su análogo de $g_0(p, i)$ para una longitud de onda de $1550 nm$.
 
-La ecuación \ref{eq:fom-splitter} busca maximizar la transmitancia por la guía de onda superior y minimizarla para la guía de onda inferior cuando se recibe una longitud de onda de $1400 nm$ y lo contrario para una longitud de onda de $1550 nm$.
+La \autoref{eq:fom-splitter} busca maximizar la transmitancia por la guía de onda superior y minimizarla para la guía de onda inferior cuando se recibe una longitud de onda de $1400 nm$ y lo contrario para una longitud de onda de $1550 nm$.
 
 Un dispositivo similar al WDM es un \emph{splitter}. Este dispositivo tiene la
 misma geometría, pero lo que recibe lo trata de dividir en la misma proporción
@@ -111,7 +111,7 @@ de matriz y variar la permitividad dentro de cada celda \citep{Molesky2018}.
   \label{fig:pixeles}
 \end{figure}
 
-Por ejemplo, en la figura \ref{fig:pixeles} se ha definido una región cuadrangular de
+Por ejemplo, en la \autoref{fig:pixeles} se ha definido una región cuadrangular de
 diseño que podemos ver como una imagen de $18 \times 18$ píxeles.
 Aquí estamos usando los píxeles negros para representar la presencia de $Si$,
 los blancos para indicar que hay $SiO_2$ y los grises para materiales (no
@@ -159,7 +159,7 @@ tres elementos adicionales \citep{Su2020}:
 
 Dos librerías de Python de código abierto que permiten hacer las simulaciones
 de las ecuaciones de Maxwell en diseños como los descritos son MEEP \citep{Oskooi2010} y SPINS \citep{Su2020}. 
-Una evaluación cualitativa de sus funcionalidades puede ser vista en la tabla \ref{tab:simulation}.
+Una evaluación cualitativa de sus funcionalidades puede ser vista en la \autoref{tab:simulation}.
 
 \begin{table}[ht]
     \centering
@@ -194,7 +194,7 @@ para realizar estos cálculos.
 
 Como fue descrito en la \autoref{sec:parametrization}, podemos
 tener diseños que no puedan ser fabricados.
-Para evitar esto se necesita obtener que $\lambda_{x, y}$ de la ecuación \ref{eq:permitivity} tenga valores enteros.
+Para evitar esto se necesita obtener que $\lambda_{x, y}$ de la \autoref{eq:permitivity} tenga valores enteros.
 Sin embargo, al optimizar la función $f_{obj}$ no podemos asegurar esta condición.
 Ante esta dificultad, \cite{Su2020} trabaja en dos etapas:
 
@@ -228,7 +228,7 @@ Por este motivo, se presentan los siguientes tres algoritmos que serán usados e
 
 \subsection{\emph{Genetic Algorithms} (GA)}
 
-Como se describe en el algoritmo \ref{alg:GA} \citep{Mykel2019}, la idea es  
+Como se describe en el Algoritmo \ref{alg:GA} \citep{Mykel2019}, la idea es  
 comenzar generando una población (\emph{population}) de $n$ individuos representados por $p$
 parámetros, línea 1. 
 Los siguientes tres pasos se ejecutan por $k$ iteraciones.
@@ -280,7 +280,7 @@ Entrando en más detalle, para nuestro caso tenemos:
 
 \subsection{\emph{Particle Swarm Optimization} (PSO)}
 
-Podemos pensar este algoritmo como un caso especial del algoritmo \ref{alg:GA}
+Podemos pensar este algoritmo como un caso especial del Algoritmo \ref{alg:GA}
 \citep{Mykel2019, Prosopio-Galarza2019}.
 La idea es visualizar el $i-$ésimo individuo como una partícula definida por: 
 (i) su posición $x^{(i)}$ (el vector $p$-dimensional asociado al $i-$ésimo individuo),
@@ -296,7 +296,7 @@ Adicionalmente, agregando caminos aleatorios las particulas incorporan
 comportamientos impredecibles que puede permitirles encontrar potenciales
 mejores direcciones.
 
-Entrando en más detalle, siguiendo la estructura del algoritmo \ref{alg:GA}, tenemos:
+Entrando en más detalle, siguiendo la estructura del Algoritmo \ref{alg:GA}, tenemos:
 
 \begin{itemize}
 
@@ -329,7 +329,7 @@ Entrando en más detalle, siguiendo la estructura del algoritmo \ref{alg:GA}, te
 
 \subsection{\emph{Covariance Matrix Adapatation Evolution Strategy} (CMA-ES)}
 
-La idea general de esta estrategia evolutiva, mostrada en el algoritmo
+La idea general de esta estrategia evolutiva, mostrada en el Algoritmo
 \ref{alg:CMA}, es mantener:
 (i) un vector $\mu$ $p$-dimensional,
 (ii) una matriz $\Sigma$ y
@@ -360,7 +360,7 @@ Para una descripción más detallada del algoritmo, revisar \citep{Mykel2019, Ha
 \label{alg:CMA}
 \end{algorithm}
 
-Entrando en más detalla del algoritmo \ref{alg:CMA} y considerando variables
+Entrando en más detalle del Algoritmo \ref{alg:CMA} y considerando variables
 globales por simplicidad, podemos resumir el procedimiento en cinco pasos.
 En la línea 1 simplemente se repite las siguientes líneas por $k$ iteraciones.
 En la iteración $t$, comenzamos con la línea 2 generando $n$ puntos
@@ -400,7 +400,7 @@ este valor mediante las ecuaciones
 donde $p_{\sigma}$ es una variable que acumula los pasos llevados,
 $c_{\sigma} \in [0, 1]$ es una variable que determina el tiempo acumulado para $p_{\sigma}$ y 
 $d_{\sigma} \approx 1$ es un parámetro que determina el ratio de posibilidad de cambio de $\sigma^{(t + 1)}$. 
-La principal parte de la ecuación \ref{cma-control} es el término \emph{evolution path comparison}, 
+La principal parte de la \autoref{cma-control} es el término \emph{evolution path comparison}, 
 aquí se compara el tamaño de $p_{\sigma}$ con su tamaño esperado bajo selección
 aleatoria.
 De esta comparación podemos controlar si el valor de $\sigma$ debe
@@ -426,7 +426,7 @@ covarianza,
 $w'_i$ son los coeficientes de ponderación modificados y
 $\delta^{(i)}$ son las desviaciones seleccionadas.
 
-En la ecuación \ref{cma-adapt}, el primer término (\emph{cumulative update}) 
+En la \autoref{cma-adapt}, el primer término (\emph{cumulative update}) 
 mantiene información de la anterior matriz de convarianza.
 El segundo término (\emph{rank-one update}) permite expandir la distribución en
 una dirección favorable.
@@ -451,7 +451,7 @@ descrita como
 \end{equation}
 
     donde $\eta = 0.5$ y $\beta$ comienza con un valor de 1 y va incrementándose exponencialmente en cada iteración. 
-    Como se observa en la figura \ref{fig:discretization}, la ecuación \ref{eq:topo-smooth} se encarga de ir haciendo converger los valores de la parametrización a $0$ o $1$ de acuerdo a cual esté más cercano. 
+    Como se observa en la \autoref{fig:discretization}, la \autoref{eq:topo-smooth} se encarga de ir haciendo converger los valores de la parametrización a $0$ o $1$ de acuerdo a cual esté más cercano. 
     Conforme aumenta el valor de $\beta$ esta convergencia es más rápida.
 
     \begin{figure}[ht]

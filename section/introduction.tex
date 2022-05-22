@@ -131,7 +131,7 @@ Tercero, al trabajar en la escala de nanómetros, existen casos como el
 %Tercero, al trabajar en la escala de nanómetros, existen casos como el \emph{bend} y WDM que presentan un bajo rendimiento con diseños tradicionales \citep{Molesky2018, Su2020}.
 
 
-Por el otro lado, en el diseño inverso, mostrado en la figura \ref{fig:devices}
+Por el otro lado, en el diseño inverso, mostrado en la \autoref{fig:devices}
 (derecha), las geometrías resultantes no están limitadas a diseños intuitivos o regulares.
 Esta técnica busca hacer una mayor exploración de todos los posibles diseños.
 Para ello, se define geometrías arbitrarias y se usa simulaciones
@@ -272,7 +272,7 @@ Por último, el capítulo 5 muestra los resultados obtenidos con los distintos c
 Para poder describir el funcionamiento de un dispositivo se calcula la distribución del campo eléctrico, para ello se resuelven las ecuaciones
 de Maxwell \citep{Schneider2019}. 
 Una forma de encontrar la solución a estas ecuaciones en cualquier geometría es utilizando un método numérico llamado diferencias finitas en el dominio de frecuencias (FDFD) \citep{Su2020}.
-Con este planteamiento se selecciona una región rectangular a optimizar y se la divide  en $n \times m$  píxeles como si fuera una imagen, ver Figura \ref{fig:bend-discretization}. 
+Con este planteamiento se selecciona una región rectangular a optimizar y se la divide  en $n \times m$  píxeles como si fuera una imagen, ver  \autoref{fig:bend-discretization}. 
 Luego, cada píxel se rellena con dos posibles materiales: óxido de silicio ($SiO_2$) o silicio ($Si$) \citep{Molesky2018}.
 
 \begin{figure}[ht]
@@ -338,9 +338,6 @@ Así, es probable que se pueda obtener buenos resultados en la investigación ap
   \item Comparar el desempeño y la convergencia de cinco algoritmos de optimización populares usados para optimizar dispositivos nanofotónicos.
 
   \begin{itemize}
-
-    \item Implementar el proceso de optimización de los dispositivos asegurando aprovechar los
-      recursos CPU de un \emph{cluster}.
 
     \item Implementar el proceso de optimización de los dispositivos asegurando aprovechar los
       recursos GPU de un \emph{cluster}.
