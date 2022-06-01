@@ -1,17 +1,25 @@
 \chapter{Propuesta}
 
-Como se muestra en la figura \ref{fig:pipeline}, en esta investigación se seguirán los siguientes siete pasos:
-(i) parametrización, 
-(ii) función objetivo, 
+En el presente capítulo se describe la metodología a seguir en esta tesis.
+
+Como se muestra en la \autoref{fig:pipeline}, en esta investigación se siguieron los siguientes seis pasos:
+(i) preparar simulación, 
+(ii) preparar optimización, 
 (iii) optimización continua,
 (iv) optimización discreta,
-(v) optimización de fabricación,
-(vi) preparación para fabricación y
-(vii) fabricación.
+(v) optimización de fabricación y
+(vi) preparación para fabricación.
 
-Se comienza con un diseño aleatorio y los pasos son secuenciales ya que el resultado de uno es necesario para comenzar el siguiente. 
-Esto se realiza así para mantener un buen resultado \citep{Yang2017}.
-El valor de $\beta$ es en referencia a la ecuación \ref{eq:topo-smooth}, esto representa el factor discretizador de nuestros diseños.
+Estos pasos se siguieron para optimizar tanto un \emph{bend} como un WDM.
+Una vez preparada la simulación, la etapa de optimización (continua, discreta y de fabricación) se realizó
+tres veces por cada algoritmo.
+Estas tres ejecuciones se realizaron con distintos valores de semilla (128, 256 y 512).
+Esto se realizó para iniciar con diseños aleatorios y mantener los resultados reproducibles.
+Los resultados de cada etapa de la optimización se usaron como puntos iniciales para las inmediatamente
+siguientes, esto con el fin de mantener un buen resultado \citep{Yang2017}.
+El valor de $\beta$ es en referencia a la \autoref{eq:topo-smooth}, este representa el factor discretizador de nuestros diseños.
+Finalmente, tras haber conseguido diseños obtimizados se realizó un post-procesamiento para dejar los diseños
+en un formato listo para fabricación.
 
 En las siguientes subsecciones se explica en detalle cada una de los pasos de la metodología seguida en esta tesis.
 
