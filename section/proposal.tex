@@ -1,6 +1,7 @@
 \chapter{Propuesta}
 
 En el presente capítulo se describe la metodología a seguir en esta tesis.
+\leonidas{AGREGAR ALGO MÁS LARGO AL FINAL}
 
 Como se muestra en la \autoref{fig:pipeline}, en esta investigación se siguieron los siguientes seis pasos:
 (i) preparar simulación, 
@@ -13,12 +14,16 @@ Como se muestra en la \autoref{fig:pipeline}, en esta investigación se siguiero
 Estos pasos se siguieron para optimizar tanto un \emph{bend} como un WDM.
 Una vez preparada la simulación, la etapa de optimización (continua, discreta y de fabricación) se realizó
 tres veces por cada algoritmo.
-Estas tres ejecuciones se realizaron con distintos valores de semilla (128, 256 y 512).
-Esto se realizó para iniciar con diseños aleatorios y mantener los resultados reproducibles.
-Los resultados de cada etapa de la optimización se usaron como puntos iniciales para las inmediatamente
-siguientes, esto con el fin de mantener un buen resultado \citep{Yang2017}.
-El valor de $\beta$ es en referencia a la \autoref{eq:topo-smooth}, este representa el factor discretizador de nuestros diseños.
-Finalmente, tras haber conseguido diseños obtimizados se realizó un post-procesamiento para dejar los diseños
+La primera ejecución usa un valor de semilla de 128, la segunda de 256 y la tercera de 512.
+De esta manera se aseguró iniciar con diseños aleatorios y mantener los resultados reproducibles.
+Es importante señalar que los resultados de la optimización continua se usan como punto de inicio
+para la optimización discreta. Asimismo, los resultados de la optimización discreta se utilizan como
+entrada para la optimización de fabricación.
+Este proceso tiene como fin el mantener un buen resultado \citep{Yang2017}.
+El valor de $\beta$, presente en la \autoref{eq:topo-smooth}, representa el factor discretizador de nuestros diseños.
+Este valor se va incrementando en la optimización discreta y de fabricación como se muestra en la
+\autoref{fig:pipeline}.
+Finalmente, tras haber conseguido diseños optimizados se realizó un post-procesamiento para dejar los diseños
 en un formato listo para fabricación.
 
 En las siguientes subsecciones se explica en detalle cada una de los pasos de la metodología seguida en esta tesis.
@@ -30,31 +35,64 @@ En las siguientes subsecciones se explica en detalle cada una de los pasos de la
   \label{fig:pipeline}
 \end{figure}
 
-\subsection{Parametrización}
+\section{Preparar Simulación}
 
-El \emph{bend} y WDM de dos canales se parametrizarán usando la parametrización basada en topología.
+El \emph{bend} y WDM se parametrizaron usando la parametrización basada en topología descrita en la
+\autoref{sec:parametrization}.
 La descripción detallada para los dos dispositivos de estudio se presentan en las siguientes dos subsecciones.
 
-\subsubsection{\emph{Bend}}
+\subsection{\emph{Bend}}
 
 \begin{figure}[ht]
   \centering
-  \includegraphics[width=0.8\textwidth]{image/proposal/bend.png}
-  \caption{Dimensiones del diseño del \emph{bend} a utilizar.}
+  \includegraphics[width=0.7\textwidth]{image/proposal/bend.png}
+  \caption{Parámetros del diseño del \emph{bend} a optimizar.}
   \label{fig:dimensiones-bend}
 \end{figure}
 
-En la figura \ref{fig:dimensiones-bend} se muestra el diseño y dimensiones del \emph{bend} a utilizar.
+En la \autoref{fig:dimensiones-bend} se muestra el diseño y parámetros del \emph{bend} a utilizar.
 Los rectángulo negros representan las guías de onda, estos tienen las mismas dimensiones aunque en distinta orientación.
-La región gris representa la región de diseño, esta región ha sido dividida en una cuadrícula de $20 \times 20$.
-Cada píxel tiene $60 nm$ de lado y una permitividad asociada dada por la ecuación \ref{eq:permitivity}.
+La región gris representa la región de diseño.
+\leonidas{Al rectángulo con perímetro punteado} se le añadió el valor de $pml\_dist$ en cada dirección
+para luego definir el PML con un grosor de valor $pml$.
+La recta roja representa la fuente, esta tiene un longitud de valor
+$source \times z\_length$, donde $source$ está en el eje Y y $z\_length$ en el eje Z, es decir la fuente está
+representada por un rectángulo en YZ.
+De manera similar, la recta azul representa el monitor y se encuentra en el eje XZ, este tiene dimensiones
+$monitor \times z\_length$. La profundidad de todo es diseño es de $depth$.
 
-\subsubsection{WDM}
+Los parámetros fueron escogidos basándonos en \cite{Su2020}.
+Primero, la región de diseño se dividió en rectángulos de $16 nm \times 16 nm$.
+El valor de los demás parámetros se presenta en la \autoref{tab:bend-values}.
+
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{|c|c|}
+    \hline 
+    Parámetro &  Valor (nm) \\
+    \hline 
+    pml & 300 \\
+    pml\_dist & 200 \\
+    $d_1$ & 400 \\
+    $d_2$ & 400 \\
+    L\_width & 2000 \\
+    L\_height & 2000 \\
+    source & 2500 \\
+    monitor & 2500 \\
+    z\_length & 1000 \\
+    depth & 220 \\
+    \hline 
+    \end{tabular}
+    \caption{\leonidas{Parámetros} usados en el diseño del \emph{bend} a optimizar.}
+    \label{tab:bend-values}
+\end{table}
+
+\subsection{WDM}
 
 \begin{figure}[ht]
   \centering
-  \includegraphics[width=\textwidth]{image/proposal/demultiplexer.png}
-  \caption{Dimensiones del diseño del WDM a utilizar.}
+  \includegraphics[width=0.8\textwidth]{image/proposal/wdm.png}
+  \caption{Parámetros del diseño del \emph{bend} a optimizar.}
   \label{fig:dimensiones-demultiplexer}
 \end{figure}
 
@@ -63,11 +101,11 @@ Los rectángulos negros representas las guías de onda, estos tienen las mismas 
 La región gris representa la región de diseño, esta región ha sido dividida en una cuadrícula de $20 \times 20$.
 Cada píxel tiene $60 nm$ de lado y una permitividad asociada dada por la ecuación \ref{eq:permitivity}.
 
-\subsection{Función objetivo}
+\section{Función objetivo}
 
 Basándonos en el trabajo de \cite{Su2020}, para el \emph{bend} usaremos como función objetivo la ecuación \ref{eq:fom-bend} y para el WDM la ecuación \ref{eq:fom-splitter}.
 
-\subsection{Optimización}
+\section{Optimización}
 
 El proceso de optimización se dividirá en tres etapas: (i) optimización continua, (ii) optimización discreta y (iii) optimización de fabricación.
 Tomando como base a \cite{Elsawy2020, Schneider2019, Gregory2015}, este proceso se realizará con los siguientes cinco algoritmos: (i) L-BFGS-B, (ii) \emph{covariance matrix adaptation evolution strategy} (CMA-ES), (iii) \emph{particle swarm optimization} (PSO), (iv) algoritmos genéticos (GA), (v) optimización bayesiana (OB).

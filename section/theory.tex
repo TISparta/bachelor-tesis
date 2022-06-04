@@ -23,36 +23,44 @@ estrategia a seguir.
 Un \emph{bend} es un dispositivo fotónico que se encarga de guiar un haz de ondas para que gire.
 
 En general, al estudiar dispositivos fotónicos es de especial interés la
-distribución del campo eléctrico (E). 
-Este campo se descompone en una componente transversal eléctrica (TE) y en una componente transversal magnética (TM) de acuerdo a la ecuación
+distribución del campo eléctrico (E).
+Este nos permite visualizar la distribución de la energía en un dispositivo al calcular lo siguiente:
 
 \begin{equation}
-  E = E^{TE} + E^{TM},
+  |E|^2 = |E_x|^2+|E_y|^2+|E_z|^2,
 \label{eq:field}
 \end{equation}
 
-donde $E^{TE}$ es la componente paralela al dispositivo y $E^{TM}$ es el componente restante \citep{Hohenester2020}. 
+donde $E_x, E_y, E_z$ representan las componentes del campo eléctrico en los ejes $X, Y, Z$, respectivamente
+\citep{LukasChrostowski2010}.
 
 \begin{figure}[ht]
   \centering
-  \includegraphics[scale=0.7]{image/theory/bend-field.png}
-  \caption{Intensidad de campo eléctrico ($E^{TE}$) para un \emph{bend-90°} de radio interno de 0.25 $\mu m$.}
+  \includegraphics[scale=0.7]{image/theory/bend_field_dx30_px16_rint1000.png}
+  \caption{Representación de $|E|^2$ de un \emph{bend} de $1 \mu m$ de radio obtenido con una simulación en 3D FDFD con SPINS
+  bajo una resolución de $30 nm$.}
   \label{fig:efield}
 \end{figure}
 
-La intensidad de estos campos es de especial interés pues nos dan una idea del rendimiento del dispositivo. 
-Por ejemplo, en la \autoref{fig:efield} se muestra la intensidad del campo
-$E^{TE}$ cuando un haz de luz está pasando por el \emph{bend}. 
-Como podemos observar, parte del campo (representando por color morado) está
-fuera del dispositivo.
-Así se visualiza de forma gráfica la pérdida de energía, lo cual es un indicador de mal rendimiento.
 
-Por otro lado, para evaluar el desempeño de un dispositivo de forma numérica se
-suele calcular la transmitancia ($T$) como la relación entre la intensidad del haz
-que sale del dispositivo ($I$) con la intensidad con la que entra ($I_0$) \citep{Su2020}. Esto se expresa mediante la ecuación
+Tradicionalmente, un \emph{bend} consiste en una una guía de onda horizontal usada como entrada y
+una guía de onda vertical usada como salida, estas son conectadas por una guía de onda con la forma de un
+cuarto de circunferencia de radio $r$ y con el mismo grosor de las guías de onda de entrada y salida.
+En la \autoref{fig:efield} se muestra un \emph{bend} tradicional de radio $r = 1 \mu m$.
+Como se observa en la imagen, parte significativa de la energía se pierde en la región curva.
+Esto se debe a que el radio de curvatura es muy pequeño, con un valor más grande (e.g. $r = 10 \mu m$) 
+las pérdidas se vuelven casi nulas \citep{LukasChrostowski2010}.
+
+
+Observar en una gráfica el valor de $|E|^2$ nos ayuda a entender el funcionamiento de un dispositivo.
+Por otro lado, una manera de cuantificar que tan bien funciona un diseño es mediante el cálculo de la
+transmitancia $(T)$.
+Este valor se define como la relación entre la intensidad del haz que sale del dispositivo $I$ con la
+intensidad con la que entra $I_0$ \citep{Su2020}.
+Sea $\lambda$ la longitud de onda de la entrada, lo descrito se expresa mediante la ecuación
 
 \begin{equation}
-  T = \frac{I}{I_0}.
+  T_{\lambda} = \frac{I}{I_0}.
 \label{eq:transmission}
 \end{equation}
 
@@ -65,36 +73,55 @@ también conocido en el área como figura de mérito (FOM), mediante la siguient
 \label{eq:fom-bend}
 \end{equation}
 
-Así, dentro de todas las posibles combinaciones de los parámetros $p$, la
- \autoref{eq:fom-bend} busca encontrar aquellos diseños con la mayor transmitancia.
-Distintas estrategias para definir los parámetros $p$ se presentan en la
-\autoref{sec:parametrization} y 
-los procedimientos para optimizar la función $f_{obj}$ se presentan en la
-\autoref{sec:alg-opt}.
+Así, la idea detrás de estas definiciones es describir un \emph{bend} mediante parámetros $p$,
+\autoref{sec:parametrization}.
+Luego, buscar entre las distintas combinaciones de los parámetros aquella configuración
+que optimice la función $f_{obj}$, \autoref{sec:alg-opt}.
+De este modo, estaremos encontrando un diseño con una elevada transmitancia, es decir con un buen desempeño.
 
 \subsection{\emph{Wavelength Demultiplexer} de dos canales (WDM)}
 
 Un WDM es un dispositivo fotónico que se encarga de guiar un haz de ondas de acuerdo a su longitud de onda.
-Así, estos suelen trabajar con dos longitudes de onda y guían las de un tipo por la guía de onda superior y las de otro tipo por la guía de onda inferior.
+Así, estos suelen trabajar con dos longitudes de onda y guían las de una longitud por la guía de onda superior
+y las de otra longitud por la guía de onda inferior.
 
-Similar al caso del \emph{bend} se estudia su campo eléctrico y transmitancia para medir el rendimiento de estos dispositivos.
+Análogo al caso del \emph{bend}, utilizaremos la transmitancia $T$ (\autoref{eq:transmission}) para cuantificar el desempeño del dispositivo.
+Pero, en este caso tenemos dos guías de salida, por ello, usaremos como notación $T_{\lambda}^{(1)}$ para
+representar la transmitancia en la guía de salida superior cuando se recibe un haz de longitud de onda
+$\lambda$ y $T_{\lambda}^{(2)}$ para la guía de salida inferior.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[scale=0.7]{image/theory/wdm_field_dx30_px16_px12_5.png}
+  \caption{Representación de $|E|^2$ de un WDM obtenido con una simulación en 3D FDFD con SPINS bajo una resolución de $30 nm$.}
+  \label{fig:efield-wdm}
+\end{figure}
+
+En la \autoref{fig:efield-wdm} se muestra un WDM donde las guías de onda son unidas por una región rectangular
+de $1.5\mu m \times 2.0 \mu m$. En el lado izquierdo se muestra la representación de $|E|^2$ cuando se usa 
+como entrada un haz de ondas de $1400 nm$ de longitud, en el lado derecho la entrada es de $1550 nm$.
+En ambos casos el diseño está funcionando más como un \emph{splitter} que como un WDM.
+Un \emph{splitter} es un dispositivo fotónico que intenta dividir la entrada en forma equitativa por las guías
+de salida. El diseño tradicional para este dispositivo es el presentado en la imagen. Similar al caso del
+\emph{bend}, con unas dimensiones un poco más grandes se puede conseguir pérdidas casi nulas de energía
+\citep{LukasChrostowski2010}.
+Sin embargo, como se observa de la distribución de $|E|^2$, este diseño intuitivo no es apropiado para un WDM.
 
 Basándonos en \cite{Su2020}, conviene definir su FOM como
 
 \begin{equation}
-  f_{obj}(p) = max \left \{ g_0(p, 0)^2 + (1 - g_0(p, 1))^2 + g_1(p, 1)^2 + (1
-  - g_1(p, 0))^2 \right \},
+  f_{obj}(p) = max \left \{ \left ( T_{1400}^{(1)} \right )^2  + 
+                            \left ( 1 - T_{1400}^{(2)} \right )^2
+                            \left ( 1 - T_{1550}^{(1)} \right )^2  + 
+                            \left ( T_{1500}^{(2)} \right )^2 
+                    \right \}.
 \label{eq:fom-splitter}
 \end{equation}
 
-donde $g_0(p, i)$ representa la transmitancia asociada a la parametrización $p$ en la guía de onda $i$ para una longitud de onda de $1400 nm$ y 
-      $g_1(p, i)$ representa su análogo de $g_0(p, i)$ para una longitud de onda de $1550 nm$.
-
 La \autoref{eq:fom-splitter} busca maximizar la transmitancia por la guía de onda superior y minimizarla para la guía de onda inferior cuando se recibe una longitud de onda de $1400 nm$ y lo contrario para una longitud de onda de $1550 nm$.
 
-Un dispositivo similar al WDM es un \emph{splitter}. Este dispositivo tiene la
-misma geometría, pero lo que recibe lo trata de dividir en la misma proporción
-para ambas guías de onda (superior e inferior).
+La idea para optimizar un WDM es la misma descrita para un \emph{bend}. En las siguientes secciones se
+describirá en más detalle los otros pasos necesarios para lograr esto.
 
 \section{Parametrización}\label{sec:parametrization}
 
