@@ -20,11 +20,11 @@ estrategia a seguir.
 
 \subsection{\emph{Bend}}
 
-Un \emph{bend} es un dispositivo fotónico que se encarga de guiar un haz de ondas para que gire.
+Un \emph{bend} es un dispositivo fotónico que se encarga de guiar el giro de un haz de ondas.
 
 En general, al estudiar dispositivos fotónicos es de especial interés la
 distribución del campo eléctrico (E).
-Este nos permite visualizar la distribución de la energía en un dispositivo al calcular lo siguiente:
+Este nos permite visualizar la distribución de la energía en un dispositivo calculando lo siguiente:
 
 \begin{equation}
   |E|^2 = |E_x|^2+|E_y|^2+|E_z|^2,
@@ -52,31 +52,31 @@ Esto se debe a que el radio de curvatura es muy pequeño, con un valor más gran
 las pérdidas se vuelven casi nulas \citep{LukasChrostowski2010}.
 
 
+Para evitar ambigüedades, dos puntos adicionales a remarcar son: 
+(i) cuando nos referimos al radio estamos haciendo mención al radio medio de curvatura y 
+(ii) todos los diseños mostrados en este trabajo tienen un profundidad de 220nm.
+
 Observar en una gráfica el valor de $|E|^2$ nos ayuda a entender el funcionamiento de un dispositivo.
 Por otro lado, una manera de cuantificar que tan bien funciona un diseño es mediante el cálculo de la
 transmitancia $(T)$.
-Este valor se define como la relación entre la intensidad del haz que sale del dispositivo $I$ con la
-intensidad con la que entra $I_0$ \citep{Su2020}.
-Sea $\lambda$ la longitud de onda de la entrada, lo descrito se expresa mediante la ecuación
+Este valor se define como la relación entre la potencia del flujo que sale del dispositivo con la 
+potencia del flujo que ingresa \citep{Christiansen2021}.
+
+Seguidamente, sea $\lambda$ la longitud de onda de la entrada y $p$ los parámetros que caracterizan al
+diseño, denotaremos como $T_{\lambda}(p)$ a la transmitancia asociada al dispositivo obtenido con la
+parametrización $p$ en la longitud de onda $\lambda$. Luego, definimos la función objetivo 
+($f_{obj}$) para un \emph{bend}, también conocido en el área como figura de mérito (FOM), 
+mediante la siguiente ecuación \citep{Su2020}:
 
 \begin{equation}
-  T_{\lambda} = \frac{I}{I_0}.
-\label{eq:transmission}
-\end{equation}
-
-Seguidamente, sea $p$ los parámetros que caracterizan a un \emph{bend}, definimos la función objetivo ($f_{obj}$) para este dispositivo,
-también conocido en el área como figura de mérito (FOM), mediante la siguiente ecuación
-\citep{Su2020}:
-
-\begin{equation}
-  f_{obj}(p) = max \left \{ T(p) \right \}.
+  f_{obj}(p) = max \left \{ T_{1550} (p) \right \}.
 \label{eq:fom-bend}
 \end{equation}
 
-Así, la idea detrás de estas definiciones es describir un \emph{bend} mediante parámetros $p$,
-\autoref{sec:parametrization}.
-Luego, buscar entre las distintas combinaciones de los parámetros aquella configuración
-que optimice la función $f_{obj}$, \autoref{sec:alg-opt}.
+Así, la idea detrás de estas definiciones es describir un \emph{bend} mediante parámetros $p$
+(\autoref{sec:parametrization}).
+Luego, usando algoritmos de optimización, buscar entre las distintas combinaciones de los parámetros aquella configuración
+que optimice la función $f_{obj}$ (\autoref{sec:alg-opt}).
 De este modo, estaremos encontrando un diseño con una elevada transmitancia, es decir con un buen desempeño.
 
 \subsection{\emph{Wavelength Demultiplexer} de dos canales (WDM)}
@@ -85,24 +85,24 @@ Un WDM es un dispositivo fotónico que se encarga de guiar un haz de ondas de ac
 Así, estos suelen trabajar con dos longitudes de onda y guían las de una longitud por la guía de onda superior
 y las de otra longitud por la guía de onda inferior.
 
-Análogo al caso del \emph{bend}, utilizaremos la transmitancia $T$ (\autoref{eq:transmission}) para cuantificar el desempeño del dispositivo.
-Pero, en este caso tenemos dos guías de salida, por ello, usaremos como notación $T_{\lambda}^{(1)}$ para
+Análogo al caso del \emph{bend}, utilizaremos la transmitancia para cuantificar el desempeño del dispositivo.
+Pero, en este caso tenemos dos guías de salida, por ello, usaremos como notación $T_{\lambda}^{(1)}(p)$ para
 representar la transmitancia en la guía de salida superior cuando se recibe un haz de longitud de onda
-$\lambda$ y $T_{\lambda}^{(2)}$ para la guía de salida inferior.
+$\lambda$ en un diseño descrito por los parámetros $p$ y $T_{\lambda}^{(2)}(p)$ para la guía de salida inferior.
 
 \begin{figure}[ht]
   \centering
-  \includegraphics[scale=0.7]{image/theory/wdm_field_dx30_px16_px12_5.png}
+  \includegraphics[scale=0.7]{image/theory/wdm_field_dx30_px16_px16.png}
   \caption{Representación de $|E|^2$ de un WDM obtenido con una simulación en 3D FDFD con SPINS bajo una resolución de $30 nm$.}
   \label{fig:efield-wdm}
 \end{figure}
 
 En la \autoref{fig:efield-wdm} se muestra un WDM donde las guías de onda son unidas por una región rectangular
-de $1.5\mu m \times 2.0 \mu m$. En el lado izquierdo se muestra la representación de $|E|^2$ cuando se usa 
-como entrada un haz de ondas de $1400 nm$ de longitud, en el lado derecho la entrada es de $1550 nm$.
+de $2.0\mu m \times 2.0 \mu m$. En el lado izquierdo se muestra la representación de $|E|^2$ cuando se usa 
+como entrada un haz de ondas de $1300 nm$ de longitud, en el lado derecho la entrada es de $1550 nm$.
 En ambos casos el diseño está funcionando más como un \emph{splitter} que como un WDM.
 Un \emph{splitter} es un dispositivo fotónico que intenta dividir la entrada en forma equitativa por las guías
-de salida. El diseño tradicional para este dispositivo es el presentado en la imagen. Similar al caso del
+de salida. El diseño intuitivo para este dispositivo es el presentado en la imagen. Similar al caso del
 \emph{bend}, con unas dimensiones un poco más grandes se puede conseguir pérdidas casi nulas de energía
 \citep{LukasChrostowski2010}.
 Sin embargo, como se observa de la distribución de $|E|^2$, este diseño intuitivo no es apropiado para un WDM.
@@ -110,10 +110,10 @@ Sin embargo, como se observa de la distribución de $|E|^2$, este diseño intuit
 Basándonos en \cite{Su2020}, conviene definir su FOM como
 
 \begin{equation}
-  f_{obj}(p) = max \left \{ \left ( T_{1400}^{(1)} \right )^2  + 
-                            \left ( 1 - T_{1400}^{(2)} \right )^2
-                            \left ( 1 - T_{1550}^{(1)} \right )^2  + 
-                            \left ( T_{1500}^{(2)} \right )^2 
+  f_{obj}(p) = max \left \{ \left ( T_{1300}^{(1)}(p) \right )^2  + 
+                            \left ( 1 - T_{1300}^{(2)}(p) \right )^2 +
+                            \left ( 1 - T_{1550}^{(1)}(p) \right )^2  + 
+                            \left ( T_{1550}^{(2)}(p) \right )^2 
                     \right \}.
 \label{eq:fom-splitter}
 \end{equation}

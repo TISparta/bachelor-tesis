@@ -16,6 +16,7 @@ Una vez preparada la simulación, la etapa de optimización (continua, discreta 
 tres veces por cada algoritmo.
 La primera ejecución usa un valor de semilla de 128, la segunda de 256 y la tercera de 512.
 De esta manera se aseguró iniciar con diseños aleatorios y mantener los resultados reproducibles.
+
 Es importante señalar que los resultados de la optimización continua se usan como punto de inicio
 para la optimización discreta. Asimismo, los resultados de la optimización discreta se utilizan como
 entrada para la optimización de fabricación.
@@ -39,13 +40,14 @@ En las siguientes subsecciones se explica en detalle cada una de los pasos de la
 
 El \emph{bend} y WDM se parametrizaron usando la parametrización basada en topología descrita en la
 \autoref{sec:parametrization}.
+La implementación se realizó en SPINS.
 La descripción detallada para los dos dispositivos de estudio se presentan en las siguientes dos subsecciones.
 
 \subsection{\emph{Bend}}
 
 \begin{figure}[ht]
   \centering
-  \includegraphics[width=0.7\textwidth]{image/proposal/bend.png}
+  \includegraphics[width=0.6\textwidth]{image/proposal/bend.png}
   \caption{Parámetros del diseño del \emph{bend} a optimizar.}
   \label{fig:dimensiones-bend}
 \end{figure}
@@ -53,16 +55,16 @@ La descripción detallada para los dos dispositivos de estudio se presentan en l
 En la \autoref{fig:dimensiones-bend} se muestra el diseño y parámetros del \emph{bend} a utilizar.
 Los rectángulo negros representan las guías de onda, estos tienen las mismas dimensiones aunque en distinta orientación.
 La región gris representa la región de diseño.
-\leonidas{Al rectángulo con perímetro punteado} se le añadió el valor de $pml\_dist$ en cada dirección
-para luego definir el PML con un grosor de valor $pml$.
-La recta roja representa la fuente, esta tiene un longitud de valor
-$source \times z\_length$, donde $source$ está en el eje Y y $z\_length$ en el eje Z, es decir la fuente está
-representada por un rectángulo en YZ.
-De manera similar, la recta azul representa el monitor y se encuentra en el eje XZ, este tiene dimensiones
-$monitor \times z\_length$. La profundidad de todo es diseño es de $depth$.
+La recta roja simula la fuente y la recta azul el monitor, su extensión está
+simbolizada por las variables \emph{source} y \emph{monitor}, respectivamente.
+Además, la profundidad de estos dos elementos es la misma, valor denotado como \emph{z\_length}.
+Por otro lado, la región punteada se utiliza como referencia para definir el PML (región verde),
+del cual dista un valor definido como \emph{pml\_dist}. 
+La profundidad de toda la geometría es especificada por la variable \emph{depth}.
 
-Los parámetros fueron escogidos basándonos en \cite{Su2020}.
-Primero, la región de diseño se dividió en rectángulos de $16 nm \times 16 nm$.
+Los parámetros fueron escogidos inspirados por el trabajo de \cite{Su2020}.
+La región de diseño se dividió en rectángulos de $16nm \times 16 nm$, obteniendo así una
+matriz de $125 \times 125$.
 El valor de los demás parámetros se presenta en la \autoref{tab:bend-values}.
 
 \begin{table}[ht]
@@ -71,6 +73,7 @@ El valor de los demás parámetros se presenta en la \autoref{tab:bend-values}.
     \hline 
     Parámetro &  Valor (nm) \\
     \hline 
+    wg\_height & 400 \\
     pml & 300 \\
     pml\_dist & 200 \\
     $d_1$ & 400 \\
@@ -83,7 +86,7 @@ El valor de los demás parámetros se presenta en la \autoref{tab:bend-values}.
     depth & 220 \\
     \hline 
     \end{tabular}
-    \caption{\leonidas{Parámetros} usados en el diseño del \emph{bend} a optimizar.}
+    \caption{Parámetros usados en el diseño del \emph{bend} a optimizar.}
     \label{tab:bend-values}
 \end{table}
 
@@ -91,83 +94,176 @@ El valor de los demás parámetros se presenta en la \autoref{tab:bend-values}.
 
 \begin{figure}[ht]
   \centering
-  \includegraphics[width=0.8\textwidth]{image/proposal/wdm.png}
-  \caption{Parámetros del diseño del \emph{bend} a optimizar.}
+  \includegraphics[width=0.6\textwidth]{image/proposal/wdm.png}
+  \caption{Parámetros del diseño del WDM a optimizar.}
   \label{fig:dimensiones-demultiplexer}
 \end{figure}
 
-En la figura \ref{fig:dimensiones-demultiplexer} se muestra el diseño y dimensiones del WDM a utilizar.
-Los rectángulos negros representas las guías de onda, estos tienen las mismas dimensiones.
-La región gris representa la región de diseño, esta región ha sido dividida en una cuadrícula de $20 \times 20$.
-Cada píxel tiene $60 nm$ de lado y una permitividad asociada dada por la ecuación \ref{eq:permitivity}.
+En la \autoref{fig:dimensiones-demultiplexer} se muestra el diseño y parámetros del WDM a utilizar.
+Los rectángulo negros representan las guías de onda, estos tienen las mismas dimensiones.
+La región gris representa la región de diseño.
+La recta roja simula la fuente y su extensión se simboliza por la variable \emph{source}.
+Las rectas azul y marrón describen los monitores cuya extensión está definida por las variables \emph{monitor}.
+Además, la profundidad de la fuente y monitores es la misma, valor denotado como \emph{z\_length}.
+Por otro lado, la región punteada se utiliza como referencia para definir el PML (región verde),
+del cual dista un valor definido como \emph{pml\_dist}.
+La profundidad de toda la geometría es especificada por la variable \emph{depth}.
 
-\section{Función objetivo}
+Los parámetros fueron escogidos inspirados por el trabajo de \cite{Christiansen2021}.
+Del mismo modo como se realizó para el \emph{bend}, 
+la región de diseño se dividió en rectángulos de $16nm \times 16 nm$, obteniendo así una
+matriz de $125 \times 125$.
+El valor de los demás parámetros se presenta en la \autoref{tab:wdm-values}.
 
-Basándonos en el trabajo de \cite{Su2020}, para el \emph{bend} usaremos como función objetivo la ecuación \ref{eq:fom-bend} y para el WDM la ecuación \ref{eq:fom-splitter}.
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{|c|c|}
+    \hline 
+    Parámetro &  Valor (nm) \\
+    \hline 
+    wg\_height & 400 \\
+    pml & 300 \\
+    pml\_dist & 200 \\
+    $d_1$ & 400 \\
+    $d_2$ & 400 \\
+    L\_width & 2000 \\
+    L\_height & 2000 \\
+    $\delta$ & 600 \\
+    source & 2500 \\
+    monitor & 1000 \\
+    z\_length & 1000 \\
+    depth & 220 \\
+    \hline 
+    \end{tabular}
+    \caption{Parámetros usados en el diseño del WDM a optimizar.}
+    \label{tab:wdm-values}
+\end{table}
 
-\section{Optimización}
 
-El proceso de optimización se dividirá en tres etapas: (i) optimización continua, (ii) optimización discreta y (iii) optimización de fabricación.
-Tomando como base a \cite{Elsawy2020, Schneider2019, Gregory2015}, este proceso se realizará con los siguientes cinco algoritmos: (i) L-BFGS-B, (ii) \emph{covariance matrix adaptation evolution strategy} (CMA-ES), (iii) \emph{particle swarm optimization} (PSO), (iv) algoritmos genéticos (GA), (v) optimización bayesiana (OB).
+\section{Preparar Optimización}
 
-Similar a \cite{Schneider2019}, para poder comparar los resultados el proceso se repetirá 6 veces por cada algoritmo y en cada repetición se fijará el valor de la semilla con el fin de asegurar reproducibilidad de los experimentos.
-Además, en cada etapa de la optimización se realizará un cambio de sus parámetros, en la medida de lo posible, para asegurar ir convergiendo a un resultado óptimo.
-Adicionalmente, se limitará la cantidad de posibles diseños a simular.
-Así se podrá hacer una comparación del desempeño de los algoritmos en base a la cantidad de evaluaciones de la función objetivo.
-Sin embargo, debido a que estos algoritmos trabajan de forma iterativa con sus propias particularidades, se considerará como condición de salida el estar en la primera iteración donde ya se haya realizado la cantidad máxima de simulaciones.
+Con lo descrito en la anterior sección ya podemos evaluar distintos diseños.
+Ahora, utilizando como función objetivo la \autoref{eq:fom-bend} para el \emph{bend} y 
+la \autoref{eq:fom-splitter} para el WDM,
+estamos ante un problema de optimización.
+Para resolverlo, la propuesta inicial era utilizar estos cinco algoritmos:
+(i) GA, (ii) PSO, (iii) CMA-ES, (iv) L-BFGS-B, (v) MMA.
 
-A continuación, se describirá las características de cada etapa del proceso de optimización.
+La elección de estos fue por diversos motivos.
+GA y PSO se escogieron por ser populares en el área \citep{Elsawy2020, Molesky2018, Prosopio-Galarza2019}.
+CMA-ES por haber tenido un buen desempeño en \cite{Gregory2015} y las buenas referencias brindadas en
+\cite{Campbell2019}.
+L-BFGS-B por haber obtenido buenos resultados en trabajos como \cite{Su2020}.
+MMA por haber sido recomendado como un buen candidato para la optimización topológica \citep{Christiansen2021}.
 
-\subsubsection{Optimización continua}
+Para poder comparar el desempeño de estos algoritmos se configuró la máxima cantidad de veces que podían
+evaluar la función objetivo. Los parámetros específicos se detallan en la
+\autoref{tab:alg-parameters} siguiendo la nomenclatura presentada en la \autoref{sec:alg-opt}.
 
-En este primer paso se usará directamente la ecuación \ref{eq:permitivity} para buscar dispositivos óptimos de acuerdo al FOM definido.
-Así, es probable obtener diseños con muy buenos resultados, pero con permitividades no asociadas al $SiO_2$ o $Si$.
-Cada algoritmo comenzará con un diseño inicial aleatorio y se limitará en 5000 la cantidad de posibles diseños a simular. 
-Las simulaciones se realizarán en 2D.
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{|c|c|c|}
+    \hline 
+    Algoritmo & Parámetro &  Valor (nm) \\
+    \hline
+    GA & population\_size & 40 \\
+    GA & n\_selected\_parents & 10 \\
+    GA & range & 0.1 \\
+    GA & prob\_mutation & 0.1 \\
+    PSO & population\_size & 40 \\
+    PSO & range & 0.1 \\
+    PSO & $\omega$ & 0.5 \\
+    PSO & $c_1$ & 0.5 \\
+    PSO & $c_2$ & 0.5 \\
+    CMA-ES & population\_size & 40 \\
+    CMA-ES & $\sigma$ & 0.3 \\
+    \hline 
+    \end{tabular}
+    \caption{Parámetros usados por los algoritmos de optimización.}
+    \label{tab:alg-parameters}
+\end{table}
 
-\subsubsection{Optimización discreta}
+Por trabajos como los de \cite{Su2020} y \cite{Christiansen2021} ya nos podíamos anticipar que al usar
+L-BFGS-B o MMA se obtendrían buenos resultados en parte gracias a usar la gradiente para guiar la búsqueda.
+Por otro lado, por la cantidad de variables utilizadas ($125 \times 125$) no podíamos asegurar lo mismo
+con GA, PSO y CMA. 
 
-Bajo la premisa que la anterior etapa obtuvo un buen resultado, cada algoritmo tomará como punto inicial el resultado de la optimización previa y tratará de configurar sus parámetros para realizar la búsqueda principalmente alrededor de ese punto.
+Debido a ello, primero se realizó un experimento preliminar para evaluar el desempeño de estos
+algoritmos al realizar como máximo 1200 evaluaciones en la optimización del \emph{bend} propuesto, 
+estos resultados son presentados en la \autoref{fig:gradient-free-comparison}.
+Como podemos observar, especialmente del CMA-ES, hay una ligera tendencia de mejora, pero esta es muy lenta.
+Por los resultados mostrados en \cite{Christiansen2021matlab} uno esperaría que algoritmos como GA lograran 
+obtener resultados similares a los obtenidos por algún algoritmo basado en la gradiente (e.g. L-BFGS-B y MMA), 
+sin embargo, esto podría necesitar evaluar la función objetivo un número muy elevado de veces (entre $10^4$ y $10^5$).
 
-Además, se aplicará la ecuación \ref{eq:topo-smooth} al parámetro $\lambda$ de la ecuación \ref{eq:permitivity} para gradualmente terminar mapeando al $SiO_2$ o $Si$ en cada píxel. 
-Para ello se realizará 5 optimizaciones donde el resultado de una funcionará como punto inicial de la siguiente.
-En cada una de estas optimizaciones se limitará en 5000 la cantidad de posibles diseños a simular y se tomará como parámetro $\beta$ de la ecuación \ref{eq:topo-smooth} el valor dado por la siguiente recurrencia:
 
-\begin{equation}
-  \begin{split}
-    \beta_1 &= 2\\
-    \beta_n &= \beta_{n-1} \times 2
-  \end{split}
-  \label{eq:beta-param}
-\end{equation}
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=1.0\textwidth]{image/proposal/bend-opt-cont.png}
+  \caption{Comparación del desempeño de GA, PSO y CMA-ES para optimizar el \emph{bend} propuesto.}
+  \label{fig:gradient-free-comparison}
+\end{figure}
 
-Las simulaciones se realizarán en 2D.
 
-\subsubsection{Optimización de fabricación}
+De este modo, en esta tesis se optó por comparar solamente algoritmos de primer orden, es decir, que utilicen
+el cómputo de la gradiente en sus rutinas. Así, se seguirá evaluando los algoritmos GA, PSO y CMA-ES pero
+ahora en sus versiones que usan la gradiente y con los mismos parámetros descritos en la
+\autoref{tab:alg-parameters}. 
 
-Con la anterior etapa la ecuación \ref{eq:topo-smooth} nos asegura diseños que están convergiendo a dispositivos reales.
-Ahora, tomando como referencia el trabajo de \cite{Hammond20} para asegurar un buen desempeño pese a los errores de fabricación, por cada parametrización $p$ se calculará:
+Es resumen, usando simulaciones en 3D FDFD con SPINS, evaluaremos estos cinco algoritmos: (i) G-GA, (ii) G-PSO, (iii) G-CMA-ES, (iv) L-BFGS-B, (v) MMA.
+
+\section{Optimización Continua}
+
+En esta etapa se configuró la máxima cantidad de evaluaciones a 2000.
+Luego, se ejecutaron los cinco algoritmos para optimizar el \emph{bend} y WDM.
+Cada algoritmo se ejecutó 3 veces, la primera con un valor de semilla de 128, la segunda de 256 y
+la tercera de 512.
+La idea de esta etapa es optimizar los diseños sin imponer ninguna restricción.
+
+\section{Optimización Discreta}
+
+Ahora, utilizamos los resultados de la optimización continua como punto inicial.
+En esta etapa se busca comenzar a discretizar los resultados, es decir, que los píxeles vayan convergiendo
+a valores 0 o 1 y manteniendo resultados similares a los de la optimización continua.
+Para ello se realiza una primera optimización configurando la máxima cantidad de evaluaciones 
+en 800 y aplicando a cada diseño la \autoref{eq:topo-smooth} con $\beta = 2^1$ y $\eta = 0.5$.
+El resultado de esta optimización se usa como punto inicial para repetir este proceso, pero ahora con $\beta
+= 2^2$. Finalmente, se repite una vez más el procedimiento con $\beta = 2^3$.
+
+\section{Optimización de Fabricación}
+
+Por último, se busca imponer a los diseños restricciones de fabricación y robustez a posibles errores
+de fabricación. 
+
+Tomando como referencia el trabajo de \cite{Hammond20} para asegurar un buen desempeño pese a los errores de
+fabricación, por cada parametrización $p$ se calculó:
 
 \begin{itemize}
-  \item $p_{ext}$ que representará el diseño como si el dispositivo se hubiera dilatado.
-  \item $p_{int}$ que representará el diseño como si el dispositivo se hubiera contraído.
+  \item $p_{ext}$ que representa el diseño como si el dispositivo se hubiera dilatado.
+  \item $p_{int}$ que representa el diseño como si el dispositivo se hubiera contraído.
 \end{itemize}
 
-Luego, se definirá como nueva función objetivo la siguiente ecuación:
+Luego, se definió una nueva función objetivo mediante la siguiente ecuación:
 
 \begin{equation}
   \begin{split}
-    F_{obj} &= \omega_1 f^2_{obj}(p) + \omega_2 (1 - |f_{obj}(p_{ext}) - f_{obj}(p_{int})|)^2\\
-    \omega_1 &= 0.85\\
-    \omega_2 &= 0.15
+    F_{obj} &= k_1 f^2_{obj}(p) + k_2 (1 - |f_{obj}(p_{ext}) - f_{obj}(p_{int})|)^2\\
+    k_1 &= 0.85\\
+    k_2 &= 0.15
   \end{split}
   \label{eq:final-fom}
 \end{equation}
 
-Así, se buscará un diseño que tenga un buen desempeño y que sea resiliente a posibles errores de fabricación.
-Además, para asegurar que los resultados sean más congruentes con la realidad las simulaciones se realizarán en 3D con la ayuda de un GPU.
+Así, se buscan diseños que tenga un buen desempeño y que sea resiliente a posibles errores de fabricación.
+Para optimizar esta nueva función objetivo se realizó el mismo proceso de la optimización discreta, pero ahora
+con valores $\beta = 2^4, 2^5, 2^6$. De esta manera, en paralelo, seguimos con el proceso de discretizar
+nuestros resultados.
 
-\subsection{Preparación para fabricación}
+\leonidas{Completar la ecuación de la projección conica en la teoría para terminar esta
+sección.}
+
+\section{Preparación para Fabricación}
+
 
 Para que nuestros diseños puedan ser fabricados, necesitamos representarlo en formato GDSII.
 Para ello, con los mejores resultados de cada algoritmo usaremos la distribución de la permitividad asociada a su parametrización, $\epsilon(p)$,
@@ -176,7 +272,6 @@ Así, nuestra tarea se reducirá a aproximar el contorno de esta geometría con 
 Además, usaremos el resultado en formato GDSII para simular el funcionamiento del dispositivo y asegurar que siga manteniendo las propiedades deseadas.
 En caso no se tenga éxito, se volverá a iterar en la conversión
 
-\subsection{Fabricación}
+\leonidas{Debo incluir una sección de Alcances y Limitaciones?}
 
-Se mandará a fabricar los mejores resultados hasta cubrir el área dispuesta para fabricación. 
-Luego, se esperará las mediciones de los dispositivos ya fabricados para compararlo con los resultados de las simulaciones computacionales.
+\leonidas{Incluir párrafo de cierre.}
