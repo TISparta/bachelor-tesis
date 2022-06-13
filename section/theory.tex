@@ -15,6 +15,7 @@ algoritmos genéticos (GA), (ii) \emph{particle swarm optimization} (CMA), (iii)
 Finalmente, se expone que transformaciones se puede aplicar dentro de la
 estrategia a seguir.
 
+\leonidas{TODO: Actualizar esto al final.}
 
 \section{Dispositivos de estudio}
 
@@ -23,21 +24,22 @@ estrategia a seguir.
 Un \emph{bend} es un dispositivo fotónico que se encarga de guiar el giro de un haz de ondas.
 
 En general, al estudiar dispositivos fotónicos es de especial interés la
-distribución del campo eléctrico (E).
+distribución del campo eléctrico ($\boldsymbol{E}$).
 Este nos permite visualizar la distribución de la energía en un dispositivo calculando lo siguiente:
 
 \begin{equation}
-  |E|^2 = |E_x|^2+|E_y|^2+|E_z|^2,
+  |\boldsymbol{E}|^2 = |\boldsymbol{E_x}|^2+|\boldsymbol{E_y}|^2+|\boldsymbol{E_z}|^2,
 \label{eq:field}
 \end{equation}
 
-donde $E_x, E_y, E_z$ representan las componentes del campo eléctrico en los ejes $X, Y, Z$, respectivamente
+donde $\boldsymbol{E_x}, \boldsymbol{E_y}, \boldsymbol{E_z}$ representan las componentes del campo eléctrico
+en los ejes $x, y, z$, respectivamente
 \citep{LukasChrostowski2010}.
 
 \begin{figure}[ht]
   \centering
   \includegraphics[scale=0.7]{image/theory/bend_field_dx30_px16_rint1000.png}
-  \caption{Representación de $|E|^2$ de un \emph{bend} de $1 \mu m$ de radio obtenido con una simulación en 3D FDFD con SPINS
+  \caption{Representación de $|\boldsymbol{E}|^2$ de un \emph{bend} de $1 \mu m$ de radio obtenido con una simulación en 3D FDFD con SPINS
   bajo una resolución de $30 nm$.}
   \label{fig:efield}
 \end{figure}
@@ -56,172 +58,227 @@ Para evitar ambigüedades, dos puntos adicionales a remarcar son:
 (i) cuando nos referimos al radio estamos haciendo mención al radio medio de curvatura y 
 (ii) todos los diseños mostrados en este trabajo tienen un profundidad de 220nm.
 
-Observar en una gráfica el valor de $|E|^2$ nos ayuda a entender el funcionamiento de un dispositivo.
+Observar en una gráfica el valor de $|\boldsymbol{E}|^2$ nos ayuda a entender el funcionamiento de un dispositivo.
 Por otro lado, una manera de cuantificar que tan bien funciona un diseño es mediante el cálculo de la
 transmitancia $(T)$.
 Este valor se define como la relación entre la potencia del flujo que sale del dispositivo con la 
 potencia del flujo que ingresa \citep{Christiansen2021}.
 
-Seguidamente, sea $\lambda$ la longitud de onda de la entrada y $p$ los parámetros que caracterizan al
-diseño, denotaremos como $T_{\lambda}(p)$ a la transmitancia asociada al dispositivo obtenido con la
-parametrización $p$ en la longitud de onda $\lambda$. Luego, definimos la función objetivo 
+Seguidamente, sea $\lambda$ la longitud de onda de la entrada y $\boldsymbol{P}$ los parámetros que caracterizan al
+diseño, denotaremos como $T_{\lambda}(\boldsymbol{P})$ a la transmitancia asociada al dispositivo obtenido con la
+parametrización $\boldsymbol{P}$ en la longitud de onda $\lambda$. Luego, definimos la función objetivo 
 ($f_{obj}$) para un \emph{bend}, también conocido en el área como figura de mérito (FOM), 
 mediante la siguiente ecuación \citep{Su2020}:
 
 \begin{equation}
-  f_{obj}(p) = max \left \{ T_{1550} (p) \right \}.
+  f_{obj}(\boldsymbol{P}) = max \left \{ T_{1550} (\boldsymbol{P}) \right \}.
 \label{eq:fom-bend}
 \end{equation}
 
-Así, la idea detrás de estas definiciones es describir un \emph{bend} mediante parámetros $p$
+En síntesis, la idea detrás de estas definiciones es describir un \emph{bend} mediante una parametrización
+$\boldsymbol{P}$
 (\autoref{sec:parametrization}).
 Luego, usando algoritmos de optimización, buscar entre las distintas combinaciones de los parámetros aquella configuración
 que optimice la función $f_{obj}$ (\autoref{sec:alg-opt}).
 De este modo, estaremos encontrando un diseño con una elevada transmitancia, es decir con un buen desempeño.
 
-\subsection{\emph{Wavelength Demultiplexer} de dos canales (WDM)}
+\subsection{\emph{Wavelength Demultiplexer} (WDM)}
 
 Un WDM es un dispositivo fotónico que se encarga de guiar un haz de ondas de acuerdo a su longitud de onda.
-Así, estos suelen trabajar con dos longitudes de onda y guían las de una longitud por la guía de onda superior
+Por ejemplo, estos pueden trabajar con dos longitudes de onda y guían las de una longitud por la guía de onda superior
 y las de otra longitud por la guía de onda inferior.
 
 Análogo al caso del \emph{bend}, utilizaremos la transmitancia para cuantificar el desempeño del dispositivo.
-Pero, en este caso tenemos dos guías de salida, por ello, usaremos como notación $T_{\lambda}^{(1)}(p)$ para
+Pero, en el presente trabajo usaremos un WDM con dos guías de salida, por ello, utilizaremos como notación
+$T_{\lambda}^{(1)}(\boldsymbol{P})$ para
 representar la transmitancia en la guía de salida superior cuando se recibe un haz de longitud de onda
-$\lambda$ en un diseño descrito por los parámetros $p$ y $T_{\lambda}^{(2)}(p)$ para la guía de salida inferior.
+$\lambda$ en un diseño descrito por los parámetros $\boldsymbol{P}$ y $T_{\lambda}^{(2)}(\boldsymbol{P})$ para la guía de salida inferior.
 
 \begin{figure}[ht]
   \centering
   \includegraphics[scale=0.7]{image/theory/wdm_field_dx30_px16_px16.png}
-  \caption{Representación de $|E|^2$ de un WDM obtenido con una simulación en 3D FDFD con SPINS bajo una resolución de $30 nm$.}
+  \caption{Representación de $|\boldsymbol{E}|^2$ de un WDM obtenido con una simulación en 3D FDFD con SPINS bajo una resolución de $30 nm$.}
   \label{fig:efield-wdm}
 \end{figure}
 
 En la \autoref{fig:efield-wdm} se muestra un WDM donde las guías de onda son unidas por una región rectangular
-de $2.0\mu m \times 2.0 \mu m$. En el lado izquierdo se muestra la representación de $|E|^2$ cuando se usa 
+de $2.0\mu m \times 2.0 \mu m$. En el lado izquierdo se muestra la representación de $|\boldsymbol{E}|^2$ cuando se usa 
 como entrada un haz de ondas de $1300 nm$ de longitud, en el lado derecho la entrada es de $1550 nm$.
 En ambos casos el diseño está funcionando más como un \emph{splitter} que como un WDM.
-Un \emph{splitter} es un dispositivo fotónico que intenta dividir la entrada en forma equitativa por las guías
-de salida. El diseño intuitivo para este dispositivo es el presentado en la imagen. Similar al caso del
+Un \emph{splitter} es un dispositivo fotónico que divide la potencia del flujo de la entrada por las guías
+de salida en una determinada proporción. El diseño intuitivo para este dispositivo es el presentado en la imagen. Similar al caso del
 \emph{bend}, con unas dimensiones un poco más grandes se puede conseguir pérdidas casi nulas de energía
 \citep{LukasChrostowski2010}.
-Sin embargo, como se observa de la distribución de $|E|^2$, este diseño intuitivo no es apropiado para un WDM.
+Sin embargo, como se observa en los valores de la transmitancia, este diseño intuitivo no es apropiado para un WDM.
 
-Basándonos en \cite{Su2020}, conviene definir su FOM como
+Basándonos en \cite{Su2020}, definimos su FOM como
 
 \begin{equation}
-  f_{obj}(p) = max \left \{ \left ( T_{1300}^{(1)}(p) \right )^2  + 
-                            \left ( 1 - T_{1300}^{(2)}(p) \right )^2 +
-                            \left ( 1 - T_{1550}^{(1)}(p) \right )^2  + 
-                            \left ( T_{1550}^{(2)}(p) \right )^2 
+  f_{obj}(\boldsymbol{P}) = max \left \{ \frac{\left ( T_{1300}^{(1)}(\boldsymbol{P}) \right )^2  + 
+                            \left ( 1 - T_{1300}^{(2)}(\boldsymbol{P}) \right )^2 +
+                            \left ( 1 - T_{1550}^{(1)}(\boldsymbol{P}) \right )^2  + 
+                            \left ( T_{1550}^{(2)}(\boldsymbol{P}) \right )^2 }{4}
                     \right \}.
 \label{eq:fom-splitter}
 \end{equation}
 
-La \autoref{eq:fom-splitter} busca maximizar la transmitancia por la guía de onda superior y minimizarla para la guía de onda inferior cuando se recibe una longitud de onda de $1400 nm$ y lo contrario para una longitud de onda de $1550 nm$.
+La \autoref{eq:fom-splitter} busca maximizar la transmitancia por la guía de onda superior y minimizarla para
+la guía de onda inferior cuando se recibe una longitud de onda de $1300 nm$ y lo contrario para una longitud
+de onda de $1550 nm$. Cabe destacar que la división por cuatro se realiza para asegurar que $f_{obj}$ solamente
+tenga valores en el intervalo $[0, 1]$, al igual que sucede con la función objetivo del \emph{bend}.
 
-La idea para optimizar un WDM es la misma descrita para un \emph{bend}. En las siguientes secciones se
-describirá en más detalle los otros pasos necesarios para lograr esto.
+La idea para optimizar un WDM es la misma descrita en la anterior sección. 
+En el resto del capítulo se describe en más detalle los otros pasos necesarios para lograr esto.
 
 \section{Parametrización}\label{sec:parametrization}
 
 Tanto para el \emph{bend} como para el WDM se define una región de diseño
-mediante ciertos parámetros que puedan mapear un gran conjunto de dispositivos a considerar.
+mediante una parametrización ($\boldsymbol{P}$) que pueda mapear un gran conjunto de dispositivos.
 Una de la estrategias más populares para esta tarea es usar parametrización
-basada en topología, esta consiste en definir una región rectangular en forma
-de matriz y variar la permitividad dentro de cada celda \citep{Molesky2018}.
+basada en píxeles, esta consiste en definir $\boldsymbol{P}$ como una matriz con valores en el intervalo
+$[0, 1]$ \citep{Molesky2018}.
 
 \begin{figure}[h]
   \centering
   \includegraphics[scale=0.7]{image/theory/parametrization-pixeles.png}
-  \caption{Parametrización por píxeles para un \emph{bend-90°.}}
+  \caption{Parametrización basada en píxeles para un \emph{bend} definiendo $\boldsymbol{P}$ como una matriz de $18 \times 18$.}
   \label{fig:pixeles}
 \end{figure}
 
-Por ejemplo, en la \autoref{fig:pixeles} se ha definido una región cuadrangular de
-diseño que podemos ver como una imagen de $18 \times 18$ píxeles.
-Aquí estamos usando los píxeles negros para representar la presencia de $Si$,
-los blancos para indicar que hay $SiO_2$ y los grises para materiales (no
-necesariamente reales) que tengan una permitividad ($\varepsilon(x, y)$) intermedia entre el $Si$
-y $SiO_2$. Matemáticamente expresamos esto como
+Por ejemplo, en la \autoref{fig:pixeles} se ha definido la matriz $\boldsymbol{P}: [1, n] \times [1, m]
+\to [0, 1]$ con $n = m = 18$ y se ha graficado sus valores
+usando escala gris (0 corresponde al color blanco, 1 al negro y los demás valores a diferentes
+intensidades del gris). De esta manera observamos como $\boldsymbol{P}$ logra definir la geometría de un
+diseño.
+Adicionalmente, conforme se incrementa el valor de $n, m$ se logra definir detalles con mayor precisión.
+
+
+Sin embargo, lo anterior solo nos permite describir la geometría de los diseños, no sus propiedades.
+Por ello, es necesario asociar a $\boldsymbol{P}$ alguna propiedad física.
+Esto lo realizamos calculando la permitividad ($\varepsilon$) mediante la siguiente ecuación:
 
 \begin{equation}
-  \varepsilon(x, y) = \varepsilon_{Si} + (1 - \lambda_{x,y})
-  \varepsilon_{SiO_2} \quad \lambda_{x, y} \in [0, 1], \lambda_{x, y} \in
-  \mathbb{R}, 
+  \varepsilon(x, y) = \varepsilon_{Si} + (1 - p_{x,y})
+  \varepsilon_{SiO_2} \, \mid \, x \in [1, n] \land y \in [1, m] \land p_{x,y} \in
+  \boldsymbol{P},
 \label{eq:permitivity}
 \end{equation}
 
-donde $\varepsilon_{Si} = 3.48$ es la permitividad del $Si$,
-$\varepsilon_{SiO_2} = 1.44$ es la permitividad del $SiO2$ y $\lambda_{x, y}$
-es un parámetro asociado al píxel ubicado en la fila $x$ y columna $y$.
-Con esta ecuación se mapea el intervalo $[0, 1]$ con el intervalo $[1.44, 3.48]$. 
-Esto se realiza para determinar la permitividad que hay en la ubicación de cada
-píxel y así ser capaces de simular las ecuaciones de Maxwell en el diseño.
-Con esta parametrización obtenemos una cantidad infinita de posibles dispositivos, 
-mas solo nos interesan aquellos donde $\lambda_{x,y}$ es entero, 
-pues en caso contrario un píxel se mapea a la permitividad de un material
-potencialemente desconocido, lo cual lo volvería infabricable.
+donde $\varepsilon_{Si} = 3.48$ es la permitividad del silicio ($Si$),
+$\varepsilon_{SiO_2} = 1.44$ es la permitividad del óxido de silicio ($SiO2$) y $p_{x, y}$
+es el elemento de $\boldsymbol{P}$ ubicado en la fila $x$, columna $y$.
 
-\section{Simulación}
+Con la \autoref{eq:permitivity} estamos asociando a cada rectángulo de la geometría descrita por
+$\boldsymbol{P}$ un valor de permitividad en el rango 
+$[\varepsilon_{SiO2} = 1.44, 3.48 = \varepsilon_{Si}]$.
+De esta manera, $p_{x, y} = 1$ describe que el rectángulo ubicado en la posición $(x, y)$ es de silicio,
+un valor de $p_{x, y} = 0$ describe la presencia de óxido de silicio y $0 < p_{x, y} < 1$ hace referencia
+a algún material cuya permitividad es $\varepsilon(x, y)$.
+
+No obstante, un inconveniente de lo descrito es que $\boldsymbol{P}$ puede mapear a materiales inexistestes
+(regiones grises),
+en la \autoref{sec:estrategia-optimizacion} se estudia en más detalle esta dificultad.
+Por otro lado, con la descripción de la permitividad ya podemos calcular los campos eléctricos con lo
+cual se puede obtener el valor de $f_{obj}$ definido para el \emph{bend} y WDM.
+Por tal motivo, se realiza una simulación electromagnética y se resuelve las inversas de las 
+ecuaciones de Maxwell, esto permite obtener los campos eléctricos \citep{Su2020}.
+Afortunadamente, para este proceso se puede utilizar distintos programas que utilizan diversos 
+métodos numéricos para realizar los cálculos (\autoref{sec:simulation}).
+
+\section{Simulación}\label{sec:simulation}
 
 Una vez tenemos definido un dispositivo con regiones fijas (guías de onda) y una
 región de diseño (descrita por la parametrización), es necesario incorporar
-tres elementos adicionales \citep{Su2020}:
+tres elementos adicionales \citep{Oskooi2010, Su2020}:
 
 \begin{itemize}
 
-  \item \textbf{Fuente:} Suele representarse como un cuadrado en el eje $XZ$
-    o $YZ$. Simula la emición de un haz de ondas por el diseño.
+  \item \textbf{Fuente:} Suele representarse como un rectángulo en un plano perpendicular al flujo
+    que pasa por el lugar donde este se ubica. Simula la emición de un haz de ondas por el diseño.
 
-  \item \textbf{Monitores:} Suelen representarse como cuadrados en el eje $XZ$
-    o $YZ$. Capturan información en su ubicación (e.g. valores del campo
-    eléctrico).
+  \item \textbf{Monitores:} Suelen representarse como un rectángulo similar a la fuente.
+    Capturan información en su ubicación (e.g. valores del campo eléctrico).
 
-  \item \textbf{PML:} Representan las condiciones de frontera en la simulación
-    de las ecuaciones de Maxwell. Se utilizan para limitar el espacio donde se
-    deberá realizar las simulaciones computacionales.
+  \item \textbf{PML:} Representan las condiciones de frontera en la simulación. 
+    Se utilizan para limitar el espacio donde se deberá realizar las simulaciones computacionales.
 
 \end{itemize}
 
-Dos librerías de Python de código abierto que permiten hacer las simulaciones
-de las ecuaciones de Maxwell en diseños como los descritos son MEEP \citep{Oskooi2010} y SPINS \citep{Su2020}. 
-Una evaluación cualitativa de sus funcionalidades puede ser vista en la \autoref{tab:simulation}.
+\begin{figure}[ht]
+  \centering
+  \subfigure[Vista frontal]
+    {\includegraphics[width=0.45\textwidth]{image/theory/simulation.png}}
+  \hfill
+  \subfigure[Vista lateral]
+    {\includegraphics[width=0.45\textwidth]{image/theory/simulation-top.png}}
+
+  \caption{Configuración de simulación para una guía de onda.}
+  \label{fig:waveguide}
+\end{figure}
+
+En la \autoref{fig:waveguide} se ilustra una guía de onda con los elementos mencionados.
+El rectángulo de color negro representa la guía de onda, la región roja la fuente, 
+la región azul el monitor y lo verde el PML.
+Guiándonos de la figura de la izquierda, al realizar una simulación con esta configuración 
+el flujo iría de la región roja a la región azul.
+Sin embargo, este seguiría expandiéndose por la guía de onda hasta llegar a la región verde (PML).
+En palabras sencillas, podemos interpretar el PML como una caja que permite aislar nuestro sistema.
+Por otro lado, la figura de la derecha representa el mismo diseño pero desde una vista lateral 
+(recordemos que son diseños en 3D).
+Aquí podemos evidenciar como la fuente y el monitor son representados por rectángulos, no por rectas.
+
+Siguiendo lo descrito, para configurar y ejecutar simulaciones de un \emph{bend} y WDM podemos utilizar
+diversos programas.
+Dos librerías de Python de código abierto que permiten hacer estas tareas
+son MEEP \citep{Oskooi2010} y SPINS \citep{Su2020}. 
+Una evaluación cualitativa de sus funcionalidades puede ser observada en la \autoref{tab:simulation}.
 
 \begin{table}[ht]
     \centering
-    \begin{tabular}{|c|c|c|c|c|}
-    \hline 
-    Librería &  Usabilidad & Eficiencia & Bugs & Funcionalidad \\
-    \hline 
-    MEEP &  Difícil & Alta & Elevados & Extensa \\
-    SPINS &  Moderada  & Moderada-Alta & Pocos & Básica-necesaria \\
+    \begin{tabular}{|c|c|c|}
+    \hline
+    \textbf{Librería} & \textbf{MEEP} & \textbf{SPINS} \\
+    \hline
+    Usabilidad & Dificil & Moderada \\
+    Eficiencia & Alta & Moderada-Alta \\
+    Funcionalidad & Extensa & Básica-necesaria \\
+    ¿Soporta GPU? & No & Sí \\
+    ¿Implementa el método \emph{adjoint}? & Sí & Sí \\
     \hline 
     \end{tabular}
     \caption{Evaluación cualitativa de las librerías MEEP y SPINS.}
     \label{tab:simulation}
 \end{table}
 
-Ambas librerías utilizan métodos finitos para discretizar el espacio de
-simulación y permiten realizar simulaciones en 2D y 3D. 
-Particularmente, podemos definir un parámetro $dx$ para indicar que tan preciso
-serán nuestros resultados. En general, cuanto más pequeño sea el valor de $dx$
+Como se describe en \autoref{tab:simulation}, desde mi punto de vista, MEEP es un programa eficiente y
+con más funcionalidades que SPINS. Sin embargo, estas ventajas se reflejan en una usabilidad más
+complicada. Además, en realidad, la eficiencia de SPINS es muy destacable en diversas situaciones,
+en parte gracias a su implementación en GPU para las simulaciones. 
+Finalmente, sobre el método \emph{adjoint} no hay inconvenientes en ninguno de los programas.
+Este método permite calcular eficientemente (independientemente de la dimensión de $\boldsymbol{P}$) 
+el valor de $\frac{\mathrm d f_{obj}(\boldsymbol{P})}{\mathrm d \boldsymbol{P}}$ \citep{Molesky2018}.
+
+Por otro lado, ambas librerías utilizan métodos numéricos y permiten simulaciones en 1D, 2D y 3D.
+Particularmente, podemos definir un parámetro $dx$ para discretizar nuestro espacio de
+simulación en una malla de cuadrados de dimensiones $dx \times dx$.
+En general, cuanto más pequeño sea este valor
 los resultados serán más precisos, pero la cantidad de memoría y el tiempo de
 simulación se incrementarán considerablemente.
+Es importante señalar que debemos procurar trabajar con un valor de $dx$ menor a las dimensiones
+de nuestros rectángulos de la parametrización para poder simular nuestras geometrías con mejor
+precisión.
 
-Adicionalmente, hay dos diferencias importantes entre estas librerías.
-Primero, en una simulación SPINS puede obtener resultados en solo una
-frecuencia mientras que MEEP puede obtener resultados en un rango de
-frecuencias de forma eficiente.
-Segundo, MEEP realiza simulaciones en 3D utilizando MPI para aprovechar
-recursos \emph{multi-cores}, por otro lado SPINS permite usar uno o más GPUs
-para realizar estos cálculos.
+
+Adicionalmente, mientras MEEP utiliza un método conocido como FDTD para las simulaciones,
+SPINS usa FDFD. Por un lado, MEEP permite calcular la función objetivo en un rango de longitudes
+de onda usando una sola simulación. En cambio, para realizar esta tarea SPINS debe realizar una simulación
+por cada longitud de onda.
 
 \section{Estrategia de optimización}\label{sec:estrategia-optimizacion}
 
 Como fue descrito en la \autoref{sec:parametrization}, podemos
 tener diseños que no puedan ser fabricados.
-Para evitar esto se necesita obtener que $\lambda_{x, y}$ de la \autoref{eq:permitivity} tenga valores enteros.
+Para evitar esto se necesita obtener que $p_{x, y}$ de la \autoref{eq:permitivity} tenga valores enteros.
 Sin embargo, al optimizar la función $f_{obj}$ no podemos asegurar esta condición.
 Ante esta dificultad, \cite{Su2020} trabaja en dos etapas:
 
@@ -231,29 +288,30 @@ Ante esta dificultad, \cite{Su2020} trabaja en dos etapas:
 \item{\textbf{Optimización continua}}
 
 En esta etapa se optimiza la función $f_{obj}$ sin imponer ninguna restricción.
-    En la \autoref{sec:alg-opt} se detallará algoritmos que suelen usarse para este fin.
+    En la \autoref{sec:alg-opt} se detalla algoritmos que suelen usarse para este fin.
 
 \item{\textbf{Optimización discreta}}
 
 Se utiliza el resultado de la optimización continua como punto inicial para el algoritmo de optimización que se escoja.
 Luego, se trabaja por iteraciones.
 En cada iteración se aplica una transformación a cada diseño antes de evaluar su FOM.
-Esta transformación se escoge de tal manera que asegure que una
-parametrización vaya convergiendo a un diseño fabricable, es decir,
-a tener $\lambda_{x, y} = 0$ o $\lambda_{x, y} = 1$, más detalles en la \autoref{sec:transformations}.
-Así, la idea de realizarlo por iteraciones es para ir discretizando nuestro diseño
+Esta transformación se escoge de tal manera que ayude a ir convergiendo a un diseño fabricable, es decir,
+a tener $p_{x, y} = 0$ o $p_{x, y} = 1$, más detalles en la \autoref{sec:transformations}.
+Así, la idea de realizarlo por iteraciones es ir discretizando nuestro diseño
 de forma suave e intentando mantener un buen valor del FOM.
-Por ello es crucial usar el resultado de una iteración como punto inicial de la próxima
+Por ello, es crucial utilizar el resultado de una iteración como punto inicial de la próxima.
 
 \end{enumerate}
 
-\section{Algoritmos de optimización}\label{sec:alg-opt}
+\section{Algoritmos de Optimización}\label{sec:alg-opt}
 
 Como observamos en la anterior sección, es necesario escoger algún algoritmo
 que nos permita optimizar la función $f_{obj}$. 
 Por este motivo, se presentan los siguientes tres algoritmos que serán usados en el presente trabajo.
 
 \subsection{\emph{Genetic Algorithms} (GA)}
+
+\leonidas{TODO: Actualizar nomenclatura.}
 
 Como se describe en el Algoritmo \ref{alg:GA} \citep{Mykel2019}, la idea es  
 comenzar generando una población (\emph{population}) de $n$ individuos representados por $p$
@@ -305,7 +363,13 @@ Entrando en más detalle, para nuestro caso tenemos:
 
 \end{itemize}
 
+\subsection{\emph{Gradient Genetic Algorithms} (G-GA)}
+
+\leonidas{TODO: Completar esto}
+
 \subsection{\emph{Particle Swarm Optimization} (PSO)}
+
+\leonidas{TODO: Actualizar nomenclatura.}
 
 Podemos pensar este algoritmo como un caso especial del Algoritmo \ref{alg:GA}
 \citep{Mykel2019, Prosopio-Galarza2019}.
@@ -335,7 +399,7 @@ Entrando en más detalle, siguiendo la estructura del Algoritmo \ref{alg:GA}, te
 \item $crossover(population, parents):$ retorna la población luego de aplicar 
     
   \begin{equation}
-    x^{(i)} \gets x^{(i)} + \nu^{(i)}
+    x^{(i)} \gets x^{(i)} + \nu^{(i)},
   \label{pso-pos}
   \end{equation}
 
@@ -353,8 +417,13 @@ Entrando en más detalle, siguiendo la estructura del Algoritmo \ref{alg:GA}, te
 
 \end{itemize}
 
+\subsection{\emph{Gradient Particle Swarm Optimization} (G-PSO)}
+
+\leonidas{TODO: Completar esto}
 
 \subsection{\emph{Covariance Matrix Adapatation Evolution Strategy} (CMA-ES)}
+
+\leonidas{TODO: Actualizar nomenclatura.}
 
 La idea general de esta estrategia evolutiva, mostrada en el Algoritmo
 \ref{alg:CMA}, es mantener:
@@ -462,6 +531,18 @@ donde es probable encontrar buenas soluciones.
 La combinación de estos tres términos actualiza $\Sigma$ de tal manera que
 mueva la hiperelipse en una dirección favorable.
 
+\subsection{\emph{Gradient Covariance Matrix Adapatation Evolution Strategy} (G-CMA-ES)}
+
+\leonidas{TODO: Completar esto}
+
+\subsection{L-BFGS-B}
+
+\leonidas{TODO: Completar esto}
+
+\subsection{MMA}
+
+\leonidas{TODO: Completar esto}
+
 \section{Transformaciones}\label{sec:transformations}
 
 La aplicación de transformaciones a un diseño se realiza con el fin de obtener
@@ -472,13 +553,13 @@ parámetros $p$ describan un diseño más fácil de fabricar es aplicacando la f
 descrita como
 
 \begin{equation}
-  s(p) = \frac{\tanh (\beta \times \eta) + \tanh (\beta \times (p
+  \widetilde{\widetilde{\boldsymbol{P}}}(x, y) = \frac{\tanh (\beta \times \eta) + \tanh (\beta \times (p_{x, y}
   - \eta))}{\tanh (\beta \times \eta) + \tanh (\beta \times (1 - \eta))},
-  \label{eq:topo-smooth}
+  \label{eq:projection}
 \end{equation}
 
     donde $\eta = 0.5$ y $\beta$ comienza con un valor de 1 y va incrementándose exponencialmente en cada iteración. 
-    Como se observa en la \autoref{fig:discretization}, la \autoref{eq:topo-smooth} se encarga de ir haciendo converger los valores de la parametrización a $0$ o $1$ de acuerdo a cual esté más cercano. 
+    Como se observa en la \autoref{fig:discretization}, la \autoref{eq:projection} se encarga de ir haciendo converger los valores de la parametrización a $0$ o $1$ de acuerdo a cual esté más cercano. 
     Conforme aumenta el valor de $\beta$ esta convergencia es más rápida.
 
     \begin{figure}[ht]
@@ -488,6 +569,47 @@ descrita como
       de $\beta$.}
       \label{fig:discretization}
     \end{figure}
+
+\leonidas{TODO: Agregar una descripción detallada sobre las siguientes ecuaciones.}
+
+\begin{equation}
+  \widetilde{\boldsymbol{P}}(x, y) = \frac{\displaystyle\sum_{(x', y') \in B_{r_f}(x, y)} w_{x, y}(x', y')
+  A(x', y')p_{x', y'}}
+  {\displaystyle\sum_{(x', y') \in B_{r_f}(x, y)} w_{x, y}(x', y') A(x', y')},
+  \label{eq:densityfilter}
+\end{equation}
+
+\begin{equation}
+  w_{x, y}(x', y') = max(0, r_f - dis(x, y, x', y'))
+  \label{eq:hatbased}
+\end{equation}
+
+\begin{equation}
+  dis(x, y, x', y') = |x-x'|*psize_y+|y-y'|*psize_x
+  \label{eq:distance}
+\end{equation}
+
+\begin{equation}
+  \frac{\partial\widetilde{\boldsymbol{P}}(x, y)}{\partial \boldsymbol{P}(x^{*}, y^{*})} = \frac{w_{x, y}(x^{*},
+  y^{*})A(x^{*}, y^{*})}
+  {\displaystyle\sum_{(x', y') \in B_{r_f}(x, y)} w_{x, y}(x', y') A(x', y')},
+  \label{eq:densityfiltergrad}
+\end{equation}
+
+\begin{equation}
+  \frac{\partial\widetilde{\widetilde{\boldsymbol{P}}}(x, y)}{\partial \widetilde{\boldsymbol{P}}(x, y)} =
+  \frac{(1 - \tanh^2 (\beta \times (\widetilde{p}_{x, y} - \eta)) \beta)}
+       {\tanh (\beta \times \eta) + \tanh (\beta \times (1 - \eta))},
+  \label{eq:projecition-grad}
+\end{equation}
+
+\begin{equation}
+  \frac{\partial f_{obj}}{\partial \boldsymbol{P}(x, y)} = \displaystyle\sum_{(x', y') \in B_{r_f}(x, y)}
+  \frac{\partial f_{obj}}{\partial \widetilde{\widetilde{\boldsymbol{P}}}(x', y')}
+  \frac{\partial \widetilde{\widetilde{\boldsymbol{P}}}(x', y')}{\partial \widetilde{\boldsymbol{P}}(x', y')}
+   \frac{\partial \widetilde{\boldsymbol{P}}(x', y')}{\partial \boldsymbol{P}(x, y)}
+  \label{eq:fobjgrad}
+\end{equation}
 
 %\section{Preparación para fabricación}
 
