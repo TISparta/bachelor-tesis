@@ -1,14 +1,28 @@
 \chapter{Experimentaciones y Resultados}
 
-En las siguientes imágenes el circulo blanco en las columnas de optimización discreta y de fabricación
-representa un círculo de radio $80nm$, el radio de curvatura aplicado en el filtro 
-$\widetilde{\boldsymbol{P}}$.
+\leonidas{TODO: Introducción del capítulo}
 
+\leonidas{Preguntas:}
+
+\begin{itemize}
+
+  \item Está bien si simplemente reporto que en los 3 GPUs cada simulación demoró 30 segundos approx.?
+  \item Cuando dejaba Maxwell-B ejecutándose por más de 1 semana solían ocurrir problemas con el programa.
+        Mi hipótesis es que es algún error de memoria con el garbage collector.
+  \item Error de almacenamiento (más de 200 GB)
+  \item No tengo medidas exactas del consumo de memoria, solo lo obvio
+  \item Cuando dejaba Maxwell-B ejecutándose por más de 1 semana solían ocurrir problemas con el programa.
+        Mi hipótesis es que es algún error de memoria con el garbage collector.
+  \item Error de almacenamiento (más de 200 GB)
+  \item No tengo medidas exactas del consumo de memoria, solo lo obvio??
+\end{itemize}
+
+\leonidas{TODO: }
 Para poder comparar nuestros resultados, en la bibliografía tenemos lo siguiente:
 
 \begin{enumerate}
 
-  \item En \cite{Christiansen2021} se optimiza un WDM con una región de diseño de 
+  \item En \cite{Christiansen2021} se optimizó un WDM con una región de diseño de 
         $2 \mu m \times 2 \mu m$ donde la guía de onda de entrada es de $299 nm$,
         la guía de onda de salida superior es de $299 nm$ y la guía de salida inferior de $356 nm$.
         Con esta configuración, el mejor diseño tiene una transmitancia de $0.86$ en el brazo inferior
@@ -16,10 +30,15 @@ Para poder comparar nuestros resultados, en la bibliografía tenemos lo siguient
 
   \item Usando una simulación en SPINS, para el caso del \emph{bend} tenemos que el diseño intuitivo
         posee una transmitancia de $0.8389$ a $1550 nm$.
-        En el mejor de mi conocimiento, no hay publicaciones recientes que muestren resultados
+        En el mejor de mi (\leonidas{O nuestro?}) conocimiento, 
+        no hay publicaciones recientes que muestren resultados
         explícitos en la optimización de un bend en un área de diseño de $2 \mu m \times 2 \mu m$.
 
 \end{enumerate}
+
+En las siguientes imágenes el circulo blanco en las columnas de optimización discreta y de fabricación
+representa un círculo de radio $80nm$, el radio de curvatura aplicado en el filtro 
+$\widetilde{\boldsymbol{P}}$.
 
 %Estructura:
 

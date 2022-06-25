@@ -134,8 +134,8 @@ En el resto del capítulo se describe en más detalle los siguientes pasos neces
 Tanto para el \emph{bend} como para el WDM se define una región de diseño
 mediante una parametrización ($\boldsymbol{P}$) que pueda mapear un gran conjunto de dispositivos.
 Una de la estrategias más populares para esta tarea es usar parametrización
-basada en píxeles, esta consiste en definir $\boldsymbol{P}$ como una matriz con valores en el intervalo
-$[0, 1]$ \citep{Molesky2018}.
+basada en píxeles. Esta estrategia consiste en definir $\boldsymbol{P}$ como una matriz 
+de $n$ filas y $m$ columnas con valores en el intervalo $[0, 1]$ \citep{Molesky2018}.
 
 \begin{figure}[h]
   \centering
@@ -149,11 +149,11 @@ Por ejemplo, en la \autoref{fig:pixeles} se ha definido la matriz $\boldsymbol{P
 usando escala gris (0 corresponde al color blanco, 1 al negro y los demás valores a diferentes
 intensidades del gris). De esta manera observamos como $\boldsymbol{P}$ logra definir la geometría de un
 diseño.
-Adicionalmente, conforme se incrementa el valor de $n, m$ se logra definir detalles con mayor precisión.
+Adicionalmente, conforme se incrementa el valor de $n$ y $m$ se logra definir detalles con mayor precisión.
 
 
 Sin embargo, lo anterior solo nos permite describir la geometría de los diseños, no sus propiedades.
-Además, no queda claro que representan las regiones grises.
+Además, no queda claro qué representan las regiones grises.
 Por ello, para describir las propiedades del diseño es necesario asociar a $\boldsymbol{P}$ alguna propiedad física.
 Esto lo realizamos calculando la permitividad ($\boldsymbol{\varepsilon}$) mediante la siguiente ecuación:
 
@@ -163,22 +163,24 @@ Esto lo realizamos calculando la permitividad ($\boldsymbol{\varepsilon}$) media
 \label{eq:permitivity}
 \end{equation}
 
-donde $\varepsilon_{Si} = 3.48$ es la permitividad del silicio ($Si$) y
-$\varepsilon_{SiO_2} = 1.44$ es la permitividad del óxido de silicio ($SiO2$).
+donde $\varepsilon_{Si} \approx 3.48^2$ es la permitividad del silicio ($Si$) y
+$\varepsilon_{SiO_2} \approx 1.44^2$ es la permitividad del óxido de silicio ($SiO_2$).
 De esta manera, la celda ubicada en la fila $x$, columna $y$ de la geometría descrita por 
 $\boldsymbol{P}(x, y)$ tiene una permitividad de valor $\boldsymbol{\varepsilon}$(x, y).
 
 Con la \autoref{eq:permitivity} estamos asociando a cada rectángulo de la geometría descrita por
 $\boldsymbol{P}$ un valor de permitividad en el rango 
 $[\varepsilon_{SiO2} = 1.44, 3.48 = \varepsilon_{Si}]$.
-De esta manera, $\boldsymbol{P}(x, y) = 1$ describe que el rectángulo ubicado en la posición $(x, y)$ es de silicio,
-un valor de $\boldsymbol{P}(x, y) = 0$ describe la presencia de óxido de silicio y 
+De esta manera, $\boldsymbol{P}(x, y) = 1$ describe que el rectángulo ubicado en la posición $(x, y)$ es de
+$Si$,
+un valor de $\boldsymbol{P}(x, y) = 0$ describe la presencia de $SiO_2$ y 
 $0 < \boldsymbol{P}(x, y) < 1$ hace referencia
 a algún material cuya permitividad es $\boldsymbol{\varepsilon}(x, y)$.
 
 No obstante, un inconveniente de lo descrito es que $\boldsymbol{P}$ puede mapear a materiales inexistestes
 (regiones grises),
-en la \autoref{sec:estrategia-optimizacion} se estudia en más detalle esta dificultad.
+mayor detalle de esta dificultad se estudia
+en la \autoref{sec:estrategia-optimizacion}.
 Por otro lado, con la descripción de la permitividad ya podemos calcular los campos eléctricos con lo
 cual se puede obtener el valor de $f_{obj}$ definido para el \emph{bend} y WDM.
 Por esta razón se realizan simulaciones electromagnéticas y se resuelven las inversas de las 
@@ -200,7 +202,7 @@ tres elementos adicionales \citep{Oskooi2010, Su2020}:
   \item \textbf{Monitores:} Suelen representarse como un rectángulo similar a la fuente.
     Capturan información en su ubicación (e.g. valores del campo eléctrico).
 
-  \item \textbf{PML:} Representan las condiciones de frontera en la simulación. 
+  \item \textbf{\emph{Perfectly Matched Layer} (PML):} Representan las condiciones de frontera en la simulación. 
     Se utilizan para limitar el espacio donde se deberá realizar las simulaciones computacionales.
 
 \end{enumerate}
@@ -232,15 +234,15 @@ Siguiendo lo descrito, podemos utilizar diversos programas para configurar y eje
 simulaciones de un \emph{bend} y WDM.
 Una alternativa es usar SPINS-B junto a Maxwell-B, paquetes de Python de código
 abierto.
-Estos funcionan bajo una arquitectura cliente-servidor donde SPINS-B es el cliente y Maxwell-B el servidor.
+Estos paquetes funcionan bajo una arquitectura cliente-servidor donde SPINS-B es el cliente y Maxwell-B es el servidor.
 
 Por un lado, SPINS-B permite configurar diseños (fuente, monitores, PML, parametrización, región de diseño, etc) y solicitar al servidor que obtenga sus propiedades.
 Un aspecto interesante de este paquete es que trabaja con bloques llamados nodos.
 Estos representan operaciones fundamentales como suma, resta, multiplicación, etc.
-Luego, el programa guarda nuestra función objetivo usando un grafo que tiene estos nodos de vértices.
+Luego, el programa guarda nuestra función objetivo ($f_{obj}$) usando un grafo que tiene estos nodos de vértices.
 Lo interesante de este enfoque es que permite calcular de forma eficiente
 (independientemente de las dimensiones de $\boldsymbol{P}$) 
-el valor de $\nabla f_{obj}(\boldsymbol{P})$ mediante diferenciación automática \citep{Su2020}.
+el valor de $\nabla f_{obj}(\boldsymbol{P})$ mediante diferenciación automática \citep{Su2020, Mykel2019}.
 
 Por otro lado, Maxwell-B implementa un método numérico conocido como \emph{finite-difference frequency domain}
 (FDFD) para resolver numéricamente las ecuaciones de Maxwell y obtener así determinadas propiedades
@@ -286,31 +288,195 @@ Por ello, es crucial utilizar el resultado de una iteración como punto inicial 
 
 \end{enumerate}
 
+\section{Transformaciones}\label{sec:transformations}
+
+En esta sección se discute dos transformaciones populares en optimización topológica
+para imponer restricciones de fabricación en nuestreos diseños: (i) filtro por densidad y
+(ii) proyección.
+
+\subsection{Filtro por Densidad}
+
+Antes de definir el filtro por densidad, necesitamos definir el concepto de bola cerrada.
+Para ello, tenemos que definir el concepto de función distancia en nuestra matriz
+de parametrización. Así, sea $x, x' \in [1, n] \land y, y' \in [1, m]$, definimos 
+la distancia entre las posiciones $(x, y)$ y $(x', y')$ de la matriz $\boldsymbol{P}$ como:
+
+\begin{equation}
+  dis(x, y, x', y') = |x-x'|*psize_y+|y-y'|*psize_x,
+  \label{eq:distance}
+\end{equation}
+
+\noindent donde $psize_x$ es el valor de la longitud horizontal que representa cada celda de $\boldsymbol{P}$
+y $psize_y$ es el recíproco para la longitud vertical.
+
+De esta manera, definimos la bola cerrada ($\overline{B}_{r}(x, y)$)  de centro $(x, y)$ y 
+radio $0 < r$ mediante el siguiente conjunto:
+
+\begin{equation}
+  \overline{B}_{r}(x, y) = \{(x', y') | 1 \leq x' \leq n \land 1 \leq m \leq m \land 
+  dis(x, y, x', y') \leq r\}.
+  \label{eq:bola}
+\end{equation}
+
+Seguidamente, usando estos conceptos en la matriz $\boldsymbol{P}$
+se define el filtro por densidad ($\widetilde{\boldsymbol{P}}$) mediante la ecuación:
+
+\begin{equation}
+  \widetilde{\boldsymbol{P}}(x, y) = \frac{\displaystyle\sum_{(x', y') \in \overline{B}_{r_f}(x, y)} w_{x, y}(x', y')
+  A(x', y')\boldsymbol{P}(x', y')}
+  {\displaystyle\sum_{(x', y') \in \overline{B}_{r_f}(x, y)} w_{x, y}(x', y') A(x', y')},
+  \label{eq:densityfilter}
+\end{equation}
+
+\begin{equation}
+  w_{x, y}(x', y') = max(0, r_f - dis(x, y, x', y')),
+  \label{eq:hatbased}
+\end{equation}
+
+\noindent donde $A(x, y)$ es el área de la celda representada por $\boldsymbol{P}(x, y)$. 
+Por otro lado, el concepto de mínimo radio de curvatura ($r_f$) hace referencia a que un diseño
+se puede dibujar con una circunferencia de radio $r_f$.
+El objetivo de la \autoref{eq:hatbased} es tratar de imponer este concepto al diseño.
+
+Finalmente, de la \autoref{eq:densityfilter} podemos obtener el valor de su derivada parcial respecto al diseño
+original calculando lo siguiente:
+
+\begin{equation}
+  \frac{\partial\widetilde{\boldsymbol{P}}(x, y)}{\partial \boldsymbol{P}(x^{*}, y^{*})} = \frac{w_{x, y}(x^{*},
+  y^{*})A(x^{*}, y^{*})}
+  {\displaystyle\sum_{(x', y') \in \overline{B}_{r_f}(x, y)} w_{x, y}(x', y') A(x', y')}.
+  \label{eq:densityfiltergrad}
+\end{equation}
+
+\subsection{Proyección}
+
+La proyección descrita en la sección anterior ayuda a obtener diseños que eviten regiones punteagudas;
+sin embargo, esta transformación suele generar regiones grises.
+Por este motivo, es común acompañar el filtro por densidad con una proyección 
+($\widetilde{\widetilde{\boldsymbol{P}}}$) descrita como:
+
+\begin{equation}
+  \widetilde{\widetilde{\boldsymbol{P}}}(x, y) = \frac{\tanh (\beta \times \eta) + \tanh (\beta \times
+  (\widetilde{\boldsymbol{P}}(x, y)
+  - \eta))}{\tanh (\beta \times \eta) + \tanh (\beta \times (1 - \eta))},
+  \label{eq:projection}
+\end{equation}
+
+\noindent donde $\eta$ y $\beta$ son números escalares. Para entender el impacto de estos parámetros
+en la \autoref{eq:projection}, veamos la \autoref{fig:discretization}.
+En la figura se está graficando esta ecuación con un valor fijo de $\eta = 0.5$ y distintos valores de
+$\beta$.
+Como podemos observar, con $\beta = 1$ tenemos prácticamente la función identidad y conforme aumenta
+el valor de $\beta$ la función se aproxima más a una función escalonada con quiebre en $0.5$. 
+En realidad, en general el quiebre se realiza en el valor que se le de a $\eta$.
+
+    \begin{figure}[ht]
+      \centering
+      \includegraphics[scale=0.8]{image/theory/discretization.png}
+      \caption{Función de discretización con $\eta = 0.5$ y distintos valores
+      de $\beta$.}
+      \label{fig:discretization}
+    \end{figure}
+
+Además, de la \autoref{eq:projection} podemos obserner el valor de su derivada parcial 
+respecto al diseño $\widetilde{\boldsymbol{P}}$ mediante la siguiente ecuación:
+
+\begin{equation}
+  \frac{\partial\widetilde{\widetilde{\boldsymbol{P}}}(x, y)}{\partial \widetilde{\boldsymbol{P}}(x, y)} =
+  \frac{(1 - \tanh^2 (\beta \times (\widetilde{\boldsymbol{P}}(x, y) - \eta))) \beta}
+       {\tanh (\beta \times \eta) + \tanh (\beta \times (1 - \eta))},
+  \label{eq:projecition-grad}
+\end{equation}
+
+Con el objetivo de visualizar estas transformaciones, observemos la \autoref{fig:three-filters}.
+En la Figura \autoref{subfig:P} se representa el diseño que representa una parametrización $\boldsymbol{P}$.
+A su derecha se encuentra la Figura \autoref{subfig:P_filter}, aquí se aplicó el filtro de densidad
+utilizando un radio de curvatura $r_f = 80 nm$. Como podemos observar, este diseño posee regiones grises,
+mas ha logrado eliminar ciertas regiones punteagudas.
+Seguidamente, en las Figuras \autoref{subfig:P_E_D}, \autoref{subfig:P_E_I}, \autoref{subfig:P_E_E}
+se muestra el diseño de la Figura \autoref{subfig:P_filter} tras aplicar la proyección descrita con
+$\beta = 2^6$ y distintos valores de $\eta$.
+Al utilizar $\eta = \eta_i = 0.5$ (Figura \autoref{subfig:P_E_I}) 
+estamos simplemente discretizando el diseño.
+Por otro lado, al usar $\eta = \eta_d = 0.3$ (Figura \autoref{subfig:P_E_I})
+estamos simulando que el diseño se ha dilatado 
+(i.e. la región de $Si$ del diseño intenta expandirse).
+Finalmente, al usar $\eta = \eta_e = 0.7$ (Figura \autoref{subfig:P_E_E})
+estamos simulando que el diseño ha erosionado 
+(i.e. la región de $SiO_2$ del diseño intenta expandirse).
+
+
+Particularme, suele convenir $\eta_d = 1 - \eta_e$. Además, notemos que 
+estos parámetros deben seleccionarse con cuidado; caso contrario el diseño
+podría simular una dilatación o erosión muy exageradas.
+
+\begin{figure}[ht]
+  \centering
+  % 1° row
+  % P
+  \subfigure[$\boldsymbol{P}$.]
+  {\includegraphics[width=0.4\textwidth]{image/theory/P.png}\label{subfig:P}}
+  \hfill
+  % filter P
+  \subfigure[$\widetilde{\boldsymbol{P}}$ con $r_f = 80 nm$.]
+  {\includegraphics[width=0.4\textwidth]{image/theory/P_filter.png}\label{subfig:P_filter}}
+
+  % 2° row
+  \subfigure[$\widetilde{\widetilde{\boldsymbol{P}}}$ con $\eta_d = 0.3$ y $\beta = 2^6$.]
+  {\includegraphics[width=0.3\textwidth]{image/theory/P_E_D.png}\label{subfig:P_E_D}}
+  \hfill
+  \subfigure[$\widetilde{\widetilde{\boldsymbol{P}}}$ con $\eta_i = 0.5$ y $\beta = 2^6$.]
+  {\includegraphics[width=0.3\textwidth]{image/theory/P_E_I.png}\label{subfig:P_E_I}}
+  \hfill
+  \subfigure[$\widetilde{\widetilde{\boldsymbol{P}}}$ con $\eta_e = 0.7$ y $\beta = 2^6$.]
+  {\includegraphics[width=0.3\textwidth]{image/theory/P_E_E.png}\label{subfig:P_E_E}}
+
+  \caption{Aplicación del filtro de densidad y proyección a una parametrización $\boldsymbol{P}.$}
+  \label{fig:three-filters}
+\end{figure}
+
+
+\begin{equation}
+  \frac{\partial f_{obj}}{\partial \boldsymbol{P}(x, y)} = \displaystyle\sum_{(x', y') \in B_{r_f}(x, y)}
+  \frac{\partial f_{obj}}{\partial \widetilde{\widetilde{\boldsymbol{P}}}(x', y')}
+  \frac{\partial \widetilde{\widetilde{\boldsymbol{P}}}(x', y')}{\partial \widetilde{\boldsymbol{P}}(x', y')}
+   \frac{\partial \widetilde{\boldsymbol{P}}(x', y')}{\partial \boldsymbol{P}(x, y)}
+  \label{eq:fobjgrad}
+\end{equation}
+
+Una discusión más detallada de estas transformaciones se puede encontrar en \cite{Lazarov2016}.
+
 \section{Algoritmos de Optimización}\label{sec:alg-opt}
 
-Como observamos en la anterior sección, necesitamos optimizar la función $f_{obj}$.
-Es decir, sea $\pmb{\mathscr{P}}$ el conjunto de todas las matrices 
-$\boldsymbol{P}: [1, n] \times [1, m] \to [0, 1]$, queremos encontrar algún 
-$\boldsymbol{P^{*}} \in \pmb{\mathscr{P}}$ tal que 
-$f_{obj}(\boldsymbol{P}) \leq f_{obj}(\boldsymbol{P^{*}}), \quad \forall \boldsymbol{P} \in \pmb{\mathscr{P}}$. 
-Dicho de otra manera, nuestro problema es encontrar $\boldsymbol{P^{*}}$, 
-elemento conocido como el óptimo global; sin embargo, en general es dificil encontrarlo.
+Finalmente, con todo lo descrito en este capítulo, ya podemos optimizar nuestros dispositivos.
+Ahora, notemos que nuestro problema se ha reducido a maximizar $f_{obj}$.
+Sin pérdida de generalidad, en la presente sección se describen algoritmos
+para minimizar la función $f = -f_{obj}$.
+Esto es posible ya que maximizar una función es equivalente a minimizar su negativo \citep{Mykel2019}.
+
+
+Para minimizar la función $f$, sea $\pmb{\mathscr{P}}$ el conjunto de todas las matrices 
+$\boldsymbol{P}: [1, n] \times [1, m] \to [0, 1]$, queremos encontrar algún mínimo global 
+$\boldsymbol{P^{*}} \in \pmb{\mathscr{P}}$, 
+donde este elemento se define como una matriz que satisface que
+$f(\boldsymbol{P^{*}}) \leq f(\boldsymbol{P}), \quad \forall \boldsymbol{P} \in \pmb{\mathscr{P}}$. 
+Dicho de otra manera, nuestro problema es encontrar $\boldsymbol{P^{*}}$; sin embargo,
+esto es una tarea computacionalmente dificil de resolver \citep{Angeris2021}.
 
 Un problema más viable es encontrar $\sigma > 0 \land \boldsymbol{P^{+}} \in \pmb{\mathscr{P}}$ 
 tal que 
-$f_{obj}(\boldsymbol{P}) \leq f_{obj}(\boldsymbol{P^{+}}), \quad \forall \boldsymbol{P} \in \pmb{\mathscr{P}}:
-|| \boldsymbol{P} - \boldsymbol{P^{+}}|| < \delta$.
-Es decir, es más práctico encontrar $\boldsymbol{P^{+}}$ (conocido como óptimo local)
-el cual es un elemento que es un óptimo global si restringimos el espacio de búsqueda a una región
+$f(\boldsymbol{P^{+}}) \leq f(\boldsymbol{P}), \quad \forall \boldsymbol{P} \in \pmb{\mathscr{P}}:
+|| \boldsymbol{P} - \boldsymbol{P^{+}}|| < \sigma$.
+Es decir, es más práctico encontrar $\boldsymbol{P^{+}}$ (conocido como mínimo local)
+el cual es un elemento que es un mínimo global si restringimos el espacio de búsqueda a cierta región
 alrededor de este elemento.
 
-
-En el presente capítulo se describen algunos algoritmos para optimizar $f_{obj}$.
-Ninguno de estos puede asegurar encontrar el óptimo global, sin embargo sus estrategias 
-de búsqueda suelen permitir encontrar óptimos locales adecuados para nuestros propósitos.
-Sin pérdida de generalidad, la descripción de estos algoritmos se desarrollará para minimizar una función.
-Esto es posible ya que minimizar una función es equivalente a maximizar su negativo \citep{Mykel2019}.
-
+Debemos resaltar que ninguno de los algoritmos de esta sección puede asegurar encontrar el mínimo global;
+sin embargo, sus estrategias de búsqueda suelen permitir encontrar 
+óptimos locales adecuados \citep{Angeris2021, Schneider2019}.
+Además, todos estos algoritmos se aseguran de mantener los valores de $\boldsymbol{P}$ en el
+intérvalo $[0, 1]$ aplicando $\boldsymbol{P}(x, y) \gets max(0, min(1, \boldsymbol{P}(x, y)))$, mas
+este detalle se obvia en las explicaciones por simplicidad en la notación.
 
 \subsection{\emph{Genetic Algorithms} (GA)}
 
@@ -327,37 +493,39 @@ Tercero, la nueva generación muta obteniendo nuevas características, línea 5.
 
 \begin{algorithm}
 %\footnotesize
-$population = generate\_population(\boldsymbol{P}, population\_size, GA\_range)$ \\
+\KwData{$\boldsymbol{P}, population\_size, GA\_range, n\_selected\_parents, prob\_mutation$}
+\KwResult{$min(population)$}
+$population = generate\_population()$ \\
 \For{$t = 0; \, t < k; \, t$++}{
-    $parents = select(population, n\_selected\_parents)$ \\
+    $parents = select(population)$ \\
     $children = crossover(parents)$ \\
-    $population = mutation(children, prob\_mutation, GA\_range)$
+    $population = mutation(children)$
 }
-\caption{Estructura de un algoritmo genético}
+\caption{\emph{Genetic Algorithms} (GA)}
 \label{alg:GA}
 \end{algorithm}
 
-Entrando en más detalle, tenemos:
+Como se observa en el \autoref{alg:GA}, tenemos las siguientes funciones:
 
 \begin{itemize}
-    \item $generate\_population(\boldsymbol{P}, population\_size, GA\_range):$ 
+    \item $generate\_population():$ 
       retorna $population\_size$ matrices 
       $\boldsymbol{P'}$ tal que 
       $|\boldsymbol{P'}(x, y) - \boldsymbol{P}(x, y)| \in U(-GA\_range, GA\_range), \quad \forall x \in [1, n]
       \land y \in [1, m]$.
 
-    \item $select(population, n\_selected\_parents):$ 
-      retorna $number\_selected\_parents$ elementos de $population$ de
+    \item $select(population):$ 
+      retorna $n\_selected\_parents$ elementos de $population$ de
       acuerdo a la probabilidad $prob_i$ dada por la ecuación
     
     \begin{equation}
-      prob_i = \frac{f_{obj}^{(i)} - min(f_{obj})}{\displaystyle\sum_{j} (f_{obj}^{(j)} - min(f_{obj}))},
+      prob_i = \frac{max(f) - f^{(i)}}{\displaystyle\sum_{j} max(f) - f^{(j)}},
     \label{eq:prob}
     \end{equation}
     
-    donde $f_{obj}^{(i)}$ representa el valor de $f_{obj}$ aplicado a la 
-    $i-$ésima parametrización de $population$ y $min(f_{obj})$ es el mínimo
-    valor de $f_{obj}$ al haber sido aplicado a todas las matrices de $population$.
+    donde $f^{(i)}$ representa el valor de $f$ aplicado a la 
+    $i-$ésima parametrización de $population$ y $max(f)$ es el máximo
+    valor de $f$ al haber sido aplicado a todas las matrices de $population$.
     
     \item $crossover(parents):$ 
     retorna $population\_size$ nuevas parametrizaciones.
@@ -368,7 +536,7 @@ Entrando en más detalle, tenemos:
     $\boldsymbol{S}(x, y) = \boldsymbol{P_1}(x, y)$ o
     $\boldsymbol{S}(x, y) = \boldsymbol{P_2}(x, y)$.
 
-    \item $mutation(children, prob\_mutation, GA\_range):$ 
+    \item $mutation(children):$ 
       retorna $children$, pero
       a cada elemento de todas estas matrices
       le agrega un valor en $U(-GA\_range, GA\_range)$ con
@@ -376,91 +544,100 @@ Entrando en más detalle, tenemos:
 
 \end{itemize}
 
-\subsection{\emph{Gradient Genetic Algorithms} (G-GA)}
-
-\leonidas{TODO: Completar esto}
-
 \subsection{\emph{Particle Swarm Optimization} (PSO)}
 
-\leonidas{TODO: Actualizar nomenclatura.}
-
 Podemos pensar este algoritmo como un caso especial del Algoritmo \ref{alg:GA}
-\citep{Mykel2019, Prosopio-Galarza2019}.
-La idea es visualizar el $i-$ésimo individuo como una partícula definida por: 
-(i) su posición $x^{(i)}$ (el vector $p$-dimensional asociado al $i-$ésimo individuo),
-(ii) su velocidad $\nu^{(i)}$ (un número real) y
-(iii) la mejor posición encontrada hasta el momento.
+\citep{Mykel2019}.
+La idea es visualizar el $i-$ésimo individuo como una partícula definida por 
+su posición ($\boldsymbol{P^{(i)}}$), velocidad ($\boldsymbol{V}^{(i)}$) y 
+la mejor posición encontrada por la partícula ($\boldsymbol{P^{(i)}_b}$).
+Para nuestro problema la matriz de parametrización representa la posición y
+la velocidad es una matriz que guía la exploración a otras parametrizaciones.
 
-Cada particula acumula velocidad en una dirección favorable dada por: 
-(i) la mejor posición encontrada hasta el momento por ella y 
+La idea principal del algoritmo es que cada particula acumula 
+velocidad en una dirección favorable dada por: 
+(i) la mejor posición encontrada hasta el momento por esta partícula y 
 (ii) la mejor posición encontrada por la población completa.
 Como consecuencia, los individuos se pueden mover independientemente de
 perturbaciones locales.
-Adicionalmente, agregando caminos aleatorios las particulas incorporan
+Adicionalmente, agregando caminos aleatorios los individuos incorporan
 comportamientos impredecibles que puede permitirles encontrar potenciales
-mejores direcciones.
+mejores elementos. Esta idea se sintetiza en el Algoritmo \ref{alg:PSO}.
 
-Entrando en más detalle, siguiendo la estructura del Algoritmo \ref{alg:GA}, tenemos:
+\begin{algorithm}
+%\footnotesize
+\KwData{$\boldsymbol{P}, population\_size, PSO\_range, \omega, c_1, c_2$}
+\KwResult{$\boldsymbol{P_b}$}
+$population = generate\_population()$ \\
+\For{$t = 0; \, t < k; \, t$++}{
+    $\boldsymbol{P_b} = select(population)$ \\
+    $population = mutation(population, \boldsymbol{P_b})$
+}
+\caption{\emph{Particle Swarm Optimization} (PSO)}
+\label{alg:PSO}
+\end{algorithm}
+
+Como se observa en el \autoref{alg:PSO}, tenemos las siguientes funciones:
 
 \begin{itemize}
 
-\item $generate\_population(n, p):$ retorna $n$ particulas con cada uno de
-      sus parámetros tomando valores aleatorios en $U(0, 1)$.
+    \item $generate\_population():$ 
+      retorna $population\_size$ matrices 
+      $\boldsymbol{P'}$ tal que 
+      $|\boldsymbol{P'}(x, y) - \boldsymbol{P}(x, y)| \in U(-PSO\_range, PSO\_range), \quad \forall x \in [1, n]
+      \land y \in [1, m]$. Además genera las matrices $V$ con valores en $U(0, 1)$.
 
-\item $select(population):$ retorna la particula con el mejor $f_{obj}$
+\item $select(population):$ retorna el individuo con el menor valor de $f$ encontrado hasta el momento.
 
-\item $crossover(population, parents):$ retorna la población luego de aplicar 
+\item $mutation(population, \boldsymbol{P_b}):$ Aplica las siguientes transformaciones a \emph{population}: 
     
   \begin{equation}
-    x^{(i)} \gets x^{(i)} + \nu^{(i)},
+    \boldsymbol{P^{(i)}} \gets \boldsymbol{P^{(i)}} + \boldsymbol{V^{(i)}},
   \label{pso-pos}
   \end{equation}
 
   \begin{equation}
-    \nu^{(i)} \gets \omega \nu^{(i)} + c_1 r_1 \left(x_{b}^{(i)} - x^{(i)}
-    \right) + c_2 r_2 \left(x_{b} - x^{(i)} \right),
+    \boldsymbol{V^{(i)}} \gets \omega \boldsymbol{V^{(i)}} + \
+                          c_1 r_1 \left(\boldsymbol{P_{b}^{(i)}} - \boldsymbol{P^{(i)}} \right) + \
+                          c_2 r_2 \left(\boldsymbol{P_{b}} - \boldsymbol{P^{(i)}} \right),
   \label{pso-speed}
   \end{equation}
     
 
-  donde $x_{b}$  es la mejor posición encontrada globalmente, 
+  donde $\boldsymbol{P_{b}}$  es la mejor posición encontrada globalmente, 
   $\omega$ representa la tendencia de la particula de conservar su velocidad actual,
-  $c_1$ y $c_2$ cuantifica la atracción relativa de $x_{b}^{(i)}$ y $x_{b}$ respectivamente, 
+  $c_1$ y $c_2$ cuantifica la atracción relativa con $\boldsymbol{P_{b}^{(i)}}$ y 
+  $\boldsymbol{P_{b}}$ respectivamente, 
   y $r_1, r_2 \in U(0, 1)$ representan el comportamiento impredecible.
 
 \end{itemize}
 
-\subsection{\emph{Gradient Particle Swarm Optimization} (G-PSO)}
-
-\leonidas{TODO: Completar esto}
-
 \subsection{\emph{Covariance Matrix Adapatation Evolution Strategy} (CMA-ES)}
-
-\leonidas{TODO: Actualizar nomenclatura.}
 
 La idea general de esta estrategia evolutiva, mostrada en el Algoritmo
 \ref{alg:CMA}, es mantener:
-(i) un vector $\mu$ $p$-dimensional,
-(ii) una matriz $\Sigma$ y
+(i) un vector $\boldsymbol{\mu}$ $p$-dimensional,
+(ii) una matriz $\boldsymbol{C}$ y
 (iii) un número $\sigma$ para ir generando $n$ inviduos $p$-dimensionales
-a partir una distribución $\mathcal{N}(\mu,\,\sigma^{2} \Sigma)$.
+a partir una distribución $\mathcal{N}(\mu,\,\sigma^{2} \boldsymbol{C})$.
 
 
 Tomar puntos de esta distribución limita el espacio de búsqueda a una
 hiperelipse.
-Luego, el algoritmo evalua puntos en esta región limitada.
-Usando los valores obtenidos, se puede decidir entre:
+Así, el algoritmo evalua puntos en esta región limitada.
+Luego, usando los valores obtenidos, se puede decidir entre:
 (i) mover la hiperelipse a otra región del espacio de búsqueda
 (ii) expandir or reducir la región cubierta por la distribución.
 El algoritmo de CMA-ES trabaja iterativamente sobre esta idea hasta que la
 hiperelipse termina casi degenerándose en un punto, 
 potencialmente un óptimo.
-Para una descripción más detallada del algoritmo, revisar \citep{Mykel2019, Hansen2016}.
 
 \begin{algorithm}
-%\footnotesize
+  \KwData{$\boldsymbol{P}, population\_size, \sigma$}
+\KwResult{$\boldsymbol{\mu}$}
+$\boldsymbol{\mu} = flatten(\boldsymbol{P})$ \\
 \For{$t = 0; \, t < k; \, t$++}{
-    sample() \tcp{Obtener $n$ puntos de $\mathcal{N}(\mu,\,\sigma^{2} \Sigma)$}
+  sample() \tcp{Obtener $population\_size$ puntos de $\mathcal{N}(\boldsymbol{\mu},\,\sigma^{2} \boldsymbol{C})$}
     update() \tcp{Ecuación \ref{cma-average}}
     control() \tcp{Ecuación \ref{cma-control}}
     adapt() \tcp{Ecuación \ref{cma-adapt}}
@@ -469,32 +646,33 @@ Para una descripción más detallada del algoritmo, revisar \citep{Mykel2019, Ha
 \label{alg:CMA}
 \end{algorithm}
 
-Entrando en más detalle del Algoritmo \ref{alg:CMA} y considerando variables
-globales por simplicidad, podemos resumir el procedimiento en cinco pasos.
-En la línea 1 simplemente se repite las siguientes líneas por $k$ iteraciones.
-En la iteración $t$, comenzamos con la línea 2 generando $n$ puntos
-$p$-dimensionales $x_i$ de la distribución $\mathcal{N}(\mu,\,\sigma^{2} \Sigma)$, 
-donde estos son ordenados descendentemente de acuerdo
-al valor de $f_{obj}$.
-En la línea 3 actualizamos la media $\mu$ usando una promedio ponderado dado
+
+Entrando en más detalles del Algoritmo \ref{alg:CMA},
+en la línea 1 simplemente se linealiza la matriz $\boldsymbol{P}$ en un vector $\boldsymbol{\mu}$ 
+de dimensión $p = n \times m$ (i.e. se unen sus vectores filas en orden para formar un solo vector).
+Luego, dentro del bucle en la iteración $t$, en la línea 3 se genera $population\_size$ puntos
+$p$-dimensionales $\boldsymbol{x_i}$ de la distribución $\mathcal{N}(\boldsymbol{\mu},\,\sigma^{2} \boldsymbol{C})$, 
+donde estos son ordenados ascendentemente de acuerdo
+al valor de $f$.
+En la línea 4 actualizamos la media $\boldsymbol{\mu}$ usando una promedio ponderado dado
 por
 
 \begin{equation}
-    \mu^{(t + 1)} \gets \sum_{i=1}^{n} w_i x_i,
+  \boldsymbol{\mu^{(t + 1)}} \gets \sum_{i=1}^{n} w_i \boldsymbol{x_i},
 \label{cma-average}
-\end{equation},
+\end{equation}
 
-donde $w_i$ son fijos y escogidos de tal manera que proporcionen mayor
-contribución a los puntos con meyor $f_{obj}$. Esto permite mover la media $\mu$
-en una dirección favorable.
+donde $w_i$ son valores fijos y escogidos de tal manera que proporcionen mayor
+contribución a los puntos con menor valor al evaluarlos en $f$. 
+Esto permite mover la media $\boldsymbol{\mu}$ en una dirección favorable.
 
 Seguidamente, se necesita actualizar $\sigma$ para expandir o reducir la
-hiperelipse en la siguiente iteración. Por este motivo, la línea 4 controla
+hiperelipse en la siguiente iteración. Por este motivo, la línea 5 controla
 este valor mediante las ecuaciones
 
 \begin{equation}
     \sigma^{(t + 1)} \gets \sigma^{(t)} \exp\bigg(\frac{c_{\sigma}}{d_{\sigma}}
-    \underbrace{\left(\frac{||p_{\sigma}||}{\mathbb{E}||\mathcal{N}(0,
+    \underbrace{\left(\frac{||\boldsymbol{p_{\sigma}}||}{\mathbb{E}||\mathcal{N}(0,
     \mathbf{I})||} - 1 \right)}_{\text{evolution path comparison}} \bigg),
 \label{cma-control}
 \end{equation}
@@ -506,7 +684,7 @@ este valor mediante las ecuaciones
 \label{cma-E}
 \end{equation}
 
-donde $p_{\sigma}$ es una variable que acumula los pasos llevados,
+donde $\boldsymbol{p_{\sigma}}$ es una variable que acumula los pasos llevados,
 $c_{\sigma} \in [0, 1]$ es una variable que determina el tiempo acumulado para $p_{\sigma}$ y 
 $d_{\sigma} \approx 1$ es un parámetro que determina el ratio de posibilidad de cambio de $\sigma^{(t + 1)}$. 
 La principal parte de la \autoref{cma-control} es el término \emph{evolution path comparison}, 
@@ -515,13 +693,13 @@ aleatoria.
 De esta comparación podemos controlar si el valor de $\sigma$ debe
 incrementarse, disminuirse o permanecer igual.
 
-Finalmente, en la línea 5 cambiamos $\Sigma$ a una dirección favorable usando
+Finalmente, en la línea 6 cambiamos $\boldsymbol{C}$ a una dirección favorable usando
 
 \begin{multline}
-    \Sigma^{(t + 1)} \gets \overbrace{\bigg(1 - c_1 c_c (1 - h_{\sigma})(2 - c_c) - c_1 - c_{\mu}\bigg) \Sigma^{(t)}}^{\text{cumulative update}} \\
-    + \underbrace{c_{1} p_{\Sigma} p_{\Sigma}^{T}}_{\text{rank-one update}}
+  \boldsymbol{C^{(t + 1)}} \gets \overbrace{\bigg(1 - c_1 c_c (1 - h_{\sigma})(2 - c_c) - c_1 - c_{\mu}\bigg) \boldsymbol{C^{(t)}}}^{\text{cumulative update}} \\
+    + \underbrace{c_{1} \boldsymbol{p_{C}} \boldsymbol{p_{C}}^{T}}_{\text{rank-one update}}
     + \underbrace{c_{\mu}\sum_{i=1}^{n}w'_{i}
-    \delta^{(i)}\left(\delta^{(i)}\right)^{T}}_{\text{rank-}\mu\text{ update}},
+    \boldsymbol{\delta^{(i)}}\left(\boldsymbol{\delta^{(i)}}\right)^{T}}_{\text{rank-}\mu\text{ update}},
 \label{cma-adapt}
 \end{multline}
 
@@ -530,10 +708,10 @@ $c_1 \leq 1 - c_{\mu}$ es el radio de aprendizaje para el término \emph{rank-on
 $c_c \in [0, 1]$ es el radio de aprendizaje para el término \emph{cumulative update}, 
 $h_{\sigma}$ es la evaluación bajo la función unitaria usado para actualizar
 apropiadamente el camino evolutivo, 
-$p_{\Sigma}$ es un vector acumulativo usado para actualizar la matriz de
+$\boldsymbol{p_{C}}$ es un vector acumulativo usado para actualizar la matriz de
 covarianza, 
 $w'_i$ son los coeficientes de ponderación modificados y
-$\delta^{(i)}$ son las desviaciones seleccionadas.
+$\boldsymbol{\delta^{(i)}}$ son las desviaciones seleccionadas.
 
 En la \autoref{cma-adapt}, el primer término (\emph{cumulative update}) 
 mantiene información de la anterior matriz de convarianza.
@@ -541,88 +719,78 @@ El segundo término (\emph{rank-one update}) permite expandir la distribución e
 una dirección favorable.
 El tercer término (\emph{rank-$\mu$ update}) incrementa la búsqueda en espacios
 donde es probable encontrar buenas soluciones.
-La combinación de estos tres términos actualiza $\Sigma$ de tal manera que
-mueva la hiperelipse en una dirección favorable.
+La combinación de estos tres términos actualiza $\boldsymbol{C}$ de tal manera que
+mueva la hiperelipse en una dirección favorable. 
+Para una descripción más detallada del algoritmo, revisar los trabajos de \cite{Hansen2016} y \cite{Mykel2019}.
 
-\subsection{\emph{Gradient Covariance Matrix Adapatation Evolution Strategy} (G-CMA-ES)}
+\subsection{\emph{Gradient Descent} (GD)}
 
-\leonidas{TODO: Completar esto}
+Este algoritmo comienza desde un punto inicial, en nuestro caso la matriz $\boldsymbol{P}$.
+Luego, usa la derivada en ese punto para guiar su búsqueda iterativamente, 
+esto lo realiza mediante la siguiente ecuación:
+
+\begin{equation}
+  \boldsymbol{P^{(t+1)}} \gets \boldsymbol{P^{(t)}} - \gamma \nabla \boldsymbol{P^{(t)}},
+  \label{eq:gd-point}
+\end{equation}
+
+donde $t$ representa la iteración actual y $\gamma$ (conocido como el ratio de aprendizaje)
+determina la magnitud de como actualizar $\boldsymbol{P^{(t)}}$. 
+Particularmente, un enfoque razonable para buscar convergencia a 
+un mínimo local es actualizar $\gamma$ en cada iteración mediante la ecuación
+
+\begin{equation}
+  \gamma^{(t+1)} = \frac{|(\boldsymbol{P^{(t)}}-\boldsymbol{P^{(t-1)}})^T(\nabla f(\boldsymbol{P^{(t)}})-\nabla f(\boldsymbol{P^{(t-1)}}))|}
+  {||\nabla f(\boldsymbol{P^{(t)}})-\nabla f(\boldsymbol{P^{(t-1)}})||^2}.
+  \label{eq:gd-gamma}
+\end{equation}
+
+Un detalle importante a señalar es que por simplicidad en la notación, 
+la \autoref{eq:gd-gamma} se describió de esta manera;
+sin embargo, en realidad debemos trabajar con la matriz $\boldsymbol{P}$ después de ser linealizada
+para que las operaciones de esta ecuación estén bien definidas.
+Mayores detalles del algoritmo se pueden encontrar en \cite{Demidova2020}.
+
+
+\subsection{\emph{Method of Moving asymptotes} (MMA)}
+
+\emph{Method of moving asymptotes} (MMA) es un algoritmo de optimización
+local basado en la gradiente, es decir, de primer orden.
+La idea del algoritmo es comenzar en un punto $\boldsymbol{P}$ y formar
+una aproximación de $f$ alrededor de $\boldsymbol{P}$ utilizando:
+(i) la gradiente de $f$,
+(ii) los límites de los valores de $P$ y
+(iii) una función de penalidad cuadrática.
+Lo interesante de esta aproximación es que es convexa y separable, lo cual permite
+resolverla de forma sencilla.
+Así, el algoritmo comienza calculando la aproximación, luego resuelve la optimización
+utilizando la aproximación.
+De este modo, surgen dos posibles escenarios:
+(i) la aproximación encuentra un buen elemento que se usa como punto de inicio para repetir el procedimiento o
+(ii) se repite el proceso limitando la contribución de la función de penalidad.
+
+En realidad en el presente trabajo usaremos una versión mejorada del algoritmo
+conocida como \emph{Conservative Convex Separable Approximation} (CCSA) 
+debido a su popularidad en optimización topológica, pero nos seguiremos refiriendo
+al algoritmo como MMA por convención.
+Esta variante tiene la particularidad de lograr converger a un mínimo local independientemente
+del punto inicial. Los detalles se pueden revisar en \cite{Svanberg2002}.
 
 \subsection{L-BFGS-B}
 
-\leonidas{TODO: Completar esto}
+\emph{Limited-memory Broyden–Fletcher–Goldfarb–Shanno with boundaries} (L-BFGS-B) es un algoritmo
+de optimización que se caracteriza por estimar la inversa de la matriz hessiana utilizando 
+una cantidad de memoria de orden lineal.
+El algoritmo comienza con un punto inicial $\boldsymbol{P}$.
+Luego, internamente mantiene el historial de las últimas evaluaciones de la función $f$ y $\nabla f$
+para determinar una dirección para actualizar $\boldsymbol{P}$.
+Esto es posible precondicionando la gradiente con información de curvatura obtenida por
+la aproximación de la matriz hessiana.
+El lector interesado puede revisar los detalles del algoritmo en \cite{Liu1989}.
 
-\subsection{MMA}
 
-\leonidas{TODO: Completar esto}
 
-\section{Transformaciones}\label{sec:transformations}
-
-La aplicación de transformaciones a un diseño se realiza con el fin de obtener
-dispositivos que se puedan fabricar con mayor facilidad \citep{Su2020}. 
-
-Basándonos en \cite{Zhang2021}, una manera de asegurar que los
-parámetros $p$ describan un diseño más fácil de fabricar es aplicacando la función $s(p)$
-descrita como
-
-\begin{equation}
-  \widetilde{\widetilde{\boldsymbol{P}}}(x, y) = \frac{\tanh (\beta \times \eta) + \tanh (\beta \times (p_{x, y}
-  - \eta))}{\tanh (\beta \times \eta) + \tanh (\beta \times (1 - \eta))},
-  \label{eq:projection}
-\end{equation}
-
-    donde $\eta = 0.5$ y $\beta$ comienza con un valor de 1 y va incrementándose exponencialmente en cada iteración. 
-    Como se observa en la \autoref{fig:discretization}, la \autoref{eq:projection} se encarga de ir haciendo converger los valores de la parametrización a $0$ o $1$ de acuerdo a cual esté más cercano. 
-    Conforme aumenta el valor de $\beta$ esta convergencia es más rápida.
-
-    \begin{figure}[ht]
-      \centering
-      \includegraphics[scale=0.8]{image/theory/discretization.png}
-      \caption{Función de discretización con $\eta = 0.5$ y distintos valores
-      de $\beta$.}
-      \label{fig:discretization}
-    \end{figure}
-
-\leonidas{TODO: Agregar una descripción detallada sobre las siguientes ecuaciones.}
-
-\begin{equation}
-  \widetilde{\boldsymbol{P}}(x, y) = \frac{\displaystyle\sum_{(x', y') \in B_{r_f}(x, y)} w_{x, y}(x', y')
-  A(x', y')p_{x', y'}}
-  {\displaystyle\sum_{(x', y') \in B_{r_f}(x, y)} w_{x, y}(x', y') A(x', y')},
-  \label{eq:densityfilter}
-\end{equation}
-
-\begin{equation}
-  w_{x, y}(x', y') = max(0, r_f - dis(x, y, x', y'))
-  \label{eq:hatbased}
-\end{equation}
-
-\begin{equation}
-  dis(x, y, x', y') = |x-x'|*psize_y+|y-y'|*psize_x
-  \label{eq:distance}
-\end{equation}
-
-\begin{equation}
-  \frac{\partial\widetilde{\boldsymbol{P}}(x, y)}{\partial \boldsymbol{P}(x^{*}, y^{*})} = \frac{w_{x, y}(x^{*},
-  y^{*})A(x^{*}, y^{*})}
-  {\displaystyle\sum_{(x', y') \in B_{r_f}(x, y)} w_{x, y}(x', y') A(x', y')},
-  \label{eq:densityfiltergrad}
-\end{equation}
-
-\begin{equation}
-  \frac{\partial\widetilde{\widetilde{\boldsymbol{P}}}(x, y)}{\partial \widetilde{\boldsymbol{P}}(x, y)} =
-  \frac{(1 - \tanh^2 (\beta \times (\widetilde{p}_{x, y} - \eta)) \beta)}
-       {\tanh (\beta \times \eta) + \tanh (\beta \times (1 - \eta))},
-  \label{eq:projecition-grad}
-\end{equation}
-
-\begin{equation}
-  \frac{\partial f_{obj}}{\partial \boldsymbol{P}(x, y)} = \displaystyle\sum_{(x', y') \in B_{r_f}(x, y)}
-  \frac{\partial f_{obj}}{\partial \widetilde{\widetilde{\boldsymbol{P}}}(x', y')}
-  \frac{\partial \widetilde{\widetilde{\boldsymbol{P}}}(x', y')}{\partial \widetilde{\boldsymbol{P}}(x', y')}
-   \frac{\partial \widetilde{\boldsymbol{P}}(x', y')}{\partial \boldsymbol{P}(x, y)}
-  \label{eq:fobjgrad}
-\end{equation}
+\leonidas{TODO: Resumen del capítulo}
 
 %\section{Preparación para fabricación}
 
