@@ -1,21 +1,13 @@
 \chapter{Marco  Teórico}
 
-En el presente capítulo se introducen conceptos fundamentales relacionados al diseño inverso de dispositivos fotónicos.
-Para ello se desarrolla seis secciones. 
-Primero, se describen las propiedades físicas de interés de un \emph{bend} y WDM.
-Segundo, se explica como parametrizar la región de diseño de estos
-dispositivos.
-Tercero, se detalla los pasos necesarios para poder simular computacionalmente
-los diseños realizados.
-Cuarto, se explica la estrategia de optimización a seguir con la
-parametrización señalada.
-Quinto, se describen tres algoritmos que se usaran en el presente trabajo: (i)
-algoritmos genéticos (GA), (ii) \emph{particle swarm optimization} (CMA), (iii)
-\emph{covariance matrix adaptation evolution strategy} (CMA-ES).
-Finalmente, se expone que transformaciones se puede aplicar dentro de la
-estrategia a seguir.
-
-\leonidas{TODO: Actualizar esto al final.}
+En el presente capítulo se introducen los conceptos necesarios para entender la propuesta de esta tesis.
+Primero, se describe los dos dispositivos a optimizar: (i) \emph{bend} y (ii) WDM.
+Segundo, se explica como parametrizar estos dispositivos mediante un enfoque basado en píxeles.
+Tercero, se brindan detalles necesarios para poder simular nuestros diseños utilizando el paquete de Python
+SPINS-B.
+Cuarto, se detalla dos transformaciones comúnmente utilizadas en la optimización topológica robusta: 
+(i) filtro por densidad y (ii) proyección.
+Finalmente, se describe seis algoritmos de optimización que serán utilizados en este trabajo.
 
 \section{Dispositivos de estudio}
 
@@ -135,7 +127,9 @@ Tanto para el \emph{bend} como para el WDM se define una región de diseño
 mediante una parametrización ($\boldsymbol{P}$) que pueda mapear un gran conjunto de dispositivos.
 Una de la estrategias más populares para esta tarea es usar parametrización
 basada en píxeles. Esta estrategia consiste en definir $\boldsymbol{P}$ como una matriz 
-de $n$ filas y $m$ columnas con valores en el intervalo $[0, 1]$ \citep{Molesky2018}.
+de $n$ filas y $m$ columnas con valores en el intervalo $[0, 1]$.
+Al proceso de optimizar un dispositivo con esta parametrización se le conoce como optimización
+topológica \citep{Molesky2018}.
 
 \begin{figure}[h]
   \centering
@@ -144,7 +138,7 @@ de $n$ filas y $m$ columnas con valores en el intervalo $[0, 1]$ \citep{Molesky2
   \label{fig:pixeles}
 \end{figure}
 
-Por ejemplo, en la \autoref{fig:pixeles} se ha definido la matriz $\boldsymbol{P}: [1, n] \times [1, m]
+A modo de ejemplo, en la \autoref{fig:pixeles} se ha definido la matriz $\boldsymbol{P}: [1, n] \times [1, m]
 \to [0, 1]$ con $n = m = 18$ y se ha graficado sus valores
 usando escala gris (0 corresponde al color blanco, 1 al negro y los demás valores a diferentes
 intensidades del gris). De esta manera observamos como $\boldsymbol{P}$ logra definir la geometría de un
@@ -163,14 +157,14 @@ Esto lo realizamos calculando la permitividad ($\boldsymbol{\varepsilon}$) media
 \label{eq:permitivity}
 \end{equation}
 
-donde $\varepsilon_{Si} \approx 3.48^2$ es la permitividad del silicio ($Si$) y
-$\varepsilon_{SiO_2} \approx 1.44^2$ es la permitividad del óxido de silicio ($SiO_2$).
+\noindent donde $\varepsilon_{Si} = 3.48^2$ es la permitividad del silicio ($Si$) y
+$\varepsilon_{SiO_2} = 1.44^2$ es la permitividad del óxido de silicio ($SiO_2$).
 De esta manera, la celda ubicada en la fila $x$, columna $y$ de la geometría descrita por 
 $\boldsymbol{P}(x, y)$ tiene una permitividad de valor $\boldsymbol{\varepsilon}$(x, y).
 
 Con la \autoref{eq:permitivity} estamos asociando a cada rectángulo de la geometría descrita por
 $\boldsymbol{P}$ un valor de permitividad en el rango 
-$[\varepsilon_{SiO2} = 1.44, 3.48 = \varepsilon_{Si}]$.
+$[\varepsilon_{SiO2} = 1.44^2, 3.48^2 = \varepsilon_{Si}]$.
 De esta manera, $\boldsymbol{P}(x, y) = 1$ describe que el rectángulo ubicado en la posición $(x, y)$ es de
 $Si$,
 un valor de $\boldsymbol{P}(x, y) = 0$ describe la presencia de $SiO_2$ y 
@@ -180,7 +174,7 @@ a algún material cuya permitividad es $\boldsymbol{\varepsilon}(x, y)$.
 No obstante, un inconveniente de lo descrito es que $\boldsymbol{P}$ puede mapear a materiales inexistestes
 (regiones grises),
 mayor detalle de esta dificultad se estudia
-en la \autoref{sec:estrategia-optimizacion}.
+en la \autoref{sec:transformations}.
 Por otro lado, con la descripción de la permitividad ya podemos calcular los campos eléctricos con lo
 cual se puede obtener el valor de $f_{obj}$ definido para el \emph{bend} y WDM.
 Por esta razón se realizan simulaciones electromagnéticas y se resuelven las inversas de las 
@@ -240,8 +234,8 @@ Por un lado, SPINS-B permite configurar diseños (fuente, monitores, PML, parame
 Un aspecto interesante de este paquete es que trabaja con bloques llamados nodos.
 Estos representan operaciones fundamentales como suma, resta, multiplicación, etc.
 Luego, el programa guarda nuestra función objetivo ($f_{obj}$) usando un grafo que tiene estos nodos de vértices.
-Lo interesante de este enfoque es que permite calcular de forma eficiente
-(independientemente de las dimensiones de $\boldsymbol{P}$) 
+Así, SPINS-B permite calcular de forma eficiente
+(usando un número de simulaciones independiente de las dimensiones de $\boldsymbol{P}$) 
 el valor de $\nabla f_{obj}(\boldsymbol{P})$ mediante diferenciación automática \citep{Su2020, Mykel2019}.
 
 Por otro lado, Maxwell-B implementa un método numérico conocido como \emph{finite-difference frequency domain}
@@ -258,35 +252,6 @@ simulación en una malla de cubos de dimensiones $dx \times dx \times dx$.
 En general, cuanto más pequeño es este valor
 los resultados son más precisos, pero la cantidad de memoria y el tiempo de
 simulación se incrementan considerablemente.
-
-\section{Estrategia de optimización}\label{sec:estrategia-optimizacion}
-
-Como fue descrito en la \autoref{sec:parametrization}, podemos
-representar diseños con materiales que no existen.
-Para evitar esto se necesita obtener que $\boldsymbol{P}(x, y)$ de la \autoref{eq:permitivity} tenga valores enteros.
-Sin embargo, al optimizar la función $f_{obj}$ no podemos asegurar esta condición.
-Ante esta dificultad, \cite{Su2020} trabaja en dos etapas:
-
-
-\begin{enumerate}
-
-\item{\textbf{Optimización continua}}
-
-En esta etapa se optimiza la función $f_{obj}$ sin imponer ninguna restricción.
-    En la \autoref{sec:alg-opt} se detalla algoritmos que suelen usarse para este fin.
-
-\item{\textbf{Optimización discreta}}
-
-Se utiliza el resultado de la optimización continua como punto inicial para el algoritmo de optimización que se escoja.
-Luego, se trabaja por iteraciones.
-En cada iteración se aplica una transformación a cada diseño antes de evaluar su FOM.
-Esta transformación se escoge de tal manera que ayude a ir convergiendo a un diseño fabricable, es decir,
-a tener $\boldsymbol{P}(x, y) = 0$ o $\boldsymbol{P}(x, y) = 1$, más detalles en la \autoref{sec:transformations}.
-Así, la idea de realizarlo por iteraciones es ir discretizando nuestro diseño
-de forma suave e intentando mantener un buen valor del FOM.
-Por ello, es crucial utilizar el resultado de una iteración como punto inicial de la próxima.
-
-\end{enumerate}
 
 \section{Transformaciones}\label{sec:transformations}
 
@@ -372,43 +337,23 @@ En realidad, en general el quiebre se realiza en el valor que se le de a $\eta$.
 
     \begin{figure}[ht]
       \centering
-      \includegraphics[scale=0.8]{image/theory/discretization.png}
-      \caption{Función de discretización con $\eta = 0.5$ y distintos valores
+      \includegraphics[scale=0.75]{image/theory/discretization.png}
+      \caption{Transformación de proyección con $\eta = 0.5$ y distintos valores
       de $\beta$.}
       \label{fig:discretization}
     \end{figure}
 
-Además, de la \autoref{eq:projection} podemos obserner el valor de su derivada parcial 
+Además, de la \autoref{eq:projection} podemos obtener el valor de su derivada parcial 
 respecto al diseño $\widetilde{\boldsymbol{P}}$ mediante la siguiente ecuación:
 
 \begin{equation}
   \frac{\partial\widetilde{\widetilde{\boldsymbol{P}}}(x, y)}{\partial \widetilde{\boldsymbol{P}}(x, y)} =
   \frac{(1 - \tanh^2 (\beta \times (\widetilde{\boldsymbol{P}}(x, y) - \eta))) \beta}
-       {\tanh (\beta \times \eta) + \tanh (\beta \times (1 - \eta))},
-  \label{eq:projecition-grad}
+       {\tanh (\beta \times \eta) + \tanh (\beta \times (1 - \eta))}.
+  \label{eq:projection-grad}
 \end{equation}
 
-Con el objetivo de visualizar estas transformaciones, observemos la \autoref{fig:three-filters}.
-En la Figura \autoref{subfig:P} se representa el diseño que representa una parametrización $\boldsymbol{P}$.
-A su derecha se encuentra la Figura \autoref{subfig:P_filter}, aquí se aplicó el filtro de densidad
-utilizando un radio de curvatura $r_f = 80 nm$. Como podemos observar, este diseño posee regiones grises,
-mas ha logrado eliminar ciertas regiones punteagudas.
-Seguidamente, en las Figuras \autoref{subfig:P_E_D}, \autoref{subfig:P_E_I}, \autoref{subfig:P_E_E}
-se muestra el diseño de la Figura \autoref{subfig:P_filter} tras aplicar la proyección descrita con
-$\beta = 2^6$ y distintos valores de $\eta$.
-Al utilizar $\eta = \eta_i = 0.5$ (Figura \autoref{subfig:P_E_I}) 
-estamos simplemente discretizando el diseño.
-Por otro lado, al usar $\eta = \eta_d = 0.3$ (Figura \autoref{subfig:P_E_I})
-estamos simulando que el diseño se ha dilatado 
-(i.e. la región de $Si$ del diseño intenta expandirse).
-Finalmente, al usar $\eta = \eta_e = 0.7$ (Figura \autoref{subfig:P_E_E})
-estamos simulando que el diseño ha erosionado 
-(i.e. la región de $SiO_2$ del diseño intenta expandirse).
-
-
-Particularme, suele convenir $\eta_d = 1 - \eta_e$. Además, notemos que 
-estos parámetros deben seleccionarse con cuidado; caso contrario el diseño
-podría simular una dilatación o erosión muy exageradas.
+\subsection{Aplicación de las Transformaciones}
 
 \begin{figure}[ht]
   \centering
@@ -435,21 +380,68 @@ podría simular una dilatación o erosión muy exageradas.
   \label{fig:three-filters}
 \end{figure}
 
+Con el objetivo de visualizar estas transformaciones, observemos la \autoref{fig:three-filters}.
+En la Figura \autoref{subfig:P} se muestra el diseño que representa una parametrización $\boldsymbol{P}$.
+A su derecha se encuentra la Figura \autoref{subfig:P_filter}, aquí se aplicó el filtro de densidad
+utilizando un radio de curvatura $r_f = 80 nm$. Como podemos observar, este diseño posee regiones grises,
+mas ha logrado eliminar zonas punteagudas.
+Seguidamente, en las Figuras \autoref{subfig:P_E_D}, \autoref{subfig:P_E_I}, \autoref{subfig:P_E_E}
+se muestra el diseño de la Figura \autoref{subfig:P_filter} tras aplicar la proyección descrita con
+$\beta = 2^6$ y distintos valores de $\eta$.
+Al utilizar $\eta = \eta_i = 0.5$ (Figura \autoref{subfig:P_E_I}) 
+estamos simplemente discretizando el diseño.
+Por otro lado, al usar $\eta = \eta_d = 0.3$ (Figura \autoref{subfig:P_E_D})
+estamos simulando que el diseño se ha dilatado 
+(i.e. la región de $Si$ del diseño intenta expandirse).
+Finalmente, al usar $\eta = \eta_e = 0.7$ (Figura \autoref{subfig:P_E_E})
+estamos simulando que el diseño ha erosionado 
+(i.e. la región de $SiO_2$ del diseño intenta expandirse).
+
+
+Así, observamos como la proyección presentada en esta sección no solo nos permite discretizar diseños,
+sino también simular una dilatación o erosión de estos.
+Particularmente, la optimización topológica se considera robusta cuando
+tiene en cuenta estas dos posibles modificaciones en el proceso de optimización.
+Por otro lado, del mismo modo que se aplicó en la \autoref{fig:three-filters}, para poder diferenciar 
+el uso de $\eta$ denotaremos como $\eta_i$ al valor usado en un diseño nominal, 
+$\eta_e$ para los diseños erosionados y $\eta_d$ para los diseños dilatados.
+Además, es importante señalar que se suele escoger los valores de $\eta_e$ y $\eta_d$
+de las manera que $\eta_d = 1 - \eta_e$.
+Por último, notemos que  estos parámetros deben seleccionarse con cuidado; 
+caso contrario, el diseño podría simular una dilatación o erosión muy exageradas.
+
+Un último punto a considerar es que nuestro proceso de optimización necesitará calcular 
+$\nabla f_{obj}(\boldsymbol{P})$, pero al aplicar estas transformaciones terminaremos calculando
+$\nabla f_{obj}(\widetilde{\widetilde{\boldsymbol{P}}})$.
+Para solucionar este problema podemos implementar las transformaciones presentadas 
+de manera que aprovechen la diferenciación automática (similar a lo realizado en la implementación
+de MEEP \citep{Oskooi2010}); sin embargo, en el presente trabajo optamos por un enfoque más sencillo
+que consiste en utilizar la \autoref{eq:densityfiltergrad} y la \autoref{eq:projection-grad} 
+para realizar el cálculo utilizando lo siguiente:
 
 \begin{equation}
-  \frac{\partial f_{obj}}{\partial \boldsymbol{P}(x, y)} = \displaystyle\sum_{(x', y') \in B_{r_f}(x, y)}
+  \frac{\partial f_{obj}}{\partial \boldsymbol{P}(x, y)} = \displaystyle\sum_{(x', y') \in \overline{B}_{r_f}(x, y)}
   \frac{\partial f_{obj}}{\partial \widetilde{\widetilde{\boldsymbol{P}}}(x', y')}
   \frac{\partial \widetilde{\widetilde{\boldsymbol{P}}}(x', y')}{\partial \widetilde{\boldsymbol{P}}(x', y')}
-   \frac{\partial \widetilde{\boldsymbol{P}}(x', y')}{\partial \boldsymbol{P}(x, y)}
+   \frac{\partial \widetilde{\boldsymbol{P}}(x', y')}{\partial \boldsymbol{P}(x, y)}.
   \label{eq:fobjgrad}
 \end{equation}
 
-Una discusión más detallada de estas transformaciones se puede encontrar en \cite{Lazarov2016}.
+Para finalizar esta sección, se presenta una función para medir la presencia de regiones grises.
+Esta función ($M_{nd}$) nos ayudará en la evaluación de los diseños optimizados obtenidos en esta tesis.
+
+\begin{equation}
+  M_{nd} (\boldsymbol{P}) = \frac{\sum_{1 \leq x \leq n \land 1 \leq y \leq m}
+  4 \boldsymbol{P}(x, y)(1 - \boldsymbol{P}(x, y))}{n \times m} \times 100 \%.
+\end{equation}
+
+Una discusión más detallada de todo lo explicado en esta sección se puede encontrar en \cite{Lazarov2016}.
 
 \section{Algoritmos de Optimización}\label{sec:alg-opt}
 
-Finalmente, con todo lo descrito en este capítulo, ya podemos optimizar nuestros dispositivos.
-Ahora, notemos que nuestro problema se ha reducido a maximizar $f_{obj}$.
+Finalmente, con todo lo descrito en este capítulo, ya tenemos las herramientas necesarias
+para plantear la optimización de nuestros dispositivos.
+Ahora, notemos que nuestro problema se termina reduciendo a maximizar $f_{obj}$.
 Sin pérdida de generalidad, en la presente sección se describen algoritmos
 para minimizar la función $f = -f_{obj}$.
 Esto es posible ya que maximizar una función es equivalente a minimizar su negativo \citep{Mykel2019}.
@@ -478,7 +470,7 @@ Además, todos estos algoritmos se aseguran de mantener los valores de $\boldsym
 intérvalo $[0, 1]$ aplicando $\boldsymbol{P}(x, y) \gets max(0, min(1, \boldsymbol{P}(x, y)))$, mas
 este detalle se obvia en las explicaciones por simplicidad en la notación.
 
-\subsection{\emph{Genetic Algorithms} (GA)}
+\subsection{\emph{Genetic Algorithms} (GA)}\label{sec:ga}
 
 Como se describe en el Algoritmo \ref{alg:GA} \citep{Mykel2019}, la idea es 
 comenzar generando una población (\emph{population}) de tamaño $population\_size$.
@@ -505,7 +497,7 @@ $population = generate\_population()$ \\
 \label{alg:GA}
 \end{algorithm}
 
-Como se observa en el \autoref{alg:GA}, tenemos las siguientes funciones:
+Como se observa en el Algoritmo \autoref{alg:GA}, tenemos las siguientes funciones:
 
 \begin{itemize}
     \item $generate\_population():$ 
@@ -544,7 +536,7 @@ Como se observa en el \autoref{alg:GA}, tenemos las siguientes funciones:
 
 \end{itemize}
 
-\subsection{\emph{Particle Swarm Optimization} (PSO)}
+\subsection{\emph{Particle Swarm Optimization} (PSO)}\label{sec:pso}
 
 Podemos pensar este algoritmo como un caso especial del Algoritmo \ref{alg:GA}
 \citep{Mykel2019}.
@@ -612,7 +604,7 @@ Como se observa en el \autoref{alg:PSO}, tenemos las siguientes funciones:
 
 \end{itemize}
 
-\subsection{\emph{Covariance Matrix Adapatation Evolution Strategy} (CMA-ES)}
+\subsection{\emph{Covariance Matrix Adapatation Evolution Strategy} (CMA-ES)}\label{sec:cma-es}
 
 La idea general de esta estrategia evolutiva, mostrada en el Algoritmo
 \ref{alg:CMA}, es mantener:
@@ -693,7 +685,7 @@ aleatoria.
 De esta comparación podemos controlar si el valor de $\sigma$ debe
 incrementarse, disminuirse o permanecer igual.
 
-Finalmente, en la línea 6 cambiamos $\boldsymbol{C}$ a una dirección favorable usando
+Finalmente, en la línea 6 cambiamos $\boldsymbol{C}$ a una dirección favorable usando lo siguiente:
 
 \begin{multline}
   \boldsymbol{C^{(t + 1)}} \gets \overbrace{\bigg(1 - c_1 c_c (1 - h_{\sigma})(2 - c_c) - c_1 - c_{\mu}\bigg) \boldsymbol{C^{(t)}}}^{\text{cumulative update}} \\
@@ -723,7 +715,7 @@ La combinación de estos tres términos actualiza $\boldsymbol{C}$ de tal manera
 mueva la hiperelipse en una dirección favorable. 
 Para una descripción más detallada del algoritmo, revisar los trabajos de \cite{Hansen2016} y \cite{Mykel2019}.
 
-\subsection{\emph{Gradient Descent} (GD)}
+\subsection{\emph{Gradient Descent} (GD)}\label{sec:gradient-descent}
 
 Este algoritmo comienza desde un punto inicial, en nuestro caso la matriz $\boldsymbol{P}$.
 Luego, usa la derivada en ese punto para guiar su búsqueda iterativamente, 
@@ -752,7 +744,7 @@ para que las operaciones de esta ecuación estén bien definidas.
 Mayores detalles del algoritmo se pueden encontrar en \cite{Demidova2020}.
 
 
-\subsection{\emph{Method of Moving asymptotes} (MMA)}
+\subsection{\emph{Method of Moving asymptotes} (MMA)}\label{sec:mma}
 
 \emph{Method of moving asymptotes} (MMA) es un algoritmo de optimización
 local basado en la gradiente, es decir, de primer orden.
@@ -776,7 +768,7 @@ al algoritmo como MMA por convención.
 Esta variante tiene la particularidad de lograr converger a un mínimo local independientemente
 del punto inicial. Los detalles se pueden revisar en \cite{Svanberg2002}.
 
-\subsection{L-BFGS-B}
+\subsection{\emph{Limited-memory Broyden–Fletcher–Goldfarb–Shanno with boundaries} (L-BFGS-B)}\label{sec:lbfgsb}
 
 \emph{Limited-memory Broyden–Fletcher–Goldfarb–Shanno with boundaries} (L-BFGS-B) es un algoritmo
 de optimización que se caracteriza por estimar la inversa de la matriz hessiana utilizando 
@@ -789,20 +781,17 @@ la aproximación de la matriz hessiana.
 El lector interesado puede revisar los detalles del algoritmo en \cite{Liu1989}.
 
 
+En el presente capítulo se ha descrito la teoría necesaria para optimizar el diseño de un
+un \emph{bend} y WDM.
+Esto ha implicado la explicación de la parametrización basada en píxeles,
+el uso de SPINS-B y transformaciones utilizadas en la optimización topológica robusta.
+Además, se ha desarrollado la explicación de tres algoritmos que no necesitan calcular la gradiente:
+(i) GA, (ii) PSO y (iii) CMA-ES. Asimismo, se describió tres algoritmos de primer orden 
+(que usan la gradiente): (i) GD, (ii) MMA y (iii) L-BFGS-B.
+Los conceptos presentados serán de utilidad para entender la propuesta de esta tesis descrita en el
+\autoref{chapter:methodology}.
 
-\leonidas{TODO: Resumen del capítulo}
 
-%\section{Preparación para fabricación}
-
-%\subsection{Formato GDSII}
-
-%Para poder fabricar nuestros diseños necesitamos representarlos en formato GDSII.
-%En este formato se especifica los polígonos que representan a nuestro dispositivo.
-%Independientemente de la parametrización utilizada, mediante la simulación con SPINS o MEEP se puede obtener los puntos asociados al contorno del dispositivo.
-%Así, utilizando lo anterior se construye los polígonos \citep{Bogaerts2018}.
-
-%\leonidas{Hablar en más detalle de esto y acompañarlo con una imagen de conversión de una curva al formato GDSII similar al paper de Lukas}
-
-%\subsection{Simulación de errores}
-
-%\leonidas{Escribir las fórmulas de dilatación y contracción de Hammond2020. Hacer un link con el método de los 9 puntos.}
+%\leonidas{Hablar en más detalle de esto y acompañarlo con una imagen de conversión de una curva al 
+%formato GDSII similar al paper de Lukas \citep{Bogaerts2018} o hacer mención de esto en los 
+%resultados directamente}

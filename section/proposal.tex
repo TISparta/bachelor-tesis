@@ -1,8 +1,8 @@
-\chapter{Metodología}
+\chapter{Metodología}\label{chapter:methodology}
 
 En el presente capítulo se describe la metodología a seguir en esta tesis.
 Primero, se describe de forma general los seis pasos que se trabajaran.
-Luego, se detalla en una sección completa cada uno de estos pasos.
+Luego, se detalla en una sección completa cada uno de estos.
 Finalmente, se brindan los alcances y limitaciones de la propuesta.
 
 Como se muestra en la \autoref{fig:pipeline}, en esta investigación se siguieron los siguientes seis pasos:
@@ -28,14 +28,15 @@ Este proceso tiene como fin el mantener un buen resultado \citep{Yang2017}.
 En particular, el valor de $\beta$, presente en la \autoref{eq:projection}, representa el factor discretizador de nuestros diseños.
 Este valor se va incrementando en la optimización discreta y de fabricación como se muestra en la
 \autoref{fig:pipeline}.
-Finalmente, tras haber conseguido diseños optimizados se realizó un post-procesamiento para dejar los diseños
-en un formato listo para fabricación.
+Finalmente, tras haber conseguido diseños optimizados se realizó un posprocesamiento,
+análisis de los diseños más optimos y conversión al formato GDSII para dejar los diseños 
+listos para fabricación.
 
 En las siguientes subsecciones se explica en detalle cada una de los pasos de la metodología seguida en esta tesis.
 
 \begin{figure}[ht]
   \centering
-  \includegraphics[width=\textwidth]{image/proposal/pipeline.png}
+  \includegraphics[scale=0.8]{image/proposal/pipeline.png}
   \caption{Metodología del trabajo de investigación}
   \label{fig:pipeline}
 \end{figure}
@@ -69,7 +70,8 @@ La profundidad de toda la geometría es especificada por la variable \emph{depth
 Cabe destacar que los parámetros fueron escogidos inspirados por el trabajo de \cite{Su2020}.
 De este modo, la región de diseño se dividió en rectángulos de $16nm \times 16 nm$, obteniendo así una
 matriz de $125 \times 125$.
-El valor de los demás parámetros se presenta en la \autoref{tab:bend-values}.
+Notemos que con esta configuración, en la \autoref{eq:distance} tenemos $psize_x = psize_y = 16 nm$.
+El valor de los demás parámetros del diseño se presenta en la \autoref{tab:bend-values}.
 
 \begin{table}[ht]
     \centering
@@ -171,7 +173,7 @@ estos resultados son presentados en la \autoref{fig:gradient-free-comparison}.
 Como podemos observar, especialmente del CMA-ES, hay una ligera tendencia de mejora.
 Por otro lado, por los resultados mostrados en \cite{Christiansen2021matlab} uno esperaría que algoritmos como GA lograran 
 obtener resultados similares a los obtenidos por algún algoritmo basado en la gradiente (e.g. L-BFGS-B y MMA); 
-sin embargo, esto podría necesitar evaluar la función objetivo un número muy elevado de veces (entre $10^4$ y $10^5$).
+sin embargo, esto podría necesitar evaluar el FOM un número muy elevado de veces (entre $10^4$ y $10^5$).
 
 \begin{figure}[ht]
   \centering
@@ -179,15 +181,6 @@ sin embargo, esto podría necesitar evaluar la función objetivo un número muy 
   \caption{Comparación del desempeño de GA, PSO y CMA-ES para optimizar el \emph{bend} propuesto.}
   \label{fig:gradient-free-comparison}
 \end{figure}
-
-
-De este modo, en esta tesis se optó por comparar solamente algoritmos de primer orden, es decir, que utilicen
-el cómputo de la gradiente en sus rutinas. Así, se seguirá evaluando los algoritmos GA, PSO y CMA-ES pero
-ahora en sus versiones que usan la gradiente.
-Para poder comparar el desempeño de estos se configuró la máxima cantidad de veces que podían
-evaluar la función objetivo. 
-Los parámetros específicos con los que se ejecutaron cada algoritmo se detallan en la
-\autoref{tab:alg-parameters} siguiendo la nomenclatura presentada en la \autoref{sec:alg-opt}.
 
 \begin{table}[ht]
     \centering
@@ -197,10 +190,10 @@ Los parámetros específicos con los que se ejecutaron cada algoritmo se detalla
     \hline
     G-GA & population\_size & 40 \\
     G-GA & n\_selected\_parents & 10 \\
-    G-GA & range & 0.1 \\
+    G-GA & GA\_range & 0.1 \\
     G-GA & prob\_mutation & 0.1 \\
     G-PSO & population\_size & 40 \\
-    G-PSO & range & 0.1 \\
+    G-PSO & PSO\_range & 0.1 \\
     G-PSO & $\omega$ & 0.5 \\
     G-PSO & $c_1$ & 0.5 \\
     G-PSO & $c_2$ & 0.5 \\
@@ -212,7 +205,67 @@ Los parámetros específicos con los que se ejecutaron cada algoritmo se detalla
     \label{tab:alg-parameters}
 \end{table}
 
-Es resumen, usando simulaciones en 3D FDFD con SPINS, evaluaremos estos cinco algoritmos: (i) G-GA, (ii) G-PSO, (iii) G-CMA-ES, (iv) L-BFGS-B, (v) MMA.
+De este modo, en esta tesis se optó por comparar solamente algoritmos de primer orden, es decir, que utilicen
+el cómputo de la gradiente en sus rutinas. Así, se seguirá evaluando los algoritmos GA, PSO y CMA-ES pero
+ahora en sus versiones que usan la gradiente.
+Para poder comparar el desempeño de estos se configuró la máxima cantidad de veces que podían
+evaluar la función objetivo. 
+Los parámetros específicos con los que se ejecutaron cada algoritmo se detallan en la
+\autoref{tab:alg-parameters} siguiendo la nomenclatura presentada en la \autoref{sec:alg-opt}.
+
+Es resumen, usando simulaciones en 3D FDFD con SPINS-B, evaluamos estos cinco algoritmos:
+
+\begin{enumerate}
+  \item \textbf{G-PSO}
+
+  Llamemos así a la versión de PSO (\autoref{sec:pso}) que usa la gradiente. 
+  Basándonos en el trabajo de \cite{Demidova2020}, después de cada iteración
+  del Algoritmo \ref{alg:PSO}, aplicamos el algoritmo de GD
+  (\autoref{sec:gradient-descent}) para actualizar la mejor solución global encontrada por el 
+  algoritmo PSO. Esta aplicación de GD se realiza por 10 iteraciones.
+  La idea detrás de esta variente es asegurar que la mejor solución global alcance un buen resultado
+  para lograr guiar a las demás partículas (manteniendo así el enfoque de un algoritmo de optimización
+  global).
+  
+  Los experimentos con este algoritmo se desarrollaron con una implementación propia.
+
+  \item \textbf{G-GA}
+
+  Similar al G-PSO, después de cada iteración del Algoritmo \ref{alg:GA}, se escoge dos
+  elementos aleatorios para actualizarlos aplicándoles GD por 10 iteraciones.
+  Se escoge dos elementos y no solo uno para asegurar que los resultados de aplicar GD
+  se compartan rápidamente con los demás individuos en pocas iteraciones.
+
+  Los experimentos con este algoritmo se desarrollaron con una implementación propia.
+
+  \item \textbf{G-CMA-ES}
+
+  En esta variante, al final de cada iteración del Algoritmo \ref{alg:CMA} se
+  calcula la gradiente de la media obtenida, luego este valor se utiliza para
+  actualizar la hiperelipse en la siguiente iteración.
+  Los detalles precisos se pueden encontrar en \cite{Nikolaus2021}.
+
+  Los experimentos con este algoritmo se desarrollaron usando el paquete de Python pycma
+  \citep{hansen2019pycma}.
+
+  \item \textbf{MMA} (\autoref{sec:mma})
+
+  No se realizaron variantes en este algoritmo.
+  Los experimentos se desarrollaron usando el paquete de Python NLOpt \citep{nlopt}.
+
+  \item \textbf{L-BFGS-B} (\autoref{sec:lbfgsb})
+
+  No se realizaron variantes en este algoritmo.
+  Los experimentos se desarrollaron usando el paquete de Python SciPy \citep{2020SciPy-NMeth}.
+
+\end{enumerate}
+
+A continuación, se detalla la estrategia de optimización seguida en este trabajo.
+Esta propuesta esta inspirada (principalmente) en el trabajo de \cite{Su2020} y \cite{Christiansen2021}.
+En cada una de estas etapas se limitó la cantidad de veces que se podía evaluar $f_{obj}$ para su
+posterior comparación. Además, para G-GA y G-PSO se agregó una condición para terminar el algoritmo
+en caso de no encontrar mejoras mayores a $10^{-9}$ en las últimas $5$ iteraciones, 
+para el L-BFGS-B se usó valores por defecto y para $MMA$ se estableció un toleracia relativa de $10^{-9}$.
 
 \section{Optimización Continua}
 
@@ -264,8 +317,8 @@ fabricación, por cada parametrización $\boldsymbol{P}$ se calculó:
 Estos tres elementos se calcularon siguiendo los mismos filtros descritos en la anterior sección
 $(\boldsymbol{P} \mathrel{\leadsto} \widetilde{\boldsymbol{P}} \mathrel{\leadsto}
 \widetilde{\widetilde{\boldsymbol{P}}} \mathrel{\leadsto} \varepsilon)$.
-Pero, para el diseño dilatado se usó $\eta = 0.55$, para el diseño normal $\eta = 0.5$ y
-para el diseño expandido $\eta = 0.45$.
+Pero, para el diseño dilatado se usó $\eta_d = 0.45$, para el diseño normal $\eta_i = 0.5$ y
+para el diseño expandido $\eta_e = 0.55$.
 
 Luego, se definió una nueva función objetivo mediante la siguiente ecuación:
 
@@ -283,22 +336,26 @@ Luego, se definió una nueva función objetivo mediante la siguiente ecuación:
 Así, considerando el peor escenario ante dos posibles errores de fabricación (expansión o contracción),
 se busca el diseño más resiliente posible.
 Para optimizar esta nueva función objetivo se realizó el mismo proceso de la optimización discreta, pero ahora
-con valores $\beta = 2^4, 2^5, 2^6$. De esta manera, en paralelo, seguimos con el proceso de discretizar
+con valores $\beta = 2^4, 2^5, 2^6$ y limitando a 400 evaluaciones de $F_{obj}$ por cada $\beta$. 
+De esta manera, en paralelo, seguimos con el proceso de discretizar
 nuestros resultados.
 
 \section{Preparación para Fabricación}
 
-
-Para que nuestros diseños puedan ser fabricados, necesitamos representarlo en formato GDSII.
-Para ello, con los mejores resultados de cada algoritmo usamos la distribución de la permitividad asociada a su parametrización, $\epsilon(p)$,
-para obtener la geometría del dispositivo.
-Así, nuestra tarea se redujo a aproximar el contorno de esta geometría con polígonos para luego realizar la conversión al formato GDSII.
-Para ello se uso el paquete \emph{matplotlib} para dibujar la geometría y obtener un polígono que la aproxime.
+Finalmente, se seleccionó el diseño más optimo obtenido para un \emph{bend} y WDM.
+Luego, se realizó un analisis del funcionamiento de estos dispositivos a distintas longitudes de onda
+y se evaluó su desempeño al eliminar regiones aisladas.
+Posteriormente, usando la permitividad asociada a sus parametrization se obtuvo la geometría del dispositivo.
+Esta geometría se aproximó mediante polígonos usando el paquete \emph{mathplotlib} de Python
+para representar el diseño en formato GDSII y dejarlo listo para fabricación.
 
 \section{Alcances y Limitaciones}
 
-El presente trabajo solo se realizo mediante simulaciones computacionales, no se llegó a la parte de
+El presente trabajo solo se realizó mediante simulaciones computacionales, no se llegó a la parte de
 fabricación por temas de tiempo y dinero.
 
-En este capitulo hemos explicado los pasos a seguir en esta tesis. Con estos seis pasos responderemos a los
-objetivos planteados.
+En este capítulo hemos explicado los seis pasos seguidos en esta tesis.
+Primero, comenzamos describiendo la configuración de nuestros dispositivos a optimizar.
+Segundo, se detalló los cinco algoritmos a utilizar, sus parámetros y justificación de elección.
+Luego, se desarrolló la estrategia de optimización a seguir: optimización continua, discreta y de fabricación.
+Finalmente, se describió la etapa final realizada con los mejores diseños obtenidos.

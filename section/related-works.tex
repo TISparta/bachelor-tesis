@@ -1,13 +1,12 @@
-\chapter{Revisión Crítica de la Literatura}
+\chapter{Trabajos Relacionados}
 
 En el presente capítulo comenzaremos discutiendo sobre un trabajo que optimiza un \emph{splitter}.
 Seguidamente, identificaremos dos inconvenientes con este trabajo e iremos mostrando como otras 
 investigaciones han afrontado estos desafíos.
 
-En \cite{Prosopio-Galarza2019} se optimizó un \emph{splitter} con guías de onda fijas de altura $0.5 \mu m$, 
+En \cite{Prosopio-Galarza2019} se optimizó un \emph{splitter} con guías de onda fijas de $0.5 \mu m$, 
 donde las guías de onda de salida son separadas por $0.2 \mu m$ y 
 todas estas son unidas con una región rectangular de diseño de $2 \mu m \times 1.5 \mu m$.
-El diseño utiliza un espesor estándar de $220 nm$.
 Con esta geometría se simulan distintos diseños dividiendo la región rectangular en ($z = 13$) segmentos
 uniformemente separados.
 Cada segmento puede variar su altura dentro del rectángulo, estos se centran de forma vertical y
@@ -25,7 +24,7 @@ Como función objetivo se establece maximizar la transmitancia en la guía de on
 longitud de onda de $1550 nm$.
 Los mejores resultados son obtenidos al usar PSO como algoritmo de optimización.
 
-Es destacable que al usar esta parametrización es posible limitar las alturas de los segmentos para asegurar 
+Es destacable que al usar esta parametrización se puede limitar las alturas de los segmentos para asegurar 
 obtener ángulos agudos, los cuales son los más adecuados como regla práctica de diseño
 \citep{LukasChrostowski2010}.
 Sin embargo, hay dos inconvenientes con este trabajo:
@@ -45,35 +44,68 @@ A continuación, vamos a desarrollar en más detalle como otros trabajos han bus
 
 \section{Inconveniente 1: La Parametrización}
 
-Una estrategia de parametrización interesante es la de dividir de forma uniforme la región rectangular de diseño en 
-$n \times m$ rectángulos como si fueran píxeles.
-Luego, podemos considerar que un píxel negro representa la presencia de $Si$ y uno blanco de $SiO_2$,
-como se mostró en la \autoref{fig:bend-discretization}.
-Aunque trabajaron con otro dispositivo, esta estrategia se aplicó en \cite{Malheiros-Silveira2020} con $n
-= m = 10$.
+Como se detalla en \cite{Molesky2018}, para permitir diseños con mayor grado de libertad se suele 
+trabajar con dos enfoques:
+(i) parametrización basada en conjuntos de nivel y
+(ii) parametrización basada en píxeles.
 
-Sin embargo, una estrategia aún más interesante es la asignación a cada píxel de una permitividad
-definida por la \autoref{eq:permitivity}, estrategia que se evaluó en \cite{Su2020} para optimizar un
-\emph{bend} y \emph{WDM}. 
-El principal beneficio de esta idea es que pasamos de tener un problema de optimización donde el resultado
-solo podía tomar valores enteros a uno donde podemos considerar valores reales.
-Con esto en consideración, se sigue la estrategia descrita en la \autoref{sec:estrategia-optimizacion}:
-optimización continua y optimización discreta. 
 
-Aún cuando la idea anterior es muy buena, al momento de incorporar restricciones de fabricación simplemente se
-considera usar parámetros más grandes que la mínima precisión que puede manejar el equipo encargado de
-fabricar el diseño.
-Por otro lado, el trabajo presentado por \cite{Hammond20} brinda más detalles para esta etapa.
-Lo más relevante de esta publicación es que a cada diseño le aplica transformaciones para simular la posible 
-contracción o dilatación de estos al fabricarse.
-Con lo anterior hace un intento de detectar estos dos errores de fabricación desde la etapa de optimización.
+La parametrización basada en conjuntos de nivel permite describir geometrías poco intuitivas,
+con elevada transmitancia y sin necesidad de regiones grises.
+\cite{Piggott2015} utiliza esta parametrización para optimizar un WDM con guías de onda de $0.5 \mu m$
+y una región de diseño de $2.8 \mu m \times 2.8 \mu m$ trabajando a $1300 nm$ y $1550 nm$.
+Comienza con un diseño inicial aleatorio, luego realiza la optimización en tres etapas consecutivas:
+(i) optimiza sin restricciones con una parametrización basada en píxeles (pudiendo producir regiones grises),
+(ii) introduce una parametrización basada en conjuntos de nivel,
+(iii) busca optimizar en distintas longitudes de onda con el fin de buscar un diseño robusto.
+Este enfoque ha dado buenos resultados incluso al fabricarse. 
+Además, en \cite{Piggott2017} se desarrolla
+un algoritmo para tratar de imponer un mínimo radio de curvatura a los diseños y asegurar 
+mayor coherencia entre las simulaciones y los diseños fabricados.
+
+De manera similar, \cite{Su2020} obtiene transmitancias alrededor de $90\%$ al
+optimizar un WDM trabajando a $1400nm$ y $1550 nm$.
+Sin embargo, su proceso de optimización consiste en solo dos etapas:
+(i) optimización continua y
+(ii) optimización discreta.
+Lo interesante de su propuesta es que en la optimización continua trabaja con subetapas donde aplica
+una transformación sigmoidal (similar a la \autoref{eq:projection}) para ir discretizando los diseños.
+Luego, en la optimización discreta aplica una parametrización basada en conjuntos de nivel para 
+eliminar regiones grises e imponer un mínimo radio de curvatura de $100 nm$.
+
+
+Por otro lado, la parametrización basada en píxeles también ha obtenido buenos resultados en
+la optimización topológica.
+Como se describe en \cite{Lazarov2016}, generalmente se utiliza las transformaciones 
+descritas en la \autoref{sec:transformations}:
+filtro por densidad y proyección. Particularmente, utilizando estas mismas transformaciones
+se logra simular dos posibles errores de fabricación: dilatación y erosión.
+A modo de tutorial, \cite{Christiansen2021} optimiza un WDM con guías de onda de $0.299 \mu m$ y
+una región de diseño de $2 \mu m \times 2 \mu m$ trabajando a $1300 nm$ y $1550 nm$.
+Utilizando parametrización basada en píxeles, 
+realiza un proceso similar a la optimización continua de \cite{Su2020}; 
+pero, en vez de aplicar una función sigmoidal para 
+discretizar el diseño, aplica el filtro por densidad para tratar de imponer un mínimo radio de curvatura
+y después la proyección para discretizar los diseños. 
+Asimismo, define su función objetivo de tal modo que asegura
+diseños robustos ante dilatación o erosión.
+
+
+De manera similar \cite{Hammond20} trabaja con optimización topológica robusta para optimizar un 
+\emph{splitter} en una región de diseño de $3 \mu m \times 3 \mu m$.
+En este trabajo se realiza la optimización imponiendo distintos radios de curvatura.
+De sus resultados se puede observar que a menor radio de curvatura se logra definir más detalles en los
+diseños y la optimización logra mejores resultados.
+Posteriormente, \cite{Hammond21} fabrica diseños obtenidos con esta idea y muestra buenos resultados. 
+Pero, detallan la presencia de pequeñas variaciones en las simulaciones y datos experimentales
+posiblemente causada por regiones aisladas en el diseño.
 
 \section{Inconveniente 2: La Optimización}
 
 En \cite{Malheiros-Silveira2020} se compararon dos algoritmos en la optimización de un dispositivo.
 A diferencia de \cite{Prosopio-Galarza2019}, la comparación no se realizó en base a la cantidad de iteraciones
 realizadas por cada algoritmo, en cambio se hizo de acuerdo a la cantidad de simulaciones realizadas 
-($\approx 2000$), es decir, la cantidad de veces que se evaluó la FOM. 
+($\approx 2000$), es decir, la cantidad de veces que se evaluó la FOM.
 Esta estrategia es más adecuada para comparar algoritmos con distintas características de una manera más justa.
 
 
@@ -84,7 +116,7 @@ para optimizar cualquier dispositivo.
 
 En general, PSO y GA han sido extensamente usados en el área de acuerdo de acuerdo a reseñas como las de
 \cite{Elsawy2020} y \cite{Campbell2019}. Tal y como es señalado en estos trabajos, el desempeño de ambos
-algoritmos es sensible a los parámetros escogidos. Esta es un gran inconveniente debido a que escoger
+algoritmos es sensible a los parámetros escogidos. Este es un gran inconveniente debido a que escoger
 parámetros adecuados puede consumir mucho tiempo y esto se debe hacer independientemente para cada
 dispositivo. Con el propósito de superar esta dificultad, distintos trabajos están optando por usar algoritmos
 que no necesiten configurar parámetros internos.
@@ -93,8 +125,9 @@ que no necesiten configurar parámetros internos.
 Bajo este enfoque, en \cite{Gregory2015} se resaltó el buen desempeño que pude obtener el algoritmo CMA-ES en
 la optimización de ciertos dispositivos, llegando a superar al PSO.
 De manera similar, en \cite{Schneider2019} se realizó un trabajo muy completo comparando distintos algoritmos
-llegando a resultados donde la optimización bayesiana mostró los resultados más prometedores.
-Y, aunque no entra en mucho detalle sobre la razón de esta elección, en \cite{Su2020} se empleó el algoritmo 
+llegando a resultados donde la optimización bayesiana mostró los resultados más prometedores,
+pero esta comparación fue para un bajo número de parámetros ($< 15$).
+Y, aunque no detalla la razón, en \cite{Su2020} se empleó el algoritmo 
 L-BFGS-B en la optimización de un \emph{bend} y WDM llegando a obtener resultados destacados.
 
 Un aspecto importante a resaltar de estos últimos tres trabajos es que al comparar distintos algoritmos para
@@ -103,9 +136,12 @@ optimizar dispositivos fotónicos necesitamos contar con
 (ii) distintas ejecuciones que comiencen con diferentes puntos iniciales.
 
 Como se ha discutido en este capítulo, la parametrización de nuestros dispositivos usando un bajo número
-de parámetros puede ir condicionando nuestros resultados, ante ellos podemos realizar una parametrización
-más flexible basada en píxeles. Esto supone nuevos desafíos, mas ya existen estrategias para afrontarlos e
-incluso para incluir restricciones de fabricación a esta parametrización.
-Por otro lado, aunque no se mencionó explicítamente, no parece haber muchas
-investigaciones que comparen distintos algoritmos cuando trabajamos con un elevado número de parámetros para
-representar nuestros dispositivos, en especial si los algoritmos no son PSO o GA.
+de parámetros puede ir condicionando nuestros resultados, ante ellos dos posibles soluciones son usar
+(i) parametrización basada en conjuntos de nivel o (ii) parametrización basada en píxeles. 
+Esto supone nuevos desafíos, mas ya existen estrategias para afrontarlos e
+incluso para incluir restricciones de fabricación a ambas parametrizaciones
+utilizando distintas estrategias de optimización.
+Por otro lado, aunque no se mencionó explicítamente, en el área de fotónica no parece haber muchas
+investigaciones que comparen distintos algoritmos cuando trabajamos con un 
+elevado número de parámetros para representar nuestros dispositivos, 
+en especial si los algoritmos no son PSO o GA.
