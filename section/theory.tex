@@ -428,11 +428,13 @@ para realizar el cálculo utilizando lo siguiente:
 \end{equation}
 
 Para finalizar esta sección, se presenta una función para medir la presencia de regiones grises.
-Esta función ($M_{nd}$) nos ayudará en la evaluación de los diseños optimizados obtenidos en esta tesis.
+Esta función ($M_{nd}$) nos ayudará en la evaluación de los diseños optimizados obtenidos en esta tesis,
+si obtenemos un valor menor al 2 \% podremos decir que nuestro diseño ha sido correctamente binarizado.
 
 \begin{equation}
   M_{nd} (\boldsymbol{P}) = \frac{\sum_{1 \leq x \leq n \land 1 \leq y \leq m}
   4 \boldsymbol{P}(x, y)(1 - \boldsymbol{P}(x, y))}{n \times m} \times 100 \%.
+\label{eq:grayscale}
 \end{equation}
 
 Una discusión más detallada de todo lo explicado en esta sección se puede encontrar en \cite{Lazarov2016}.
