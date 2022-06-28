@@ -28,9 +28,8 @@ Este proceso tiene como fin el mantener un buen resultado \citep{Yang2017}.
 En particular, el valor de $\beta$, presente en la \autoref{eq:projection}, representa el factor discretizador de nuestros diseños.
 Este valor se va incrementando en la optimización discreta y de fabricación como se muestra en la
 \autoref{fig:pipeline}.
-Finalmente, tras haber conseguido diseños optimizados se realizó un posprocesamiento,
-análisis de los diseños más optimos y conversión al formato GDSII para dejar los diseños 
-listos para fabricación.
+Finalmente, tras haber conseguido diseños optimizados se realizó un posprocesamiento y
+análisis de los diseños más optimos.
 
 En las siguientes subsecciones se explica en detalle cada una de los pasos de la metodología seguida en esta tesis.
 
@@ -58,6 +57,7 @@ La descripción detallada para los dos dispositivos de estudio se presentan en l
 \end{figure}
 
 En la \autoref{fig:dimensiones-bend} se muestra el diseño y parámetros del \emph{bend} a utilizar.
+Se espera que este dispositivo trabaje a $1550 nm$.
 Los rectángulo negros representan las guías de onda, estos tienen las mismas dimensiones aunque en distinta orientación.
 La región gris representa la región de diseño.
 La recta roja simula la fuente y la recta azul el monitor, su extensión está
@@ -106,6 +106,7 @@ El valor de los demás parámetros del diseño se presenta en la \autoref{tab:be
 \end{figure}
 
 En la \autoref{fig:dimensiones-demultiplexer} se muestra el diseño y parámetros del WDM a utilizar.
+Se espera que este dispositivo trabaje a $1300 nm$ en el brazo superior y a $1550 nm$ en el brazo inferior.
 Los rectángulo negros representan las guías de onda, estos tienen las mismas dimensiones.
 La región gris representa la región de diseño.
 La recta roja simula la fuente y su extensión se simboliza por la variable \emph{source}.
@@ -345,14 +346,20 @@ nuestros resultados.
 Finalmente, se seleccionó el diseño más optimo obtenido para un \emph{bend} y WDM.
 Luego, se realizó un analisis del funcionamiento de estos dispositivos a distintas longitudes de onda
 y se evaluó su desempeño al eliminar regiones aisladas.
-Posteriormente, usando la permitividad asociada a sus parametrization se obtuvo la geometría del dispositivo.
-Esta geometría se aproximó mediante polígonos usando el paquete \emph{mathplotlib} de Python
-para representar el diseño en formato GDSII y dejarlo listo para fabricación.
+Para la eliminación de regiones aisladas se realizó una búsqueda por profundidad
+desde la intersección entre la guía de entrada y la región de diseño.
+Para ello recorrimos la matriz $\boldsymbol{P}$ como un grafo implícito moviéndonos a una celda
+vecina si está poseía un valor mayor a 0.5.
+
+%Posteriormente, usando la permitividad asociada a sus parametrization se obtuvo la geometría del dispositivo.
+%Esta geometría se aproximó mediante polígonos usando el paquete \emph{mathplotlib} de Python
+%para representar el diseño en formato GDSII y dejarlo listo para fabricación.
 
 \section{Alcances y Limitaciones}
 
 El presente trabajo solo se realizó mediante simulaciones computacionales, no se llegó a la parte de
-fabricación por temas de tiempo y dinero.
+fabricación por temas de tiempo y presupuesto. Sin embargo, los mejores diseños optimizados se
+encuentran listos para poder ser fabricados.
 
 En este capítulo hemos explicado los seis pasos seguidos en esta tesis.
 Primero, comenzamos describiendo la configuración de nuestros dispositivos a optimizar.

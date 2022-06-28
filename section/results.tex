@@ -1,9 +1,9 @@
-\chapter{Experimentaciones y Resultados}
+\chapter{Experimentaciones y Resultados}\label{chapter:results}
 
 En la presente sección comenzaremos mostrando los sistemas de cómputo utilizados para la experimentación.
 Seguidamente, dividimos este capítulo en seis secciones.
 Primero, se muestra los resultados de la optimización del \emph{bend}.
-Para ello se inicia mostrando en en tres gráficas distintas el desempeño de cada algoritmo en 
+Para ello se inicia mostrando en tres gráficas distintas el desempeño de cada algoritmo en 
 las tres etapas de la estrategia de optimización; luego se detalla los resultados por cada algoritmo
 de manera individual.
 Segundo, se realiza un análisis al diseño del \emph{bend} mejor optimizado.
@@ -27,7 +27,8 @@ Los experimentos se realizaron en tres equipos brindados por la Universidad de I
 \end{enumerate}
 
 Sacando la media geométrica de los tiempos calculados, el tiempo promedio de ejecución en los tres 
-sistemas en cada etapa de la estrategia de optimización se detalla en la \autoref{tab:times}.
+sistemas en cada etapa de la estrategia de optimización se detalla en la \autoref{tab:times} (el signo -
+indica que en ese sistema de cómputo no se realizaron experimentos con ese dispositivo).
 
 \begin{table}[ht]
     \centering
@@ -35,9 +36,12 @@ sistemas en cada etapa de la estrategia de optimización se detalla en la \autor
     \hline 
       Tiempo promedio &  Quadro RTX (s) & Tesla T4 & Ampere A100 \\
     \hline 
-      Optimización continua       & - & - & - \\
-      Optimización discreta       & - & - & - \\
-      Optimización de fabricación & - & - & - \\
+      Optimización continua (\emph{bend})            & 14.261 & 15.432 & - \\
+      Optimización discreta (\emph{bend})            & 15.961 & 18.718 & - \\
+      Optimización de fabricación (\emph{bend})      & 47.084 & 50.639 & - \\
+      Optimización continua (WDM)                    & 16.876 & - & 17.479 \\
+      Optimización discreta (WDM)                    & 18.431 & - & 19.780 \\
+      Optimización de fabricación (WDM)              & 53.941 & - & 55.406 \\
     \hline 
     \end{tabular}
     \caption{Tiempos promedios de ejecución en cada etapa de optimización para el \emph{bend} y WDM con los
@@ -47,7 +51,8 @@ sistemas en cada etapa de la estrategia de optimización se detalla en la \autor
 
 Por cada optimización se realizó como máximo $2000$ evaluaciones de $f_{obj}$ en la optimización continua,
 $3 \times 800$ en la optimización discreta y $3 \times 400$ en la optimización de fabricación.
-Así, \leonidas{COMPLETAR CUANTO PUEDE DEMORAR CADA UNO}.
+Así, por ejemplo, usando Quadro RTX la optimización de un \emph{bend} podía tomar hasta 34 horas
+y usando Ampere A100 la optimización de un WDM podía tomar hasta 41 horas.
 
 Por otro lado, cada GPU solo puede realizar una simulación a la vez, en caso de querer 
 evaluar dos parametrizaciones al mismo tiempo una era puesta en cola. De este modo,
@@ -68,7 +73,7 @@ el mínimo radio de curvatura que se está intentando imponer.
 En la \autoref{fig:bend-cont}, \autoref{fig:bend-disc} y \autoref{fig:bend-fab} se observa 
 el desempeño de los cinco algoritmos seleccionados en la etapa de optimización continua, discreta y
 de fabricación del \emph{bend}, respectivamente.
-Los resultados en más detalle por algoritmo se pueden encontrar en 
+Los resultados en más detalle por algoritmo se pueden encontrar en la 
 \autoref{tab:opt-LBFGSB-bend} (L-BFGS-B),
 \autoref{tab:opt-CMA-bend} (G-CMA-ES),
 \autoref{tab:opt-MMA-bend} (MMA),
@@ -293,14 +298,14 @@ Los resultados en más detalle por algoritmo se pueden encontrar en
     \emph{Seed} & Opt. continua & Opt. discreta &  Opt. de fabricación \\
     \hline
       \multirow{2}{*}{128} &
-      \includegraphics[width=0.20\textwidth]{image/results/bend/GA/visualize_eps_cont_128.png} \\
-      %\includegraphics[width=0.20\textwidth]{image/results/bend/GA/visualize_eps_disc_128.png} &
-      %\includegraphics[width=0.20\textwidth]{image/results/bend/GA/visualize_eps_fab_128.png} \\
+      \includegraphics[width=0.20\textwidth]{image/results/bend/GA/visualize_eps_cont_128.png} &
+      \includegraphics[width=0.20\textwidth]{image/results/bend/GA/visualize_eps_disc_128.png} &
+      \includegraphics[width=0.20\textwidth]{image/results/bend/GA/visualize_eps_fab_128.png} \\
       \cline{2-4}
       &
-      \includegraphics[width=0.33\textwidth]{image/results/bend/GA/visualize_field_cont_128.png} \\
-      %\includegraphics[width=0.33\textwidth]{image/results/bend/GA/visualize_field_disc_128.png} &
-      %\includegraphics[width=0.33\textwidth]{image/results/bend/GA/visualize_field_fab_128.png} \\
+      \includegraphics[width=0.33\textwidth]{image/results/bend/GA/visualize_field_cont_128.png} &
+      \includegraphics[width=0.33\textwidth]{image/results/bend/GA/visualize_field_disc_128.png} &
+      \includegraphics[width=0.33\textwidth]{image/results/bend/GA/visualize_field_fab_128.png} \\
     \hline
       \multirow{2}{*}{256} &
       \includegraphics[width=0.20\textwidth]{image/results/bend/GA/visualize_eps_cont_256.png} \\
@@ -336,7 +341,7 @@ De la sección anterior tenemos que el \emph{bend} mejor optimizado se consigui�
 utilizando el algoritmo L-BFGS-B con un \emph{seed} (valor de semilla) de 256.
 
 Al aplicar la \autoref{eq:grayscale} obtenemos que el porcentage de región gris en el diseño
-es de 1.097 \%, un valor menor a 2 \% por lo cual podemos considerar que el diseño ha sido
+es de 1.097 \%, un valor menor a 2 \%, por lo cual podemos considerar que el diseño ha sido
 correctamente binarizado. Por otro lado, si eliminamos las regiones no conectadas con la guía de entrada
 tenemos un diseño con un porcentaje de gris de 0.168 \%.
 Estos diseños lo podemos observar en la \autoref{fig:bestbend}.
@@ -381,7 +386,7 @@ en un rango de longitudes de onda de $1500nm$ a $1600 nm$.
 En la \autoref{fig:wdm-cont}, \autoref{fig:wdm-disc} y \autoref{fig:wdm-fab} se observa 
 el desempeño de los cinco algoritmos seleccionados en la etapa de optimización continua, discreta y
 de fabricación del WDM, respectivamente.
-Los resultados en más detalle por algoritmo se pueden encontrar en 
+Los resultados en más detalle por algoritmo se pueden encontrar en la
 \autoref{tab:opt-LBFGSB-wdm} (L-BFGS-B),
 \autoref{tab:opt-CMA-wdm} (G-CMA-ES),
 \autoref{tab:opt-MMA-wdm} (MMA),
@@ -658,7 +663,7 @@ De la sección anterior tenemos que el WDM mejor optimizado se consiguió
 utilizando el algoritmo L-BFGS-B con un \emph{seed} (valor de semilla) de 128.
 
 Al aplicar la \autoref{eq:grayscale} obtenemos que el porcentage de región gris en el diseño
-es de 1.233 \%, un valor menor a 2 \% por lo cual podemos considerar que el diseño ha sido
+es de 1.233 \%, un valor menor a 2 \%, por lo cual podemos considerar que el diseño ha sido
 correctamente binarizado. Por otro lado, si eliminamos las regiones no conectadas con la guía de entrada
 tenemos un diseño con un porcentaje de gris de 0.469 \%.
 Estos diseños lo podemos observar en la \autoref{fig:bestwdm}.
@@ -709,7 +714,7 @@ Pero, utilizando SPINS-B tenemos que el diseño intuitivo posee una transmitanci
 
 De la \autoref{sec:results-bend} tenemos que MMA es el único algoritmo que no logra obtener un diseño
 mejor que el intuitivo. 
-De hecho, todos los demás algoritmos logran una transmitancia de almenos 90 \%.
+De hecho, todos los demás algoritmos logran una transmitancia de al menos 90 \%.
 Particularmente, L-BFGS-B obtiene los mejores resultados y logra una rápida convergencia a un
 elevado valor del $FOM$.
 Es cierto que G-PSO y G-GA logran una convergencia más rápida. Sin embargo, los 
@@ -733,7 +738,7 @@ señala a continuación:
 
 Curiosamente, sin contar al MMA, los algoritmos producieron pequeñas islas.
 En la \autoref{sec:best-bend} se utilizó el diseño mejor optimizado para experimentar
-quitando estas islas. Sorprendentemte, estos resultados siguieron teniendo una transmitancia
+quitando estos elementos. Sorprendentemte, estos resultados siguieron teniendo una transmitancia
 mayor a 90 \%.
 Incluso si trabajamos en longitudes de onda en el rango de $1500nm-1600nm$
 los resultados se mantienen similares aún cuando pueda ocurrir errores de erosión o dilatación.
@@ -746,12 +751,12 @@ Para poder entender nuestros resultados buscamos una referencia del estado del a
 de un WDM. Así, tenemos:
 
 \begin{itemize}
-  \item \cite{Christiansen2021} optimizó un WDM con una región
+  \item \cite{Christiansen2021} optimizaron un WDM con una región
   de diseño de $2 \mu m \times 2 \mu m$ trabajando a $1300 nm$ y $1550 nm$ logrando obtener un diseño
   con $T_{1300}^{(1)} = 0.86$ y $T_{1550}^{(2)} = 0.85$.
 
-  \item \cite{Piggott2015} optimizó un WDM con una región de diseño de $2.8 \mu m \times 2.8 \mu m$
-    trabajando a $1300 nm$ y $1550 nm$. En su trabajo muestra los resultados en gráficas por lo cual
+  \item \cite{Piggott2015} optimizaron un WDM con una región de diseño de $2.8 \mu m \times 2.8 \mu m$
+    trabajando a $1300 nm$ y $1550 nm$. En su trabajo muestran los resultados en gráficas por lo cual
     es dificil encontrar los valores de transmitancia exactos reportados. Sin embargo, en
     \cite{Sigmund2016} se detalla que el diseño obtenido posee 
     $T_{1310}^{(1)} = 0.8377$ y $T_{1550}^{(2)} = 0.8076$.
@@ -763,10 +768,10 @@ $T_{1300}^{(1)} = 0.8938$ y $T_{1550}^{(2)} = 0.9503$. Además, al realizar el a
 en un rango de longitudes de onda de $1250nm-1600nm$ obtenemos un comportamiento similar
 al logrado en \cite{Piggott2015}.
 De este modo, aparentemente hemos obtenido un diseño que supera el estado del arte.
-Sin embargo, es necesaria fabricar estos diseños para corroborar los resultados de las simulaciones.
+Sin embargo, es necesario fabricar estos diseños para corroborar los resultados de las simulaciones.
 
 Por otro lado, de la \autoref{sec:results-wdm}, tenemos que al igual que sucedió con el \emph{bend},
-MMA no está logrando llegar a diseños que almenos conecten las guías de onda.
+MMA no está logrando llegar a diseños que al menos conecten las guías de onda.
 Primero, se consideró la posibilidad de haber algún error en el cálculo de la gradiente;
 sin embargo, los demás algoritmos si han logrado tener éxito en la optimización tanto del \emph{bend}
 como del WDM. Así, este escenario es poco probable.
@@ -791,14 +796,14 @@ Además, se puede observar que tanto G-PSO como G-GA presentan comportamiento si
 superan a G-CMA-ES en términos de mejores valores alcanzados.
 Particularmente, como se muestra en \autoref{fig:wdm-cont}, CMA-ES parece caracterizarse
 por mejorar de manera lenta, mientras que los demás algoritmos (a excepción de MMA) logran tener
-grandes bruscas al inicio de la optimización.
+mejoras bruscas al inicio de la optimización.
 
 
 Finalmente, es interesante destacar que las geometrías encontradas por cada algoritmo muestran
 características en común con los resultados encontrados en la optimización del \emph{bend}.
 Por un lado, L-BFGS-B, G-PSO y G-GA han encontrado geometrías sin gran presencia de regiones puntiagudas.
-Por otro lado, G-CMA-ES obtiene un diseño con regiones puntiagudas y regiones disconexas muy pequeñas.
-Y MMA no logra concretar ninguna geometría, el resultado de obtener ciertas regiones definidas parece
+Por otro lado, G-CMA-ES obtuvo diseños con regiones puntiagudas y regiones disconexas muy pequeñas.
+Y, MMA no logró concretar ninguna geometría, el resultado de obtener ciertas regiones definidas parece
 ser simplemente el producto de las transformaciones en un diseño aleatorio.
 
 
