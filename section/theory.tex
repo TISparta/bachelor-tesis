@@ -171,7 +171,7 @@ un valor de $\boldsymbol{P}(x, y) = 0$ describe la presencia de $SiO_2$ y
 $0 < \boldsymbol{P}(x, y) < 1$ hace referencia
 a algún material cuya permitividad es $\boldsymbol{\varepsilon}(x, y)$.
 
-No obstante, un inconveniente de lo descrito es que $\boldsymbol{P}$ puede mapear a materiales inexistestes
+No obstante, un inconveniente de lo descrito es que $\boldsymbol{P}$ puede mapear a materiales inexistentes
 (regiones grises),
 mayor detalle de esta dificultad se estudia
 en la \autoref{sec:transformations}.
@@ -256,7 +256,7 @@ simulación se incrementan considerablemente.
 \section{Transformaciones}\label{sec:transformations}
 
 En esta sección se discute dos transformaciones populares en optimización topológica
-para imponer restricciones de fabricación en nuestreos diseños: (i) filtro por densidad y
+para imponer restricciones de fabricación en nuestros diseños: (i) filtro por densidad y
 (ii) proyección.
 
 \subsection{Filtro por Densidad}
@@ -315,7 +315,7 @@ original calculando lo siguiente:
 
 \subsection{Proyección}
 
-La proyección descrita en la sección anterior ayuda a obtener diseños que eviten regiones punteagudas;
+La proyección descrita en la sección anterior ayuda a obtener diseños que eviten regiones puntiagudas;
 sin embargo, esta transformación suele generar regiones grises.
 Por este motivo, es común acompañar el filtro por densidad con una proyección 
 ($\widetilde{\widetilde{\boldsymbol{P}}}$) descrita como:
@@ -384,7 +384,7 @@ Con el objetivo de visualizar estas transformaciones, observemos la \autoref{fig
 En la Figura \autoref{subfig:P} se muestra el diseño que representa una parametrización $\boldsymbol{P}$.
 A su derecha se encuentra la Figura \autoref{subfig:P_filter}, aquí se aplicó el filtro de densidad
 utilizando un radio de curvatura $r_f = 80 nm$. Como podemos observar, este diseño posee regiones grises,
-mas ha logrado eliminar zonas punteagudas.
+mas ha logrado eliminar zonas puntiagudas.
 Seguidamente, en las Figuras \autoref{subfig:P_E_D}, \autoref{subfig:P_E_I}, \autoref{subfig:P_E_E}
 se muestra el diseño de la Figura \autoref{subfig:P_filter} tras aplicar la proyección descrita con
 $\beta = 2^6$ y distintos valores de $\eta$.
@@ -455,7 +455,7 @@ $\boldsymbol{P^{*}} \in \pmb{\mathscr{P}}$,
 donde este elemento se define como una matriz que satisface que
 $f(\boldsymbol{P^{*}}) \leq f(\boldsymbol{P}), \quad \forall \boldsymbol{P} \in \pmb{\mathscr{P}}$. 
 Dicho de otra manera, nuestro problema es encontrar $\boldsymbol{P^{*}}$; sin embargo,
-esto es una tarea computacionalmente dificil de resolver \citep{Angeris2021}.
+esto es una tarea computacionalmente difícil de resolver \citep{Angeris2021}.
 
 Un problema más viable es encontrar $\sigma > 0 \land \boldsymbol{P^{+}} \in \pmb{\mathscr{P}}$ 
 tal que 
@@ -469,7 +469,7 @@ Debemos resaltar que ninguno de los algoritmos de esta sección puede asegurar e
 sin embargo, sus estrategias de búsqueda suelen permitir encontrar 
 óptimos locales adecuados \citep{Angeris2021, Schneider2019}.
 Además, todos estos algoritmos se aseguran de mantener los valores de $\boldsymbol{P}$ en el
-intérvalo $[0, 1]$ aplicando $\boldsymbol{P}(x, y) \gets max(0, min(1, \boldsymbol{P}(x, y)))$, mas
+intervalo $[0, 1]$ aplicando $\boldsymbol{P}(x, y) \gets max(0, min(1, \boldsymbol{P}(x, y)))$, mas
 este detalle se obvia en las explicaciones por simplicidad en la notación.
 
 \subsection{\emph{Genetic Algorithms} (GA)}\label{sec:ga}
@@ -548,7 +548,7 @@ la mejor posición encontrada por la partícula ($\boldsymbol{P^{(i)}_b}$).
 Para nuestro problema la matriz de parametrización representa la posición y
 la velocidad es una matriz que guía la exploración a otras parametrizaciones.
 
-La idea principal del algoritmo es que cada particula acumula 
+La idea principal del algoritmo es que cada partícula acumula 
 velocidad en una dirección favorable dada por: 
 (i) la mejor posición encontrada hasta el momento por esta partícula y 
 (ii) la mejor posición encontrada por la población completa.
@@ -599,7 +599,7 @@ Como se observa en el \autoref{alg:PSO}, tenemos las siguientes funciones:
     
 
   donde $\boldsymbol{P_{b}}$  es la mejor posición encontrada globalmente, 
-  $\omega$ representa la tendencia de la particula de conservar su velocidad actual,
+  $\omega$ representa la tendencia de la partícula de conservar su velocidad actual,
   $c_1$ y $c_2$ cuantifica la atracción relativa con $\boldsymbol{P_{b}^{(i)}}$ y 
   $\boldsymbol{P_{b}}$ respectivamente, 
   y $r_1, r_2 \in U(0, 1)$ representan el comportamiento impredecible.
@@ -612,16 +612,16 @@ La idea general de esta estrategia evolutiva, mostrada en el Algoritmo
 \ref{alg:CMA}, es mantener:
 (i) un vector $\boldsymbol{\mu}$ $p$-dimensional,
 (ii) una matriz $\boldsymbol{C}$ y
-(iii) un número $\sigma$ para ir generando $n$ inviduos $p$-dimensionales
+(iii) un número $\sigma$ para ir generando $n$ individuos $p$-dimensionales
 a partir una distribución $\mathcal{N}(\mu,\,\sigma^{2} \boldsymbol{C})$.
 
 
 Tomar puntos de esta distribución limita el espacio de búsqueda a una
 hiperelipse.
-Así, el algoritmo evalua puntos en esta región limitada.
+Así, el algoritmo evalúa puntos en esta región limitada.
 Luego, usando los valores obtenidos, se puede decidir entre:
 (i) mover la hiperelipse a otra región del espacio de búsqueda
-(ii) expandir or reducir la región cubierta por la distribución.
+(ii) expandir o reducir la región cubierta por la distribución.
 El algoritmo de CMA-ES trabaja iterativamente sobre esta idea hasta que la
 hiperelipse termina casi degenerándose en un punto, 
 potencialmente un óptimo.
