@@ -71,7 +71,7 @@ incluyen un círculo blanco, este representa una circunferencia de radio $r_f = 
 el mínimo radio de curvatura que se está intentando imponer.
 Además, las imágenes que resumen el proceso de optimización de cada dispositivo incluyen
 rectas horizontales punteadas por un tema de visualización (distintos algoritmos-iteraciones
-alcanzaron condiciones para deternerse antes de alcanzar la máxima cantidad permitidad de
+alcanzaron condiciones para detenerse antes de alcanzar la máxima cantidad permitida de
 evaluaciones del FOM), estas rectas simplemente extienden el mejor resultado obtenido.
 
 \section{Resultados de Optimización del \emph{Bend}}\label{sec:results-bend}
@@ -283,7 +283,7 @@ Centrándonos en los resultados del MMA, lo primero que llama
 la atención de la optimización continua (\autoref{fig:bend-cont}) es el hecho que el algoritmo converge 
 incluso antes de realizar 100 evaluaciones de $f_{obj}$. 
 Al inicio pensamos que era un error de configuración,
-pero incluso si forzabamos al algoritmo a realizar todas las evaluaciones permitidas, 
+pero incluso si forzábamos al algoritmo a realizar todas las evaluaciones permitidas, 
 este se estancaba en diseños con transmitancias cercanas a 0.
 Además, esta misma tendencia se repitió en la optimización discreta (\autoref{fig:bend-disc})
 y la optimización de fabricación (\autoref{fig:bend-fab}).
@@ -403,7 +403,7 @@ y buscar alcanzar una trasmitancia cercana a 1 en el brazo inferior a $1550 nm$.
 Así, parece sensato concluir que la definición de nuestra función objetivo aún carece de un
 término que incentive en mayor medida que ambas guías de salida queden conectadas.
 
-En síntesis, se obversó que L-BFGS-B fue la única opcion que logró
+En síntesis, se observó que L-BFGS-B fue la única opcion que logró
 producir un diseño adecuadamente binarizado, con elevadas transmitancias y 
 facilidad de fabricación.
 A partir de las observaciones realizadas se elaboró una relación de orden entre los 
