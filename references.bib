@@ -255,25 +255,6 @@ volume = {181},
 year = {2010}
 }
 
-
-@article{Zhang2021,
-abstract = {Local-gradient-based optimization approaches lack nonlocal exploration ability required for escaping from local minima in non-convex landscapes. A directional Gaussian smoothing (DGS) approach was proposed in our recent work and used to define a truly nonlocal gradient, referred to as the DGS gradient, in order to enable nonlocal exploration in high-dimensional black-box optimization. Promising results show that replacing the traditional local gradient with the nonlocal DGS gradient can significantly improve the performance of gradient-based methods in optimizing highly multi-modal loss functions. However, the current DGS method is designed for unbounded and unconstrained optimization problems, making it inapplicable to real-world engineering design optimization problems where the tuning parameters are often bounded and the loss function is usually constrained by physical processes. In this work, we propose to extend the DGS approach to the constrained inverse design framework in order to find a better design. The proposed framework has its advantages in portability and flexibility to naturally incorporate the parameterization, physics simulation, and objective formulation together to build up an effective inverse design workflow. A series of adaptive strategies for smoothing radius and learning rate updating are developed to improve the computational efficiency and robustness. To enable a clear binarized design, a dynamic growth mechanism is imposed on the projection strength in parameterization. The methodology is demonstrated by an example of wavelength demultiplexer. Our method shows superior performance compared to the state-of-the-art approaches. By incorporating volume constraints, the optimized design achieves an equivalently high performance but significantly reduces the amount of material usage.},
-archivePrefix = {arXiv},
-arxivId = {2007.15079},
-author = {Zhang, Jiaxin and Bi, Sirui and Zhang, Guannan},
-doi = {10.1016/j.matdes.2020.109213},
-eprint = {2007.15079},
-issn = {18734197},
-journal = {Materials and Design},
-keywords = {Constrained optimization,Directional Gaussian smoothing,Fabrication constraint,Inverse design,Nanophotonics,Robustness},
-pages = {109213},
-publisher = {Elsevier Ltd},
-title = {{A directional Gaussian smoothing optimization method for computational inverse design in nanophotonics}},
-url = {https://doi.org/10.1016/j.matdes.2020.109213},
-volume = {197},
-year = {2021}
-}
-
 @article{Shen2019,
 author = {Yiwen Shen and Xiang Meng and Qixiang Cheng and S\'{e}bastien Rumley and Nathan Abrams and Alexander Gazman and Evgeny Manzhosov and Madeleine Strom Glick and Keren Bergman},
 journal = {J. Lightwave Technol.},
@@ -672,4 +653,20 @@ doi     = {10.1038/s41592-019-0686-2},
   author = {Ole Sigmund and Jakob S. Jensen and Lars H. Frandsen},
   title = {On nanostructured silicon success},
   journal = {Nature Photonics}
+}
+
+@article{Zhang2021,
+author = {Guowu Zhang and Dan-Xia Xu and Yuri Grinberg and Odile Liboiron-Ladouceur},
+journal = {Opt. Express},
+keywords = {Computation methods; Electric fields; Linear filtering; Mode division multiplexing; Silica; Waveguide cores},
+number = {8},
+pages = {12681--12695},
+publisher = {Optica Publishing Group},
+title = {Topological inverse design of nanophotonic devices with energy constraint},
+volume = {29},
+month = {Apr},
+year = {2021},
+url = {http://opg.optica.org/oe/abstract.cfm?URI=oe-29-8-12681},
+doi = {10.1364/OE.421202},
+abstract = {In this paper, we introduce an energy constraint to improve topology-based inverse design. Current methods typically place the constraints solely on the device geometry and require many optimization iterations to converge to a manufacturable solution. In our approach the energy constraint directs the optimization process to solutions that best contain the optical field inside the waveguide core medium, leading to more robust designs with relatively larger minimum feature size. To validate our method, we optimize two components: a mode converter (MC) and a wavelength demultiplexer. In the MC, the energy constraint leads to nearly binarized structures without applying independent binarization stage. In the demultiplexer, it also reduces the appearance of small features. Furthermore, the proposed constraint improves the robustness to fabrication imperfections as shown in demultiplexer design. With energy constraint optimization, the corresponding spectrum shifts under \&\#x00B1;10\&\#x2005;nm dimensional variations are reduced by 17\&\#x0025; to 30\&\#x0025;. The proposed constraint is unique in simultaneously taking both geometry and electric field into account, opening the door to new ideas and insights to further improve the computationally intensive topology-based optimization process of nanophotonic devices.},
 }

@@ -4,36 +4,49 @@
 
 \begin{itemize}
 
-  \item Se logró diseñar tanto un \emph{bend} como un WDM con transmitancias mayores al 90 \% y
+  \item Siguiendo la estrategia planteada, se logra diseñar tanto un \emph{bend} 
+        como un WDM con transmitancias mayores al 90 \% y
         con diseños resilientes a errores de dilatación y erosión.
         Además, el \emph{bend} optimizado logra funcionar con una transmitancia de alrededor de 90 \%
-        en el rango de $1500nm$ a $1600 nm$. Por otro lado, el WDM optimizado muestra un comportamiento
+        en el rango de $1500nm$ a $1600 nm$. 
+        Por otro lado, el WDM optimizado muestra un comportamiento
         sin cambios bruscos al trabajar entre $1250 nm$ a $1600 nm$.
 
-  \item La optimización topológica facilitó la búsqueda de los diseños con las propiedades deseadas.
+  \item La optimización topológica facilita la búsqueda de los diseños robustos
+        ante errores de fabricación.
         Sin embargo, parece imprescindible el uso de algoritmos de primer orden al utilizar
-        esta estrategia. Caso contrario, la convergencia a diseños compactos avanza a un ritmo muy lento.
+        esta estrategia. 
+        Caso contrario, la convergencia a diseños compactos avanza a un ritmo muy lento.
 
-  \item Para el caso del \emph{bend} definir la función objetivo como maximizar la transmitancia en una
-        sola longitud de onda ha permitido obtener un diseño que funciona bien incluso en longitudes de
-        onda cercanas. Por otro lado, la función objetivo empleada para el WDM se estancó en todos los
-        casos (excepto en uno) en diseños que no lograban conectar de forma funcional ambas guías de salida.
-        Así, parece sensato afirmar que es necesario buscar otra alternativa para definir esta función
-objetivo.
+  \item Para el caso del \emph{bend}, definir la función objetivo 
+        como maximizar la transmitancia en una sola longitud de onda
+        permite obtener diseños que funcionan bien incluso en longitudes de
+        onda cercanas. 
+        Por otro lado, la función objetivo empleada para el WDM 
+        logra pruducir buenos resultados, mas en promedio esto no es así.
+        Es necesario incorporar un término que incentive que el diseño
+        termine con todas las guías de onda conectadas.
 
   \item Para la optimización de un \emph{bend} y WDM con una región de diseño de $2 \mu m \times 2 \mu m$,
-        el algoritmo L-BFGS-B ha mostrado superioridad en términos de convergencia y desempeño con respecto
-        al G-CMA-ES, MMA, G-PSO y G-GA. 
+        el algoritmo MMA converge rápidamente y se estanca en diseños no funcionales y
+        difíciles de fabricar. Así, parece necesario un mayor estudio al aplicar
+        este algoritmo en estos dos casos.
 
-  \item Los algoritmos G-PSO y G-GA mostraron resultados similares y muy superior a sus contrapartes que no
-        usan la información de la gradiente (PSO y GA).
-        Así, parece necesario explorar el desempeño que estos algoritmos en trabajos similares
-        donde se han aplicado simplemente PSO y GA.
+  \item Excluyendo los resultados del MMA, el algoritmo L-BFGS-B ha mostrado superioridad
+        en términos de desempeño, convergencia y porcentaje de regiones grises. 
+        Parece sensato comenzar futuras investigaciones aplicando este algoritmo.
 
-  \item El algoritmo G-CMA-ES ha mostrado mejores resultados que su contraparte que no usa la información
-        de la gradiente. Sin embargo, la convergencia de este algoritmo es más lenta que otras alternativas
-        como L-BFGS-B, G-PSO y G-GA. Además, los diseños conseguidos poseían regiones difíciles de fabricar.
-        De este modo, el algoritmo no parece ser la mejor opción a utilizar en optimización topológica.
+  \item El algoritmo G-CMA-ES ha mostrado mejores resultados que su contraparte que no usa
+        la información de la gradiente. Sin embargo, posee la peor convergencia de los
+        algoritmos estudiados, bajos valores del FOM y 
+        produce diseños no correctamente binarizados.
+        De este modo, el algoritmo no parece ser la mejor opción a utilizar en optimización
+        topológica. 
+        
+  \item En promedio, el algoritmo G-PSO muestra mejores resultados que G-GA en
+        términos de desempeño y porcentaje de regiones grises.
+        Además, ambos algoritmos muestran un desempeño exponencialmente mejor
+        a sus contrapartes que no usan la información de la gradiente.
 
 \end{itemize}
 

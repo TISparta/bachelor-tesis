@@ -28,8 +28,10 @@ Este proceso tiene como fin el mantener un buen resultado \citep{Yang2017}.
 En particular, el valor de $\beta$, presente en la \autoref{eq:projection}, representa el factor discretizador de nuestros diseños.
 Este valor se va incrementando en la optimización discreta y de fabricación como se muestra en la
 \autoref{fig:pipeline}.
-Finalmente, tras haber conseguido diseños optimizados se realizó un posprocesamiento y
-análisis de los diseños más óptimos.
+
+Finalmente, se realizó un posprocesamiento, análisis y conversión al
+formato GDSII de los diseños mejor optimizados, esto con el fin de dejar todo preparado
+para una futura etapa de fabricación de estos diseños.
 
 En las siguientes subsecciones se explica en detalle cada una de los pasos de la metodología seguida en esta tesis.
 
@@ -160,13 +162,13 @@ La elección de estos fue por diversos motivos.
 GA y PSO se escogieron por ser populares en el área \citep{Elsawy2020, Molesky2018, Prosopio-Galarza2019}.
 CMA-ES por haber tenido un buen desempeño en \cite{Gregory2015} y las buenas referencias brindadas en
 \cite{Campbell2019}.
-L-BFGS-B por haber obtenido buenos resultados en trabajos como \cite{Su2020}.
-MMA por haber sido recomendado como un buen candidato para la optimización topológica \citep{Christiansen2021}.
+L-BFGS-B por haber obtenido buenos resultados en trabajos como \cite{Su2020} y \cite{Zhang2021}.
+MMA por haber sido recomendado como un buen candidato para la optimización topológica \citep{Lazarov2016}.
 
-Por trabajos como los de \cite{Su2020} y \cite{Christiansen2021} ya nos podíamos anticipar que al usar
+Por trabajos como los de \cite{Su2020}, \cite{Christiansen2021} y \cite{Lazarov2016} ya nos podíamos anticipar que al usar
 L-BFGS-B o MMA se obtendrían buenos resultados en parte gracias a usar la gradiente para guiar la búsqueda.
 Sin embargo, por la cantidad de variables utilizadas ($125 \times 125$) no podíamos asegurar lo mismo
-con GA, PSO y CMA. 
+con GA, PSO y CMA.
 
 Debido a ello, primero se realizó un experimento preliminar para evaluar el desempeño de estos
 algoritmos al realizar como máximo 1200 evaluaciones en la optimización del \emph{bend} propuesto, 
@@ -235,7 +237,7 @@ Es resumen, usando simulaciones en 3D FDFD con SPINS-B, evaluamos estos cinco al
   Similar al G-PSO, después de cada iteración del Algoritmo \ref{alg:GA}, se escoge dos
   elementos aleatorios para actualizarlos aplicándoles GD por 10 iteraciones.
   Se escoge dos elementos y no solo uno para asegurar que los resultados de aplicar GD
-  se compartan rápidamente con los demás individuos en pocas iteraciones.
+  se compartan con los demás individuos en pocas iteraciones.
 
   Los experimentos con este algoritmo se desarrollaron con una implementación propia.
 
@@ -310,15 +312,15 @@ fabricación, por cada parametrización $\boldsymbol{P}$ se calculó:
 
 \begin{itemize}
   \item $\widetilde{\widetilde{\boldsymbol{P}}}_{d}$ que representa el diseño como si el dispositivo se hubiera dilatado.
-  \item $\widetilde{\widetilde{\boldsymbol{P}}}_{i}$ que representa el diseño normal.
-  \item $\widetilde{\widetilde{\boldsymbol{P}}}_{e}$  que representa el diseño como si el dispositivo se
-    hubiera expandido.
+  \item $\widetilde{\widetilde{\boldsymbol{P}}}_{i}$ que representa el diseño nomimal.
+  \item $\widetilde{\widetilde{\boldsymbol{P}}}_{e}$  que representa el diseño como si el dispositivo
+    hubiera erosionado.
 \end{itemize}
 
 Estos tres elementos se calcularon siguiendo los mismos filtros descritos en la anterior sección
 $(\boldsymbol{P} \mathrel{\leadsto} \widetilde{\boldsymbol{P}} \mathrel{\leadsto}
 \widetilde{\widetilde{\boldsymbol{P}}} \mathrel{\leadsto} \varepsilon)$.
-Pero, para el diseño dilatado se usó $\eta_d = 0.45$, para el diseño normal $\eta_i = 0.5$ y
+Pero, para el diseño dilatado se usó $\eta_d = 0.45$, para el diseño nominal $\eta_i = 0.5$ y
 para el diseño expandido $\eta_e = 0.55$.
 
 Luego, se definió una nueva función objetivo mediante la siguiente ecuación:
@@ -349,11 +351,14 @@ y se evaluó su desempeño al eliminar regiones aisladas.
 Para la eliminación de regiones aisladas se realizó una búsqueda por profundidad
 desde la intersección entre la guía de entrada y la región de diseño.
 Para ello recorrimos la matriz $\boldsymbol{P}$ como un grafo implícito moviéndonos a una celda
-vecina si está poseía un valor mayor a 0.5.
+vecina si esta poseía un valor mayor a 0.5.
 
-%Posteriormente, usando la permitividad asociada a sus parametrization se obtuvo la geometría del dispositivo.
-%Esta geometría se aproximó mediante polígonos usando el paquete \emph{mathplotlib} de Python
-%para representar el diseño en formato GDSII y dejarlo listo para fabricación.
+Posteriormente, usando la permitividad asociada a sus parametrizationes se obtuvo la geometría del dispositivo.
+Esta geometría se aproximó mediante polígonos usando el paquete \emph{mathplotlib} de Python.
+Luego, se utilizaron estos polígonos con rutinas de SPINS-B
+para representar el diseño en formato GDSII.
+De esta manera los mejores diseños optmizados quedaron preparados para una 
+futura etapa de fabricación.
 
 \section{Alcances y Limitaciones}
 

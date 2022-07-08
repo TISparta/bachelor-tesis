@@ -1,5 +1,7 @@
+OPTIONS=-shell-escape
+
 all:
-	pdflatex main.tex
+	pdflatex ${OPTIONS} main.tex
 	bibtex main.aux
 	pdflatex main.tex
 	pdflatex main.tex
