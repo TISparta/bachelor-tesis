@@ -45,13 +45,27 @@
         
   \item En promedio, el algoritmo G-PSO muestra mejores resultados que G-GA en
         términos de desempeño y porcentaje de regiones grises.
-        Además, ambos algoritmos muestran un desempeño exponencialmente mejor
-        a sus contrapartes que no usan la información de la gradiente.
+        Además, ambos algoritmos muestran un desempeño mucho mejor
+        que sus contrapartes que no usan la información de la gradiente.
 
 \end{itemize}
 
 \section{Trabajos Futuros}
 
-Próximamente, se espera concretar la fabricación de los diseños optimizados.
-Además, parece interesante estudiar otras restricciones que se puedan aplicar a la función
-objetivo del WDM con el fin de asegurar conectividad.
+Próximamente, se espera concretar la fabricación de los diseños optimizados para
+constrastar los resultados. Por otro lado, con el objetivo de obtener incluso mejores
+diseños, hay una variedad de investigaciones relacionadas que pueden ayudar:
+
+\begin{itemize}
+  \item Para imponer restricciones de conectividad en los diseños se presentan
+        como potenciales candidatos el incluir:
+        (i) restricciones de energía \citep{Zhang2021} o
+        (ii) restricciones de temperatura \citep{Li2016}.
+
+  \item Para acelerar el proceso de optimización es posible entrenar una
+        red neuronal para obtener los resultados de la simulación de un diseño
+        en menos de un segundo. Esto permitiría evaluar un proceso de optimización
+        más extenso o, incluso, usar la misma red para predecir un diseño óptimo
+        \citep{Liu2018, Peurifor2018}.
+
+\end{itemize}

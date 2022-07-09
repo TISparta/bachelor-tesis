@@ -148,10 +148,10 @@ De la sección anterior tenemos que el \emph{bend} mejor optimizado se consigui�
 utilizando el algoritmo L-BFGS-B con un \emph{seed} (valor de semilla) de 256.
 
 Al aplicar la \autoref{eq:grayscale} obtenemos que el porcentaje de región gris en el diseño
-es de 1.097 \%, un valor menor a 2 \%, por lo cual podemos considerar que el diseño ha sido
+es de 1.165 \%, un valor menor a 2 \%, por lo cual podemos considerar que el diseño ha sido
 adecuadamente binarizado. 
 Por otro lado, si eliminamos las regiones no conectadas con la guía de entrada
-tenemos un diseño con un porcentaje de gris de 0.168 \%.
+tenemos un diseño con un porcentaje de gris de 0.559 \%.
 Estos diseños lo podemos observar en la \autoref{fig:bestbend}, 
 el contorno morado alrededor de las geometrías de (a) y (b) representan los polígonos
 usados para aproximar estas geometrías con el fin de obtener la descripción en el formato
@@ -250,7 +250,7 @@ el contorno morado alrededor de las geometrías de (a) y (b) representan los pol
 usados para aproximar estas geometrías con el fin de obtener la descripción en el formato
 GDSII, lo cual se puede observar en (e) y (f).
 Adicionalmente, en la \autoref{fig:broadband-wdm} se muestra el comportamiento del diseño
-en un rango de longitudes de onda de $1300nm$ a $1550 nm$, resultados obtenidos usando una ventana de $50nm$.
+en un rango de longitudes de onda de $1250nm$ a $1600 nm$, resultados obtenidos usando una ventana de $50nm$.
 
 \begin{figure}[ht]
   \centering
@@ -274,12 +274,12 @@ pudimos comparar el desempeño y convergencia de los cinco algoritmos escogidos
 en la optimización del \emph{bend}.
 En nuestro caso el desempeño viene dado por el valor de la FOM, a mayor FOM 
 decimos que el algoritmo tuvo un mejor desempeño.
-Por otro lado, observamos que la optimización continua es la etapa que influye más
+Particularmente, observamos que la optimización continua es la etapa que influye más
 en los diseños finales encontrados. Esto tiene sentido pues las dos siguientes etapas
 son principalmente para refinar los resultados de esta primera etapa en un diseño
 fabricable.
 
-Centrándonos en los resultados del MMA, lo primero que llama
+Centrándonos en los resultados del MMA, lo primero que nos llamó
 la atención de la optimización continua (\autoref{fig:bend-cont}) es el hecho que el algoritmo converge 
 incluso antes de realizar 100 evaluaciones de $f_{obj}$. 
 Al inicio pensamos que era un error de configuración,
@@ -291,23 +291,23 @@ Por último, en la \autoref{tab:opt-MMA-bend} observamos que los diseños
 ni siquiera lograron conectar las guías de onda.
 En conclusión, si bien este algoritmo converge rápidamente, en términos de desempeño
 es el peor algoritmo de los estudiados para el caso del \emph{bend}.
-De hecho, tenemos que MMA es el único algoritmo que no logra conectar las guías de onda y
-que no logra obtener un diseño con mejor transmitancia que el diseño intuitivo.
+De hecho, tenemos que MMA fue el único algoritmo que no logró conectar las guías de onda y
+que no logró obtener un diseño con mejor transmitancia que el diseño intuitivo.
 
 Centrándonos en los resultados del G-CMA-ES, notamos que después del MMA este algoritmo
-obtiene los diseños con menor transmitancia en las tres etapa de optimización;
-además, en promedio es quien más se demora en converger.
+obtuvo los diseños con menor transmitancia en las tres etapa de optimización;
+además, en promedio fue quien más se demoró en converger
 (\autoref{fig:bend-cont}, \autoref{fig:bend-disc} y \autoref{fig:bend-fab}).
-Luego, en la \autoref{tab:opt-CMA-bend} se pudo apreciar que G-CMA-ES obtuvo geometrías 
+Seguidamente, en la \autoref{tab:opt-CMA-bend} pudimos apreciar que G-CMA-ES obtuvo geometrías 
 con presencia de pequeñas zonas grises (en promedio, $M_{nd} = 5.459 \%$) y zonas puntiagudas.
 En conclusión, tanto en términos de eficiencia como de convergencia este algoritmo no
 mostró los mejores resultados.
 
 Centrándonos en los resultados de los restantes algoritmos (L-BFGS-B, G-PSO y G-GA)
 notamos que los tres lograron encontrar diseños con transmitancias mayores al $90 \%$
-en todas las etapas de optimización. Sin embargo, L-BFGS-B muestra superioridad 
+en todas las etapas de optimización. Sin embargo, L-BFGS-B mustró superioridad 
 tanto en términos de eficiencia como de convergencia. Los otros dos algoritmos (G-PSO y G-GA)
-obtienen valores del FOM ligeramente menores y necesitan mayor tiempo de convergencia.
+obtuvieron valores del FOM ligeramente menores y necesitaron mayor tiempo de convergencia.
 Adicionalmente, a partir de la \autoref{tab:opt-LBFGSB-bend}, \autoref{tab:opt-PSO-bend} y
 \autoref{tab:opt-GA-bend} pudimos notar que en promedio solamente L-BFGS-B y G-PSO
 generaron diseños adecuadamente binarizados ($M_{nd} < 2 \%$) y con poca presencia de regiones
@@ -329,7 +329,7 @@ Esto se puede encontrar en la \autoref{tab:order-bend}.
     \hline 
     Desempeño &  Convergencia & $M_{nd} $\\
     \hline 
-    L-BFGS-B (0.9894) & MMA      &  L-BFGS-B (1.1343 \%) \\
+    L-BFGS-B (0.9895) & MMA      &  L-BFGS-B (1.157 \%) \\
     G-PSO (0.9830)    & L-BFGS-B & G-PSO (1.519 \%) \\
     G-GA (0.9744)     & G-PSO    & G-GA (2.062 \%) \\
     G-CMA-ES (0.9155) & G-GA     & G-CMA-ES (5.459 \%) \\
@@ -363,19 +363,19 @@ es dificil encontrar los valores exactos de transmitancia reportados. Sin embarg
 \cite{Sigmund2016} se detalla que el diseño obtenido posee 
 $T_{1310}^{(1)} = 0.8377$ y $T_{1550}^{(2)} = 0.8076$.
 También existen trabajos como los de \cite{Christiansen2021} y \cite{Zhang2021} que optimizan
-un WDM; pero, realizan las simulaciones en 2D por lo cual la comparación no es justa.
+un WDM; pero, realizaron las simulaciones en 2D por lo cual la comparación no es justa.
 
 Como se observa en la \autoref{sec:best-wdm}, el diseño del WDM mejor optimizado en este trabajo posee $T_{1300}^{(1)} = 0.9385$ y 
 $T_{1550}^{(2)} = 0.9503$ y tras eliminar las regiones no conexas obtiene
 $T_{1300}^{(1)} = 0.8938$ y $T_{1550}^{(2)} = 0.9503$. Además, al realizar el análisis
-en un rango de longitudes de onda de $1250nm-1600nm$ obtenemos un comportamiento similar
+en un rango de longitudes de onda de $1250nm-1600nm$ obtuvimos un comportamiento similar
 al logrado en \cite{Piggott2015}.
 De este modo, aparentemente hemos obtenido un diseño que supera el estado del arte en
 simulaciones 3D.
 Sin embargo, es necesario fabricar estos diseños para corroborar los resultados de las simulaciones.
 
 Por otro lado, centrándonos en los resultados del MMA, tenemos que al igual que sucedió con el \emph{bend},
-el algoritmo no está logrando llegar a diseños que al menos conecten las guías de onda, 
+el algoritmo no logró llegar a diseños que al menos conecten las guías de onda, 
 ver \autoref{tab:opt-MMA-wdm}.
 Primero, se consideró la posibilidad de haber algún error en el cálculo de la gradiente;
 sin embargo, otros algoritmos si han logrado encontrar diseños funcionales tanto del
@@ -384,14 +384,14 @@ Además, para la configuración del algoritmo se utilizó como guía un tutorial
 por lo que un error de configuración también parece sensato de descartarse.
 Probablemente, el algoritmo simplemente requería de una cantidad mayor de iteraciones.
 
-Respecto al desempeño de los demás algoritmos, notamos que se cumple una tendencia similar
-al caso del \emph{bend} respecto al desempeño de los algoritmos: MMA tiene el peor
+Respecto al desempeño de los demás algoritmos, notamos que se cumplía una tendencia similar
+al caso del \emph{bend} respecto al desempeño de los algoritmos: MMA tuvo el peor
 desempeño con dispositivos con geometrías sin forma definida y no funcionales
-(\autoref{tab:opt-MMA-wdm}), G-CMA-ES obtiene los siguientes mejores resultados,
-pero incluye un gran porcentaje de región gris en sus diseños y regiones puntiagudas.
+(\autoref{tab:opt-MMA-wdm}), G-CMA-ES obtuvo los siguientes mejores resultados,
+pero incluía un gran porcentaje de región gris en sus diseños y regiones puntiagudas.
 Finalmente, omitiendo el valor de semilla de 128, L-BFGS-B, G-CMA-ES y G-PSO obtuvieron
 desempeños similares.
-Sin embargo, en promedio L-BFGS-B es el único algoritmo que encontró geometrías
+Sin embargo, en promedio L-BFGS-B fue el único algoritmo que encontró geometrías
 adecuadamente binarizadas. De esta manera, se intuye que era necesario más iteraciones
 en la etapa de optimización para asegurar un menor porcentaje de gris.
 
