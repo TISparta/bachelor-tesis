@@ -34,7 +34,7 @@ indica que en ese sistema de cómputo no se realizaron experimentos con ese disp
     \centering
     \begin{tabular}{|c|c|c|c|}
     \hline 
-      Tiempo promedio &  Quadro RTX (s) & Tesla T4 & Ampere A100 \\
+      Tiempo promedio (s) &  Quadro RTX & Tesla T4 & Ampere A100 \\
     \hline 
       Optimización continua (\emph{bend})            & 14.261 & 15.432 & - \\
       Optimización discreta (\emph{bend})            & 15.961 & 18.718 & - \\
@@ -158,10 +158,13 @@ usados para aproximar estas geometrías con el fin de obtener la descripción en
 GDSII, lo cual se puede observar en (e) y (f).
 Adicionalmente, en la \autoref{fig:broadband-bend} se muestra el comportamiento del diseño
 en un rango de longitudes de onda de $1500nm$ a $1600 nm$, resultados obtenidos usando una ventana de $50nm$.
+En este rango, considerando los errores de erosión y dilatación, 
+la máxima diferencia de transmitancia es de 0.032 para el diseño nominal
+y de 0.034 para el diseño nominal tras eliminar regiones no conexas.
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{image/results/bend/best/broadband-bend.png}
+  \includegraphics[width=0.95\textwidth]{image/results/bend/best/broadband-bend.png}
   \caption{Análisis del \emph{bend} mejor optimizado en un rango de longitudes de onda ($1500 nm-1600 nm$)}
   \label{fig:broadband-bend}
 \end{figure}
@@ -251,11 +254,17 @@ usados para aproximar estas geometrías con el fin de obtener la descripción en
 GDSII, lo cual se puede observar en (e) y (f).
 Adicionalmente, en la \autoref{fig:broadband-wdm} se muestra el comportamiento del diseño
 en un rango de longitudes de onda de $1250nm$ a $1600 nm$, resultados obtenidos usando una ventana de $50nm$.
+En este rango, considerando los errores de erosión y dilatación, 
+para el diseño nominal la máxima diferencia de transmitancia 
+es de 0.108 en la guía de onda superior y de 0.116 en la guía de onda inferior.
+De manera similar, para el diseño nominal tras eliminar regiones no conexas,
+la máxima diferencia de transmitancia
+es de 0.114 en la guía de onda superior y de 0.098 en la guía de onda inferior.
 
 \begin{figure}[ht]
   \centering
   \includegraphics[width=\textwidth]{image/results/wdm/best/broadband-wdm.png}
-  \caption{Análisis del WDM mejor optimizado en un rango de longitudes de onda ($1300 nm-1550 nm$)}
+  \caption{Análisis del WDM mejor optimizado en un rango de longitudes de onda ($1250 nm-1550 nm$)}
   \label{fig:broadband-wdm}
 \end{figure}
 
@@ -319,7 +328,7 @@ facilidad de fabricación.
 A partir de las observaciones realizadas se elaboró una relación de orden entre los 
 algoritmos de acuerdo a los criterios: 
 (i) desempeño (mayor valor de $F_{obj})$, 
-(ii) convergencia (más rápida) y 
+(ii) convergencia (más rápida, promedio de las tres etapas de optimización) y 
 (iii) $M_{nd}$ promedio (menor porcentaje de gris).
 Esto se puede encontrar en la \autoref{tab:order-bend}.
 
@@ -329,11 +338,11 @@ Esto se puede encontrar en la \autoref{tab:order-bend}.
     \hline 
     Desempeño &  Convergencia & $M_{nd} $\\
     \hline 
-    L-BFGS-B (0.9895) & MMA      &  L-BFGS-B (1.157 \%) \\
-    G-PSO (0.9830)    & L-BFGS-B & G-PSO (1.519 \%) \\
-    G-GA (0.9744)     & G-PSO    & G-GA (2.062 \%) \\
-    G-CMA-ES (0.9155) & G-GA     & G-CMA-ES (5.459 \%) \\
-    MMA (0.0383)      & G-CMA-ES & MMA (23.958 \%) \\
+      L-BFGS-B (0.9895) & MMA (165)           &  L-BFGS-B (1.157 \%) \\
+      G-PSO (0.9830)    & L-BFGS-B (566)    & G-PSO (1.519 \%) \\
+      G-GA (0.9744)     & G-PSO (3094)    & G-GA (2.062 \%) \\
+      G-CMA-ES (0.9155) & G-GA (3117)     & G-CMA-ES (5.459 \%) \\
+      MMA (0.0383)      & G-CMA-ES (3320) & MMA (23.958 \%) \\
     \hline 
     \end{tabular}
     \caption{Relación de orden de los algoritmos en la optimización del \emph{bend} según
@@ -409,7 +418,7 @@ facilidad de fabricación.
 A partir de las observaciones realizadas se elaboró una relación de orden entre los 
 algoritmos de acuerdo a los criterios: 
 (i) desempeño (mayor valor de $F_{obj})$, 
-(ii) convergencia (más rápida) y 
+(ii) convergencia (más rápida, promedio de las tres etapas de optimización) y 
 (iii) $M_{nd}$ promedio (menor porcentaje de gris).
 Esto se puede encontrar en la \autoref{tab:order-wdm}.
 
@@ -419,11 +428,11 @@ Esto se puede encontrar en la \autoref{tab:order-wdm}.
     \hline 
     Desempeño &  Convergencia & $M_{nd} $\\
     \hline 
-    L-BFGS-B (0.9465) & MMA       &  L-BFGS-B (1.237 \%) \\
-    G-PSO (0.8005)    & L-BFGS-B  & G-PSO (2.224 \%) \\
-    G-GA (0.7176)     & G-GA      & G-GA (4.300 \%) \\
-    G-CMA-ES (0.6427) & G-PSO     & G-CMA-ES (7.977 \%) \\
-    MMA (0.4594)      & G-CMA-ES  & MMA (23.898 \%) \\
+      L-BFGS-B (0.9465) & MMA (168)      &  L-BFGS-B (1.237 \%) \\
+      G-PSO (0.8005)    & L-BFGS-B (946) & G-PSO (2.224 \%) \\
+      G-GA (0.7176)     & G-GA (2137)     & G-GA (4.300 \%) \\
+      G-CMA-ES (0.6427) & G-PSO (3103)    & G-CMA-ES (7.977 \%) \\
+      MMA (0.4594)      & G-CMA-ES (3320) & MMA (23.898 \%) \\
     \hline 
     \end{tabular}
     \caption{Relación de orden de los algoritmos en la optimización del WDM según
