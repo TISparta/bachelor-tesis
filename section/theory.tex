@@ -1,59 +1,72 @@
 \chapter{Marco  Teórico}\label{chapter:theory}
 
-En el presente capítulo se introducen los conceptos necesarios para entender la propuesta de esta tesis.
-Primero, se describe los dos dispositivos a optimizar: (i) \emph{bend} y (ii) WDM.
-Segundo, se explica como parametrizar estos dispositivos mediante un enfoque basado en píxeles.
-Tercero, se brindan detalles necesarios para poder simular nuestros diseños utilizando el paquete de Python
-SPINS-B.
-Cuarto, se detalla dos transformaciones comúnmente utilizadas en la optimización topológica robusta: 
+%En el presente capítulo se introducen los conceptos necesarios para entender la propuesta de esta tesis.
+
+En el presente capítulo se introducen los conceptos fundamentales sobre dispositivos fotónicos y optimización. Primero, se describen los dos dispositivos a optimizar: (i) \emph{bend} y (ii) WDM.
+Segundo, se explica la parametrización de estos dispositivos mediante un enfoque basado en píxeles.
+Tercero, se brindan detalles necesarios simular nuestros diseños utilizando el software de modelamiento SPINS-B \citep{Su2020}.
+Cuarto, se detallan dos transformaciones comúnmente utilizadas en la optimización topológica robusta: 
 (i) filtro por densidad y (ii) proyección.
-Finalmente, se describe seis algoritmos de optimización que serán utilizados en este trabajo.
+Finalmente, se describen seis algoritmos de optimización utilizados en este trabajo.
 
-\section{Dispositivos de estudio}
+\section{Dispositivos Fotónicos}
 
-\subsection{\emph{Bend}}
+Al estudiar dispositivos fotónicos es de especial interés: i) la
+distribución del campo eléctrico, y ii) la transmitancia.
 
-Un \emph{bend} es un dispositivo fotónico que se encarga de guiar el giro de un haz de ondas.
-
-En general, al estudiar dispositivos fotónicos es de especial interés la
-distribución del campo eléctrico ($\boldsymbol{E}$).
-Este nos permite visualizar la distribución de la energía en un dispositivo calculando lo siguiente:
+\noindent\textbf{Distribución del campo eléctrico ($\boldsymbol{E}$).} Este nos permite visualizar la distribución de la energía en un dispositivo calculando lo siguiente:
 
 \begin{equation}
   |\boldsymbol{E}|^2 = |\boldsymbol{E_x}|^2+|\boldsymbol{E_y}|^2+|\boldsymbol{E_z}|^2,
 \label{eq:field}
 \end{equation}
 
-donde $\boldsymbol{E_x}, \boldsymbol{E_y}, \boldsymbol{E_z}$ representan las componentes del campo eléctrico
+\noindent donde $\boldsymbol{E_x}, \boldsymbol{E_y}, \boldsymbol{E_z}$ representan las componentes del campo eléctrico
 en los ejes $x, y, z$, respectivamente
-\citep{LukasChrostowski2010}.
+\citep{LukasChrostowski2010}. Observar en una gráfica el valor de $|\boldsymbol{E}|^2$ nos ayuda a entender el funcionamiento de un dispositivo.
+
+\noindent \textbf{Transmitancia $(T)$.} Una manera de cuantificar el correcto funcionamiento de un diseño es mediante el cálculo de $(T)$.
+Este valor se define como la relación entre la potencia del flujo que sale del dispositivo con la 
+potencia del flujo que ingresa \citep{Christiansen2021}.
+
+En este trabajo estudiamos dos dispositivos fotónicos fundamentales:
+(i) \emph{bend} y (ii) \emph{wavelength demultiplexer}.
+
+\subsection{\emph{Bend}}
+
+%Al estudiar dispositivos fotónicos es de especial interés la
+%distribución del campo eléctrico ($\boldsymbol{E}$).
+%Este nos permite visualizar la distribución de la energía en un dispositivo calculando lo siguiente:
+%\begin{equation}
+%  |\boldsymbol{E}|^2 = %|\boldsymbol{E_x}|^2+|\boldsymbol{E_y}|^2+|\boldsymbol{E_z}|^2,
+%\label{eq:field}
+%\end{equation}
+%\noindent donde $\boldsymbol{E_x}, \boldsymbol{E_y}, \boldsymbol{E_z}$ representan las componentes del campo eléctrico
+%en los ejes $x, y, z$, respectivamente
+%\citep{LukasChrostowski2010}.
+
+Un \emph{bend} es un dispositivo fotónico que se encarga de guiar el giro de un haz de ondas. Un \emph{bend} convencional consiste en una una guía de onda horizontal usada como entrada y
+una guía de onda vertical usada como salida, estas son conectadas por una guía de onda con la forma de un
+cuarto de circunferencia de radio $r$ y con el mismo grosor de las guías de onda de entrada y salida. La \autoref{fig:efield} presenta un \emph{bend} convencional de radio $r = 1 \mu m$. Se observa que la parte significativa de la energía se pierde en la región curva.
+Esto se debe a que el radio de curvatura es muy pequeño, con un valor más grande (e.g. $r = 10 \mu m$) 
+las pérdidas se vuelven casi nulas \citep{LukasChrostowski2010}.
 
 \begin{figure}[ht]
   \centering
   \includegraphics[scale=0.7]{image/theory/bend_field_dx30_px16_rint1000.png}
-   \caption{Representación de $|\boldsymbol{E}|^2$ de un \emph{bend} de $1 \mu m$ de radio obtenido usando 3D FDFD bajo una resolución de $30 nm$.}
+   \caption{Representación de $|\boldsymbol{E}|^2$ de un \emph{bend} de $1 \mu m$ de radio obtenido usando 3D FDFD bajo una resolución de $30 nm$ en una longitud de onda $\lambda = 1550 nm$.}
   \label{fig:efield}
 \end{figure}
-
-
-Tradicionalmente, un \emph{bend} consiste en una una guía de onda horizontal usada como entrada y
-una guía de onda vertical usada como salida, estas son conectadas por una guía de onda con la forma de un
-cuarto de circunferencia de radio $r$ y con el mismo grosor de las guías de onda de entrada y salida.
-En la \autoref{fig:efield} se muestra un \emph{bend} tradicional de radio $r = 1 \mu m$.
-Como se observa en la imagen, parte significativa de la energía se pierde en la región curva.
-Esto se debe a que el radio de curvatura es muy pequeño, con un valor más grande (e.g. $r = 10 \mu m$) 
-las pérdidas se vuelven casi nulas \citep{LukasChrostowski2010}.
-
 
 Para evitar ambigüedades, dos puntos adicionales a remarcar son: 
 (i) cuando nos referimos al radio estamos haciendo mención al radio medio de curvatura y 
 (ii) todos los diseños mostrados en este trabajo tienen un profundidad de 220nm.
 
-Observar en una gráfica el valor de $|\boldsymbol{E}|^2$ nos ayuda a entender el funcionamiento de un dispositivo.
-Por otro lado, una manera de cuantificar que tan bien funciona un diseño es mediante el cálculo de la
-transmitancia $(T)$.
-Este valor se define como la relación entre la potencia del flujo que sale del dispositivo con la 
-potencia del flujo que ingresa \citep{Christiansen2021}.
+%Observar en una gráfica el valor de $|\boldsymbol{E}|^2$ nos ayuda a %entender el funcionamiento de un dispositivo.
+%Por otro lado, una manera de cuantificar que tan bien funciona un %diseño es mediante el cálculo de la
+%transmitancia $(T)$.
+%Este valor se define como la relación entre la potencia del flujo que %sale del dispositivo con la 
+%potencia del flujo que ingresa \citep{Christiansen2021}.
 
 Seguidamente, sea $\lambda$ la longitud de onda de la entrada y $\boldsymbol{P}$ los parámetros que caracterizan al
 diseño, denotaremos como $T_{\lambda}(\boldsymbol{P})$ a la transmitancia asociada al dispositivo obtenido con la

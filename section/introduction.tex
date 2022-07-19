@@ -18,22 +18,27 @@ Un problema en el Top500 sistemas de computación de alto desempeño (HPC, por s
 es el ratio entre el ancho de banda entre nodos y el poder de procesamiento por nodo ($byte / FLOP$).
 Este valor ha decrecido en un factor de seis en los últimos años.
 Es decir, la capacidad para interconectar nodos está
-limitando el desempeño de sistemas HPC en programas que hacen uso extensivo de transferencias de memoria.
+limitando el desempeño de sistemas HPC en programas que hacen uso intensivo de transferencias de datos.
 Ante este problema, los avances en la fotónica en silicio (SiP) integrada se presenta como una de las
-principales alternativas de solución porque puede realizar interconexiones a distancias del orden de metros,
+principales alternativas de solución porque permiten implementar interconexiones a distancias del orden de metros,
 manteniendo un elevado ancho de banda y bajo consumo energético \citep{Shen2019, Anderson2018}.
 
 El diseño e integración de dispositivos SiP, en términos
 de cantidad de dispositivos por chip, se encuentra aún en una etapa inicial
 \citep{LukasChrostowski2010, Glick2018}.
 Sin embargo, ya existen procesos de fabricación estándar en \emph{foundries}
-para fabricar chips SiP, a un precio accesible, utilizando procesos CMOS
-a través del \emph{process design kit} (PDK) \citep{Bogaerts2018}.
+para fabricar chips SiP a un precio accesible, compatibles con procesos CMOS
+a través de \emph{process design kits} (PDKs) \citep{Bogaerts2018}.
 
-La alta densidad de fabricación en SiP integrada es un desafío
-porque se requiere mantener eficiencia en el chip a nivel de sistema fotónico;
-por ello, se está buscando optimizar dispositivos fundamentales que lo compongan 
-(e.g. \emph{multi-channel wavelength-demultiplexer}, \emph{grating couplers}, etc) \citep{Vuckovic2019}.
+%La alta densidad de fabricación en SiP integrada es un desafío
+%porque se requiere mantener eficiencia en el chip a nivel de sistema fotónico;
+%por ello, se está buscando optimizar dispositivos fundamentales que lo compongan 
+%(e.g. \emph{multi-channel wavelength-demultiplexer}, \emph{grating couplers}, etc) \citep{Vuckovic2019}.
+%Para esto existen dos estrategias principales: (i) diseño tradicional
+%\citep{Hughes2016, Song2008, Huang2018} y (ii) diseño inverso \citep{Malheiros-Silveira2020, Gregory2015, Su2020}.
+
+La alta densidad en la fabricación de dispositivos SiP integrados es un desafío porque requiere mantener bajas pérdidas de energía en el chip a nivel de sistema fotónico. Esto motiva la optimización de dispositivos fundamentales en sistemas fotónicos \citep{Vuckovic2019}, tales como 
+ \emph{multi-channel wavelength-demultiplexer}, \emph{grating couplers}, etc.
 Para esto existen dos estrategias principales: (i) diseño tradicional
 \citep{Hughes2016, Song2008, Huang2018} y (ii) diseño inverso \citep{Malheiros-Silveira2020, Gregory2015, Su2020}.
 
@@ -61,19 +66,25 @@ Para esto existen dos estrategias principales: (i) diseño tradicional
   }
 
   \caption{Diseños tradicionales y obtenidos a partir de diseño inverso de un
-  \emph{bend} y un WDM.}
+  \emph{bend} y un WDM. 
+  En todas las figuras la luz ingresa por la guía de onda izquierda y se propaga hacia la derecha.}
   \label{fig:devices}
 
 \end{figure}
 
 
-La \autoref{fig:devices} presenta una comparación de dos metodologías de diseño: tradicional e inverso.
-Como se observa en la \autoref{fig:devices}, en el diseño tradicional (izquierda) se define el dispositivo con geometrías simples que permiten obtener funciones analíticas de sus propiedades físicas \citep{Hughes2016, Song2008}. 
-Esto se realiza para poder optimizar la función obtenida a partir de los parámetros que la definan. 
-Dicha optimización se suele ejecutar haciendo un barrido de los parámetros, con algoritmos genéticos o usando \emph{particle swarm optimization}. 
-Para obtener buenos resultados con esta metodología comúnmente se requiere intuición 
-y/o conocimiento de un experto sobre el tema \citep{Su2020}. 
+%La \autoref{fig:devices} presenta una comparación de dos metodologías de diseño: tradicional e inverso.
+%Como se observa en la \autoref{fig:devices}, en el diseño tradicional (izquierda) se define el dispositivo con geometrías simples que permiten obtener funciones analíticas de sus propiedades físicas \citep{Hughes2016, Song2008}. 
+%Esto se realiza para poder optimizar la función obtenida a partir de los parámetros que la definan. 
+%Dicha optimización se suele ejecutar haciendo un barrido de los parámetros, con algoritmos genéticos o usando \emph{particle swarm optimization}. 
+%Para obtener buenos resultados con esta metodología comúnmente se requiere intuición 
+%y/o conocimiento de un experto sobre el tema \citep{Su2020}. 
 
+La \autoref{fig:devices} presenta una comparación de dos metodologías de diseño: tradicional e inverso.
+Se observa que en el diseño tradicional (izquierda) se define el dispositivo con geometrías simples que permiten obtener funciones analíticas de sus propiedades físicas \citep{Hughes2016, Song2008}. 
+Esto se realiza para poder optimizar la función obtenida a partir de los parámetros que la definan. 
+Dicha optimización se suele ejecutar haciendo un barrido de los parámetros, con algoritmos genéticos o usando \emph{particle swarm optimization}.
+Para obtener buenos resultados con esta metodología es requerido basarse en la habilidad y confiar en la intuición por parte del diseñador \citep{Su2020}. 
 
 Existen tres grandes inconvenientes con el diseño tradicional. 
 Primero, solamente se explora una pequeña fracción de todos los posibles diseños.
@@ -84,22 +95,22 @@ Tercero, al trabajar en la escala de nanómetros, existen casos como el
 
 Por otro lado, en el diseño inverso, mostrado en la \autoref{fig:devices}
 (derecha), las geometrías resultantes no están limitadas a diseños intuitivos o regulares.
-Esta metodología consiste en primero definir que propiedades deseamos en nuestro dispositivo.
+Esta metodología consiste en primero definir las propiedades deseadas en nuestro dispositivo (e.g. transmitancia > 90\%, nivel de gris < 2 \%, etc).
 Luego, usando simulaciones computacionales podemos determinar las propiedades físicas
-de una geometría arbitraria. De este modo, el problema se reduce a parametrizar una región
+de una geometría arbitraria. El problema de diseño se reduce a parametrizar una región
 de diseño y explorar distintas geometrías con esta parametrización hasta encontrar un diseño
 que cumpla las propiedades deseadas.
 Esto se formula como un problema de optimización, para lo cual existe una variedad de algoritmos
 que se pueden aplicar (e.g. \emph{genetic algorithms}, \emph{particle swarm optimization}, etc)
 \citep{Molesky2018, Su2020}.
 Para una descripción detallada de los distintos algoritmos de optimización
-comúnmente empleados, por favor revisar \cite{Schneider2019, Elsawy2020, Campbell2019}.
+comúnmente empleados en diseño de dispositivos fotónicos, por favor revisar \cite{Schneider2019, Elsawy2020, Campbell2019}.
 
 
 El diseño inverso ha logrado conseguir dispositivos con menores pérdidas que las obtenidas por el
 diseño tradicional por lo que ha ganado interés en el área de fotónica durante
 las últimas dos décadas \citep{Su2018, Molesky2018, Campbell2019}. 
-Sin embargo, existen cuatro grandes desafíos con este planteamiento:
+Identificamos que existen cuatro grandes desafíos con este planteamiento:
 (i) el espacio de búsqueda es exponencial \citep{Vuckovic2019}, 
 (ii) las simulaciones computacionales son costosas en términos de tiempo y memoria \citep{Kudyshev2020}, 
 (iii) el espacio de búsqueda es no convexo \citep{Su2018} y
@@ -108,15 +119,17 @@ Sin embargo, existen cuatro grandes desafíos con este planteamiento:
 
 El presente trabajo se centra en estudiar dos dispositivos SiP
 fundamentales:
-(i) \emph{bend-90°} y (ii) \emph{wavelength demultiplexer} de dos canales.
+(i) \emph{bend-90°} y (ii) \emph{2-channel wavelength demultiplexer}.
 De aquí en adelante nos referiremos a estos simplemente como \emph{bend} y WDM.
 Así, el objetivo de esta tesis es aplicar el conocimiento en computación para
 encontrar diseños de estos dispositivos con eficiencias mayores al 90\%
-y resilientes a errores de fabricación trabajando en la escala de nanómetros.
-Empleamos el diseño inverso para encontrar los diseños que cumplían estas propiedades,
+y robustos ante errores de fabricación trabajando en la escala de nanómetros. 
+Empleamos el diseño inverso para encontrar los diseños que cumplen con estas propiedades,
 realizamos una parametrización topológica para explorar los posibles diseños.
-El estudio se realizó con cinco algoritmos de optimización populares en el área.
-Además, se incorporaron restricciones a los diseños para asegurar robustez al fabricarse.
+El estudio se desarrolló con cinco algoritmos de optimización: (i) \emph{Limited-memory Broyden–Fletcher–Goldfarb–Shanno with boundaries} (L-BFGS-B), 
+(ii) \emph{Method of Moving asymptotes} (MMA), 
+(iii) \emph{Covariance Matrix Adapatation Evolution Strategy} (G-CMA-ES), (iv) \emph{Gradient Particle Swarm Optimization} (G-PSO) y (v) \emph{Gradient Genetic Algorithm} (G-GA).
+
 
 El presente documento está organizado de la siguiente manera:
 
@@ -125,16 +138,22 @@ El \autoref{chapter:introduction}  brinda una introducción al tema de investiga
 El \autoref{chapter:theory} desarrolla los conceptos necesarios para entender la propuesta presentada
 en esta tesis.
 
-El \autoref{chapter:related-works} presenta una revisión del estado del arte centrándose
+En el \autoref{chapter:related-works} presentamos una revisión del estado del arte centrándose
 en algoritmos utilizados en el diseño inverso y dos estrategias populares de parametrización:
 (i) basada en conjuntos de nivel y (ii) basada en píxeles.
 
-El \autoref{chapter:methodology} plantea los pasos seguidas en este trabajo y brinda
-todos los detalles necesarios para que puedan ser reproducibles.
 
-El \autoref{chapter:results} muestra los resultados de la experimentación seguida.
-Además, contiene una discusión crítica de los resultados junto a un análisis de los
-diseños mejor optimizados.
+En el \autoref{chapter:methodology} presentamos nuestra metodología propuesta para el diseño inverso de dispositivos \emph{bend} y WDM usando optimización topológica robusta. 
+Brindamos detalles sobre la configuración
+de las simulaciones y algoritmos (dimensiones, parámetros, etc).
+Además, se describe las etapas de optimización seguidas y el posprocesamiento realizado a los diseños mejor optimizados.
+
+
+El \autoref{chapter:results} muestra los resultados obtenidos por  experimentación y la discusión sobre estos.
+Comparamos los resultados de los cinco algoritmos evaluados en base a tres criterios: 
+(i) convergencia, (ii) eficiencia y (iii) porcentaje de región gris.
+Adicionalmente, se analiza y compara con el estado del arte nuestros diseños mejor optimizados
+del \emph{bend} y WDM.
 
 Por último, en el \autoref{chapter:conclutions} se detallan las conclusiones del presente trabajo de investigación.
 
@@ -142,7 +161,7 @@ Por último, en el \autoref{chapter:conclutions} se detallan las conclusiones de
 
 Una forma de parametrizar dispositivos es seleccionando una región rectangular y dividiéndola
 en $n \times m$ píxeles como si fuera una imagen, ver \autoref{fig:bend-discretization}.
-Luego, cada píxel se rellena con dos posibles materiales: óxido de silicio $(SiO_2)$ o Silicio ($Si$).
+Luego, cada píxel se rellena con dos posibles materiales: óxido de silicio $(SiO_2)$ o silicio ($Si$).
 Finalmente, se usa métodos numéricos para resolver las ecuaciones de Maxwell en este diseño
 y obtener así la distribución del campo eléctrico, este permite entender el funcionamiento del dispositivo
 y sus propiedades \citep{Molesky2018, Schneider2019}.
@@ -181,23 +200,25 @@ Este problema se estudió para dos dispositivos nanofotónicos (i) \emph{bend} y
 
 \section{Justificación}
 
-El \emph{bend} y WDM son dispositivos SiP fundamentales que tienen aplicación
-directa, por ejemplo, en sistemas HPC \citep{Shen2017}.
-Así, las mejoras de estos ayudará indirectamente al desarrollo de Ciencia
-de la Computación brindando, potencialmente, un mejor \emph{hardware} para programas de
-inteligencia artificial, HPC, entre otros.
-Por otro lado, desde el punto de vista computacional, 
-este problema es interesante porque ya hay estrategias computacionales conocidas para resolverlo;
-por ejemplo, algoritmos genéticos \citep{Mykel2019}, estrategias evolutivas \citep{Hansen2016}, entre otros.
-Además, debido al alto costo computacional de las simulaciones \citep{Schneider2019}, el trabajo requiere de computación de alto desempeño.
+
+Las mejoras de estos dispositivos permiten diseñar \emph{hardware} eficiente y robusto para interconexión óptica en sistemas de cómputo, lo cual permitirá mejorar la ejecución de programas en sistemas HPC. Esto potencialmente beneficia aplicaciones de alto impacto [CITE] tales como inteligencia artificial, analítica de datos y computación científica.
+
+Desde el punto de vista computacional, 
+este problema es interesante porque las estrategias computacionales y algoritmos conocidos para resolverlo
+(e.g., algoritmos genéticos \citep{Mykel2019}, estrategias evolutivas \citep{Hansen2016}, etc.) motivan su comparación para identificar sus limitaciones a partir de parametrización orientada a reducir el área de dispositivo y garantizar robustez de fabricación.
+
+
+Además, debido al alto costo computacional de las simulaciones \citep{Schneider2019}, nuestro trabajo requiere de computación de alto desempeño para el procesamiento.
 
 \section{Objetivos}
 
-\begin{itemize}
+Definimos dos objetivos principales:
 
-  \item Diseñar un \emph{bend} y WDM con eficiencias mayores al 90\% y resilientes a errores de fabricación.
+\begin{enumerate}
 
-  \begin{itemize}
+  \item Diseñar un \emph{bend} y WDM con eficiencias mayores al 90\% y robustos ante errores de fabricación en un área de diseño de $2 \mu m \times 2 \mu m$. 
+
+  \begin{enumerate}
 
     \item Seleccionar una estrategia de parametrización que asegure facilidad de fabricación.
 
@@ -205,10 +226,10 @@ Además, debido al alto costo computacional de las simulaciones \citep{Schneider
 
     \item Encontrar geometrías con valores óptimos de la función objetivo en simulaciones computacionales.
 
-    \item Encontrar geometrías resilientes a posibles errores de fabricación de dilatación o contracción.
+    \item Encontrar geometrías robustos ante posibles errores de fabricación de dilatación o erosión.
 
-  \end{itemize}
+  \end{enumerate}
 
   \item Comparar el desempeño y la convergencia de cinco algoritmos de optimización populares usados para optimizar dispositivos nanofotónicos.
 
-\end{itemize}
+\end{enumerate}

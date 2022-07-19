@@ -2,22 +2,27 @@
 \addcontentsline{toc}{section}{\bfseries RESUMEN}
 \markboth{RESUMEN}{RESUMEN} 
 
-La fotónica en silicio es un área que se está desarrollando intensamente en los últimas décadas.
-Los dispositivos que se están desarrollando muestran un gran potencial para mejorar
-los sistemas de cómputo, telecomunicaciones y otras áreas;
-sin embargo, sigue siendo un reto incorporar una gran cantidad de estos en un chip con área reducida.
-Ante ello, distintas investigaciones buscan obtener dispositivos fotónicos fundamentales 
-compactos y con poca pérdida. 
-En el presente trabajo se diseñaron dos de estos: (i) \emph{bend} y (ii) \emph{2-channel wavelength-demultiplexer}.
+La fotónica en silicio es un área en desarrollo emergente y constante en los últimas décadas. Los dispositivos fotónicos muestran un gran potencial de aplicación para mejorar
+los sistemas de cómputo, telecomunicaciones y otras áreas.
+Sin embargo, sigue siendo un reto integrar una gran cantidad de dispositivos (i.e., fotónicos fundamentales) en un chip con área reducida y baja pérdida. 
+En el presente trabajo se diseñaron dos dispositivos fundamentales: (i) \emph{bend} y (ii) \emph{2-channel wavelength-demultiplexer} ( WDM).
 Los diseños se realizaron en un área de $2 \mu m \times 2 \mu m$
 siguiendo una estrategia basada en optimización topológica robusta.
-Además, se realizó una comparativa de dos algoritmos de optimización de primer orden populares en el área.
-Y, se añadió a la comparativa tres variantes de algoritmos populares, pero que no suelen
-aprovechar el cómputo de la gradiente para guiar su proceso de optimización.
-Los diseños mejor optimizados consiguieron transmitancias mayores al $90 \%$, son resilientes a errores
-de fabricación de dilatación y erosión, poseen un porcentaje de gris menor al $2 \%$
-y  funcionan bien en un rango de longitudes de onda incluso si se eliminan sus
-regiones no conexas.
+
+%Realizamos una comparativa de cinco algoritmos de optimización. Dos algoritmos de optimización de primer orden bien conocidos en la literatura: L-BFGS-B y MMA. Además, implementamos y evaluamos tres variantes de los algoritmos GA, PSO y CMA-ES con el cómputo de la gradiente para guiar su proceso de optimización. 
+
+Realizamos la evaluación y comparativa de cinco algoritmos de optimización de primer orden: 
+(i) \emph{Limited-memory Broyden–Fletcher–Goldfarb–Shanno with boundaries} (L-BFGS-B), 
+(ii) \emph{Method of Moving asymptotes} (MMA), 
+(iii) \emph{Covariance Matrix Adapatation Evolution Strategy} (G-CMA-ES), (iv) \emph{Gradient Particle Swarm Optimization} (G-PSO) y (v) \emph{Gradient Genetic Algorithm} (G-GA). Los últimos tres algoritmos son variaciones propuestas a sus versiones
+más populares (CMA-ES, PSO y GA) donde se incluye el cálculo de
+la gradiente para guiar su proceso de optimización.
+
+Nuestros resultados muestran que los diseños mejor optimizados: (i) consiguieron transmitancias mayores al $90 \%$ siendo robustos ante errores
+de fabricación de dilatación y erosión, (ii) poseen un porcentaje de gris menor al $2 \%$
+y (iii) son consistentes en un rango de longitudes de onda (i.e., 1500-1600 nm \emph{bend} y 1250-1600 nm WDM) incluso si se eliminan sus regiones no conexas. 
+
+Estos resultados son prometedores para la integración de dispositivos  WDM en un área menor al reportado en el estado del arte ( < $2.8 \mu m \times 2.8 \mu m$) y el diseño de \emph{bends} más eficientes que el diseño intuitivo-tradicional de $1 \mu m$ de radio.
 
 \noindent \textbf{Palabras clave:}\\
-\noindent Optimización Topológica Robusta, Métodos Numéricos, Algoritmos de Optimización, Diseño Inverso
+\noindent Algoritmos de Optimización, Diseño Inverso, Fotónica Integrada, Métodos Numéricos, Optimización Topológica Robusta
