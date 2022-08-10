@@ -138,7 +138,7 @@ En el resto del capítulo se describe en más detalle los siguientes pasos neces
 \section{Parametrización}\label{sec:parametrization}
 
 Tanto para el \emph{bend} como para el WDM se define una región de diseño
-mediante una parametrización ($\boldsymbol{P}$) que pueda mapear un gran conjunto de dispositivos.
+mediante una parametrización ($\boldsymbol{P}$) que permita mapear un conjunto amplio de estos dispositivos.
 Una de la estrategias más populares para esta tarea es usar parametrización
 basada en píxeles. Esta estrategia consiste en definir $\boldsymbol{P}$ como una matriz 
 de $n$ filas y $m$ columnas con valores en el intervalo $[0, 1]$.
@@ -185,30 +185,31 @@ un valor de $\boldsymbol{P}(x, y) = 0$ describe la presencia de $SiO_2$ y
 $0 < \boldsymbol{P}(x, y) < 1$ hace referencia
 a algún material cuya permitividad es $\boldsymbol{\varepsilon}(x, y)$.
 
-No obstante, un inconveniente de lo descrito es que $\boldsymbol{P}$ puede mapear a materiales inexistentes
+Nótese que un inconveniente de lo descrito es que $\boldsymbol{P}$ puede mapear a materiales inexistentes
 (regiones grises),
 mayor detalle de esta dificultad se estudia
 en la \autoref{sec:transformations}.
-Por otro lado, con la descripción de la permitividad ya podemos calcular los campos eléctricos con lo
-cual se puede obtener el valor de $f_{obj}$ definido para el \emph{bend} y WDM.
+Por otro lado, con la descripción de la permitividad podemos calcular los campos eléctricos con los
+cuales se puede obtener el valor de $f_{obj}$ definido para el \emph{bend} y WDM.
 Por esta razón se realizan simulaciones electromagnéticas y se resuelven las inversas de las 
 ecuaciones de Maxwell, esto permite obtener los campos eléctricos \citep{Su2020}.
-Afortunadamente, para este proceso se puede utilizar distintos programas que implementan diversos 
+%Afortunadamente, para este proceso se puede utilizar distintos programas que implementan diversos 
+Para este proceso se pueden utilizar distintos programas que implementan diversos
 métodos numéricos para realizar los cálculos (\autoref{sec:simulation}).
 
 \section{Simulación}\label{sec:simulation}
 
 Una vez tenemos definido un dispositivo con regiones fijas (guías de onda) y una
-región de diseño (descrita por la parametrización), es necesario incorporar
-tres elementos adicionales \citep{Oskooi2010, Su2020}:
+región de diseño descrita por la parametrización, es necesario incorporar
+tres componentes adicionales \citep{Oskooi2010, Su2020}:
 
 \begin{enumerate}
 
   \item \textbf{Fuente:} Suele representarse como un rectángulo en un plano perpendicular al flujo
-    que pasa por el lugar donde este se ubica. Simula la emición de un haz de ondas por el diseño.
+    que pasa por el lugar donde este se ubica. Simula la emisión de un haz de ondas por el diseño.
 
   \item \textbf{Monitores:} Suelen representarse como un rectángulo similar a la fuente.
-    Capturan información en su ubicación (e.g. valores del campo eléctrico).
+    Capturan información en su ubicación, en nuestro estudio valores del campo eléctrico.
 
   \item \textbf{\emph{Perfectly Matched Layer} (PML):} Representan las condiciones de frontera en la simulación. 
     Se utilizan para limitar el espacio donde se deberá realizar las simulaciones computacionales.
@@ -223,16 +224,15 @@ tres elementos adicionales \citep{Oskooi2010, Su2020}:
   \subfigure[Vista lateral]
     {\includegraphics[width=0.45\textwidth]{image/theory/simulation-top.png}}
 
-  \caption{Configuración de simulación para una guía de onda.}
+  \caption{Configuración de simulación para una guía de onda en 3D.}
   \label{fig:waveguide}
 \end{figure}
 
-En la \autoref{fig:waveguide} se ilustra una guía de onda con los elementos mencionados.
+La \autoref{fig:waveguide} ilustra una guía de onda en 3D con las tres componentes anteriores.
 El rectángulo de color negro representa la guía de onda, la región roja la fuente, 
 la región azul el monitor y lo verde el PML.
 Guiándonos de la figura de la izquierda, al realizar una simulación con esta configuración 
-el flujo iría de la región roja a la región azul.
-Sin embargo, este seguiría expandiéndose por la guía de onda hasta llegar a la región verde (PML).
+el flujo iría de la región roja a la región azul. Este seguiría expandiéndose por la guía de onda hasta llegar a la región verde (PML).
 En palabras sencillas, podemos interpretar el PML como una caja que permite aislar nuestro sistema.
 Por otro lado, la figura de la derecha representa el mismo diseño pero desde una vista lateral 
 (recordemos que son diseños en 3D).
@@ -240,19 +240,18 @@ Aquí podemos evidenciar como la fuente y el monitor son representados por rect�
 
 Siguiendo lo descrito, podemos utilizar diversos programas para configurar y ejecutar 
 simulaciones de un \emph{bend} y WDM.
-Una alternativa es usar SPINS-B junto a Maxwell-B, paquetes de Python de código
-abierto.
-Estos paquetes funcionan bajo una arquitectura cliente-servidor donde SPINS-B es el cliente y Maxwell-B es el servidor.
+Una alternativa es usar SPINS-B junto a Maxwell-B, programas implementados en Python como código abierto.
+Estos funcionan bajo una arquitectura cliente-servidor donde SPINS-B es el cliente y Maxwell-B es el servidor.
 
-Por un lado, SPINS-B permite configurar diseños (fuente, monitores, PML, parametrización, región de diseño, etc) y solicitar al servidor que obtenga sus propiedades.
-Un aspecto interesante de este paquete es que trabaja con bloques llamados nodos.
+Por un lado, SPINS-B permite configurar diseños (fuente, monitores, PML, parametrización, región de diseño, etc.) y solicitar al servidor que obtenga sus propiedades.
+Un aspecto interesante de este simulador es que trabaja con bloques llamados nodos.
 Estos representan operaciones fundamentales como suma, resta, multiplicación, etc.
 Luego, el programa guarda nuestra función objetivo ($f_{obj}$) usando un grafo que tiene estos nodos de vértices.
 Así, SPINS-B permite calcular de forma eficiente
 (usando un número de simulaciones independiente de las dimensiones de $\boldsymbol{P}$) 
 el valor de $\nabla f_{obj}(\boldsymbol{P})$ mediante diferenciación automática \citep{Su2020, Mykel2019}.
 
-Por otro lado, Maxwell-B implementa un método numérico conocido como \emph{finite-difference frequency domain}
+Por otro lado, Maxwell-B es un \emph{solver} que implementa un método numérico conocido como \emph{finite-difference frequency domain}
 (FDFD) para resolver numéricamente las ecuaciones de Maxwell y obtener así determinadas propiedades
 de los diseños que recibe.
 Es importante destacar que la implementación de esta librería es en GPUs de NVIDIA y permite
@@ -272,6 +271,7 @@ simulación se incrementan considerablemente.
 En esta sección se discute dos transformaciones populares en optimización topológica
 para imponer restricciones de fabricación en nuestros diseños: (i) filtro por densidad y
 (ii) proyección.
+Esta sección está basada en \cite{Lazarov2016}, para una descripción más detallada favor de revisar este trabajo.
 
 \subsection{Filtro por Densidad}
 
@@ -343,11 +343,11 @@ Por este motivo, es común acompañar el filtro por densidad con una proyección
 
 \noindent donde $\eta$ y $\beta$ son números escalares. Para entender el impacto de estos parámetros
 en la \autoref{eq:projection}, veamos la \autoref{fig:discretization}.
-En la figura se está graficando esta ecuación con un valor fijo de $\eta = 0.5$ y distintos valores de
+En la figura graficamos esta ecuación con un valor fijo de $\eta = 0.5$ y distintos valores de
 $\beta$.
-Como podemos observar, con $\beta = 1$ tenemos prácticamente la función identidad y conforme aumenta
+Se observa que con $\beta = 1$ tenemos prácticamente la función identidad y conforme aumenta
 el valor de $\beta$ la función se aproxima más a una función escalonada con quiebre en $0.5$. 
-En realidad, en general el quiebre se realiza en el valor que se le de a $\eta$.
+En general el quiebre se realiza en el valor que se le de a $\eta$.
 
     \begin{figure}[ht]
       \centering
@@ -396,19 +396,19 @@ respecto al diseño $\widetilde{\boldsymbol{P}}$ mediante la siguiente ecuación
 
 Con el objetivo de visualizar estas transformaciones, observemos la \autoref{fig:three-filters}.
 En la Figura \autoref{subfig:P} se muestra el diseño que representa una parametrización $\boldsymbol{P}$.
-A su derecha se encuentra la Figura \autoref{subfig:P_filter}, aquí se aplicó el filtro de densidad
+A su derecha se encuentra la Figura \autoref{subfig:P_filter}, aquí aplicamos el filtro de densidad
 utilizando un radio de curvatura $r_f = 80 nm$. Como podemos observar, este diseño posee regiones grises,
 mas ha logrado eliminar zonas puntiagudas.
 Seguidamente, en las Figuras \autoref{subfig:P_E_D}, \autoref{subfig:P_E_I}, \autoref{subfig:P_E_E}
 se muestra el diseño de la Figura \autoref{subfig:P_filter} tras aplicar la proyección descrita con
 $\beta = 2^6$ y distintos valores de $\eta$.
 Al utilizar $\eta = \eta_i = 0.5$ (Figura \autoref{subfig:P_E_I}) 
-estamos simplemente discretizando el diseño.
+estamos discretizando el diseño.
 Por otro lado, al usar $\eta = \eta_d = 0.3$ (Figura \autoref{subfig:P_E_D})
-estamos simulando que el diseño se ha dilatado 
+simulamos que el diseño se ha dilatado 
 (i.e. la región de $Si$ del diseño intenta expandirse).
 Finalmente, al usar $\eta = \eta_e = 0.7$ (Figura \autoref{subfig:P_E_E})
-estamos simulando que el diseño ha erosionado 
+simulamos que el diseño ha erosionado 
 (i.e. la región de $SiO_2$ del diseño intenta expandirse).
 
 
@@ -421,8 +421,8 @@ el uso de $\eta$ denotaremos como $\eta_i$ al valor usado en un diseño nominal,
 $\eta_e$ para los diseños erosionados y $\eta_d$ para los diseños dilatados.
 Además, es importante señalar que se suele escoger los valores de $\eta_e$ y $\eta_d$
 de las manera que $\eta_d = 1 - \eta_e$.
-Por último, notemos que  estos parámetros deben seleccionarse con cuidado; 
-caso contrario, el diseño podría simular una dilatación o erosión muy exageradas.
+Por último, notemos que estos parámetros deben seleccionarse con cuidado; 
+caso contrario, el diseño podría representar una dilatación o erosión muy exageradas  [CITEXXX].
 
 Un último punto a considerar es que nuestro proceso de optimización necesitará calcular 
 $\nabla f_{obj}(\boldsymbol{P})$, pero al aplicar estas transformaciones terminaremos calculando
@@ -451,13 +451,12 @@ si obtenemos un valor menor al 2 \% podremos decir que nuestro diseño ha sido a
 \label{eq:grayscale}
 \end{equation}
 
-Una discusión más detallada de todo lo explicado en esta sección se puede encontrar en \cite{Lazarov2016}.
+Con todo lo descrito en este capítulo, ya tenemos las herramientas necesarias
+para plantear la optimización de nuestros dispositivos.
 
 \section{Algoritmos de Optimización}\label{sec:alg-opt}
 
-Finalmente, con todo lo descrito en este capítulo, ya tenemos las herramientas necesarias
-para plantear la optimización de nuestros dispositivos.
-Ahora, notemos que nuestro problema se termina reduciendo a maximizar $f_{obj}$.
+Notemos que nuestro problema se termina reduciendo a maximizar $f_{obj}$.
 Sin pérdida de generalidad, en la presente sección se describen algoritmos
 para minimizar la función $f = -f_{obj}$.
 Esto es posible ya que maximizar una función es equivalente a minimizar su negativo \citep{Mykel2019}.
