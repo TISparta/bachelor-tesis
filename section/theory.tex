@@ -4,10 +4,10 @@
 
 En el presente capítulo se introducen los conceptos fundamentales sobre dispositivos fotónicos y optimización. Primero, se describen los dos dispositivos a optimizar: (i) \emph{bend} y (ii) WDM.
 Segundo, se explica la parametrización de estos dispositivos mediante un enfoque basado en píxeles.
-Tercero, se brindan detalles necesarios simular nuestros diseños utilizando el software de modelamiento SPINS-B \citep{Su2020}.
+Tercero, se brindan detalles necesarios para simular nuestros diseños utilizando el software de modelamiento SPINS-B \citep{Su2020}.
 Cuarto, se detallan dos transformaciones comúnmente utilizadas en la optimización topológica robusta: 
 (i) filtro por densidad y (ii) proyección.
-Finalmente, se describen seis algoritmos de optimización utilizados en este trabajo.
+Finalmente, se describen ocho algoritmos de optimización utilizados en este trabajo.
 
 \section{Dispositivos Fotónicos}
 
@@ -34,21 +34,11 @@ En este trabajo estudiamos dos dispositivos fotónicos fundamentales:
 
 \subsection{\emph{Bend}}
 
-%Al estudiar dispositivos fotónicos es de especial interés la
-%distribución del campo eléctrico ($\boldsymbol{E}$).
-%Este nos permite visualizar la distribución de la energía en un dispositivo calculando lo siguiente:
-%\begin{equation}
-%  |\boldsymbol{E}|^2 = %|\boldsymbol{E_x}|^2+|\boldsymbol{E_y}|^2+|\boldsymbol{E_z}|^2,
-%\label{eq:field}
-%\end{equation}
-%\noindent donde $\boldsymbol{E_x}, \boldsymbol{E_y}, \boldsymbol{E_z}$ representan las componentes del campo eléctrico
-%en los ejes $x, y, z$, respectivamente
-%\citep{LukasChrostowski2010}.
-
-Un \emph{bend} es un dispositivo fotónico que se encarga de guiar el giro de un haz de ondas. Un \emph{bend} convencional consiste en una una guía de onda horizontal usada como entrada y
+Un \emph{bend} es un dispositivo fotónico que busca cambiar la dirección de propagación de un haz de ondas.
+Un \emph{bend} convencional consiste en una una guía de onda horizontal usada como entrada y
 una guía de onda vertical usada como salida, estas son conectadas por una guía de onda con la forma de un
 cuarto de circunferencia de radio $r$ y con el mismo grosor de las guías de onda de entrada y salida. La \autoref{fig:efield} presenta un \emph{bend} convencional de radio $r = 1 \mu m$. Se observa que la parte significativa de la energía se pierde en la región curva.
-Esto se debe a que el radio de curvatura es muy pequeño, con un valor más grande (e.g. $r = 10 \mu m$) 
+Esto se debe a que el radio de curvatura es muy pequeño, con un valor más grande (e.g., $r = 10 \mu m$) 
 las pérdidas se vuelven casi nulas \citep{LukasChrostowski2010}.
 
 \begin{figure}[ht]
@@ -166,7 +156,7 @@ Por ello, para describir las propiedades del diseño es necesario asociar a $\bo
 Esto lo realizamos calculando la permitividad ($\boldsymbol{\varepsilon}$) mediante la siguiente ecuación:
 
 \begin{equation}
-  \boldsymbol{\varepsilon}(x, y) = \varepsilon_{Si} + (1 - \boldsymbol{P}(x, y))
+  \boldsymbol{\varepsilon}(x, y) = \varepsilon_{Si} * \boldsymbol{P}(x, y) + (1 - \boldsymbol{P}(x, y))
   \varepsilon_{SiO_2} \, \mid \, x \in [1, n] \land y \in [1, m],
 \label{eq:permitivity}
 \end{equation}
@@ -218,11 +208,20 @@ tres componentes adicionales \citep{Oskooi2010, Su2020}:
 
 \begin{figure}[ht]
   \centering
-  \subfigure[Vista frontal]
-    {\includegraphics[width=0.45\textwidth]{image/theory/simulation.png}}
+  \subfigure[Vista longitudinal del dominio computacional.]
+    {\includegraphics[width=0.45\textwidth]{image/theory/simulation.png}\label{fig:waveguide-a}}
   \hfill
-  \subfigure[Vista lateral]
-    {\includegraphics[width=0.45\textwidth]{image/theory/simulation-top.png}}
+  \centering
+  \subfigure[Vista transversal de la fuente de la guía de onda.]
+    {\includegraphics[width=0.45\textwidth]{image/theory/simulation-left.png}\label{fig:waveguide-b}}
+
+  \centering
+  \subfigure[Vista transversal del monitor de la guía de onda.]
+    {\includegraphics[width=0.45\textwidth]{image/theory/simulation-right.png}\label{fig:waveguide-c}}
+  \hfill
+  \centering
+  \subfigure[Análisis modal de una guía de onda de 400nm simulado con SPINS-B usando una resolución de 10nm.]
+    {\includegraphics[width=0.45\textwidth]{image/theory/simulation-modal.png}\label{fig:waveguide-d}}
 
   \caption{Configuración de simulación para una guía de onda en 3D.}
   \label{fig:waveguide}
@@ -231,12 +230,17 @@ tres componentes adicionales \citep{Oskooi2010, Su2020}:
 La \autoref{fig:waveguide} ilustra una guía de onda en 3D con las tres componentes anteriores.
 El rectángulo de color negro representa la guía de onda, la región roja la fuente, 
 la región azul el monitor y lo verde el PML.
-Guiándonos de la figura de la izquierda, al realizar una simulación con esta configuración 
+Guiándonos de la Figura \autoref{fig:waveguide-a}, al realizar una simulación con esta configuración 
 el flujo iría de la región roja a la región azul. Este seguiría expandiéndose por la guía de onda hasta llegar a la región verde (PML).
-En palabras sencillas, podemos interpretar el PML como una caja que permite aislar nuestro sistema.
-Por otro lado, la figura de la derecha representa el mismo diseño pero desde una vista lateral 
-(recordemos que son diseños en 3D).
-Aquí podemos evidenciar como la fuente y el monitor son representados por rectángulos, no por rectas.
+En palabras sencillas, podemos interpretar el PML como una caja que permite aislar nuestro sistema. 
+Pero, es importante que el PML se superponga con el dispositivo para evitar errores numéricos.
+Por otro lado, la Figura \autoref{fig:waveguide-b} representa el mismo diseño pero desde una vista transversal
+(recordemos que son diseños en 3D) y lo mismo ocurre en la Figura \autoref{fig:waveguide-c}, pero esta es una
+vista transversal desde otro ángulo.
+Con la ayuda de las vistas transversales se evidencia como la fuente y el monitor son representados por
+rectángulos, no por rectas. Por último, en la Figura \autoref{fig:waveguide-d} se muestra la distribución
+del campo eléctrico del modo TE calculado en la fuente y medido en el monitor. Notemos que para los distintos
+cálculos solo necesitaremos los valores asociados al modo TE.
 
 Siguiendo lo descrito, podemos utilizar diversos programas para configurar y ejecutar 
 simulaciones de un \emph{bend} y WDM.
@@ -271,7 +275,7 @@ simulación se incrementan considerablemente.
 En esta sección se discute dos transformaciones populares en optimización topológica
 para imponer restricciones de fabricación en nuestros diseños: (i) filtro por densidad y
 (ii) proyección.
-Esta sección está basada en \cite{Lazarov2016}, para una descripción más detallada favor de revisar este trabajo.
+Esta sección está basada en \cite{Lazarov2016}, para una descripción más detallada revisar este trabajo.
 
 \subsection{Filtro por Densidad}
 
@@ -286,7 +290,8 @@ la distancia entre las posiciones $(x, y)$ y $(x', y')$ de la matriz $\boldsymbo
 \end{equation}
 
 \noindent donde $psize_x$ es el valor de la longitud horizontal que representa cada celda de $\boldsymbol{P}$
-y $psize_y$ es el recíproco para la longitud vertical.
+y $psize_y$ es el recíproco para la longitud vertical. \leonidas{Notemos que esta función distancia se comporta
+como la distancia de Manhattan, pero aplicando pesos.}
 
 De esta manera, definimos la bola cerrada ($\overline{B}_{r}(x, y)$)  de centro $(x, y)$ y 
 radio $0 < r$ mediante el siguiente conjunto:
@@ -406,10 +411,10 @@ Al utilizar $\eta = \eta_i = 0.5$ (Figura \autoref{subfig:P_E_I})
 estamos discretizando el diseño.
 Por otro lado, al usar $\eta = \eta_d = 0.3$ (Figura \autoref{subfig:P_E_D})
 simulamos que el diseño se ha dilatado 
-(i.e. la región de $Si$ del diseño intenta expandirse).
+(i.e., la región de $Si$ del diseño intenta expandirse).
 Finalmente, al usar $\eta = \eta_e = 0.7$ (Figura \autoref{subfig:P_E_E})
 simulamos que el diseño ha erosionado 
-(i.e. la región de $SiO_2$ del diseño intenta expandirse).
+(i.e., la región de $SiO_2$ del diseño intenta expandirse).
 
 
 Así, observamos como la proyección presentada en esta sección no solo nos permite discretizar diseños,
@@ -422,7 +427,7 @@ $\eta_e$ para los diseños erosionados y $\eta_d$ para los diseños dilatados.
 Además, es importante señalar que se suele escoger los valores de $\eta_e$ y $\eta_d$
 de las manera que $\eta_d = 1 - \eta_e$.
 Por último, notemos que estos parámetros deben seleccionarse con cuidado; 
-caso contrario, el diseño podría representar una dilatación o erosión muy exageradas  [CITEXXX].
+caso contrario, el diseño podría representar una dilatación o erosión muy exageradas  \citep{Lazarov2016}.
 
 Un último punto a considerar es que nuestro proceso de optimización necesitará calcular 
 $\nabla f_{obj}(\boldsymbol{P})$, pero al aplicar estas transformaciones terminaremos calculando
@@ -484,6 +489,28 @@ sin embargo, sus estrategias de búsqueda suelen permitir encontrar
 Además, todos estos algoritmos se aseguran de mantener los valores de $\boldsymbol{P}$ en el
 intervalo $[0, 1]$ aplicando $\boldsymbol{P}(x, y) \gets max(0, min(1, \boldsymbol{P}(x, y)))$, mas
 este detalle se obvia en las explicaciones por simplicidad en la notación.
+
+
+\leonidas{
+Para visualizar las características de algunos de los algoritmos de esta sección, 
+a modo de ejemplo se utiliza la 
+\autoref{eq:example} para mostrar que estrategias se aplican para minimizar esta función.
+En la \autoref{fig:gxy} podemos observar los conjuntos de nivel de la función $g(x, y)$.
+La estrella representa el óptimo global.
+}
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[scale=0.5]{image/theory/countour.png}
+   \caption{Contornos de nivel de la función $g(x, y)$.}
+  \label{fig:gxy}
+\end{figure}
+
+
+\begin{equation}
+  g(x, y) = (x-3.14)^2 + (y-2.72)^2 + sin(3x + 1.41) + sin(4y-1.73).
+  \label{eq:example}
+\end{equation}
 
 \subsection{\emph{Genetic Algorithms} (GA)}\label{sec:ga}
 
@@ -547,9 +574,28 @@ Como se observa en el Algoritmo \ref{alg:GA}, tenemos las siguientes funciones:
       retorna $children$, pero
       a cada elemento de todas estas matrices
       le agrega un valor en $U(-GA\_range, GA\_range)$ con
-      probabilidad $prob\_mutation$.
+      probabilidad $0 < prob\_mutation < 1$.
 
 \end{itemize}
+
+\leonidas{Para nuestro problema en específico como los valores de la matriz $\boldsymbol{P}$ están en el rango
+$[0, 1]$, el parámetro $GA\_range$ también debe encontrarse en este rango. Una selección adecuada
+de estos parámetros requiere de experimentación. Los valores usados en este trabajo son detallados
+en el \autoref{chapter:methodology}}.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[scale=0.5]{image/theory/GA.png}
+   \caption{Visualización del proceso de optimización de $g(x, y)$ usando GA.}
+  \label{fig:ga}
+\end{figure}
+
+\leonidas{
+En la \autoref{fig:ga} se visualiza como GA optimiza $g(x, y)$ comenzando
+con distribuir puntos aleatorios en el espacio de búsqueda. Luego, 
+de forma iterativa sigue los pasos descritos en el Algoritmo \ref{alg:GA}
+para intentar encontrar el óptimo global (i.e., la estrella).
+}
 
 \subsection{\emph{Particle Swarm Optimization} (PSO)}\label{sec:pso}
 
@@ -617,7 +663,31 @@ Como se observa en el Algoritmo \ref{alg:PSO}, tenemos las siguientes funciones:
   $\boldsymbol{P_{b}}$ respectivamente, 
   y $r_1, r_2 \in U(0, 1)$ representan el comportamiento impredecible.
 
+
 \end{itemize}
+
+\leonidas{Para nuestro problema en específico $PSO\_range \in [0, 1]$ y su selección require de experimentación. 
+Por otro lado, es válido experimentar usando 
+$\omega = c_1 = c_2 = 0.5$ basándonos en el trabajo de \cite{Schneider2019}}.
+
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[scale=0.5]{image/theory/PSO.png}
+   \caption{Visualización del proceso de optimización de $g(x, y)$ usando PSO.}
+  \label{fig:pso}
+\end{figure}
+
+\leonidas{
+En la \autoref{fig:pso} se visualiza como PSO optimiza $g(x, y)$ comenzando
+con distribuir puntos aleatorios en el espacio de búsqueda. 
+Adicionalmente, se observa que cada punto tiene asociado una flecha de tamaño y dirección variable.
+Esto es para representar que cada partícula intentará explorar, potencialmente, en distintas regiones
+del espacio de búsqueda y avanzando distintas distancias.
+En siguientes iteraciones las particulas se irán dirigiendo hacia la particula que globalmente ha encontrado
+el mejor resultado. La velocidad de este proceso depende de la elección de los parámetros.
+}
+
 
 \subsection{\emph{Covariance Matrix Adapatation Evolution Strategy} (CMA-ES)}\label{sec:cma-es}
 
@@ -656,12 +726,12 @@ $\boldsymbol{\mu} = flatten(\boldsymbol{P})$ \\
 
 Entrando en más detalles del Algoritmo \ref{alg:CMA},
 en la línea 1 simplemente se linealiza la matriz $\boldsymbol{P}$ en un vector $\boldsymbol{\mu}$ 
-de dimensión $p = n \times m$ (i.e. se unen sus vectores filas en orden para formar un solo vector).
+de dimensión $p = n \times m$ (i.e., se unen sus vectores filas de manera consecutiva para formar un solo vector).
 Luego, dentro del bucle en la iteración $t$, en la línea 3 se genera $population\_size$ puntos
 $p$-dimensionales $\boldsymbol{x_i}$ de la distribución $\mathcal{N}(\boldsymbol{\mu},\,\sigma^{2} \boldsymbol{C})$, 
 donde estos son ordenados ascendentemente de acuerdo
 al valor de $f$.
-En la línea 4 actualizamos la media $\boldsymbol{\mu}$ usando una promedio ponderado dado
+En la línea 4 actualizamos la media $\boldsymbol{\mu}$ usando el promedio ponderado dado
 por
 
 \begin{equation}
@@ -730,6 +800,22 @@ La combinación de estos tres términos actualiza $\boldsymbol{C}$ de tal manera
 mueva la hiperelipse en una dirección favorable. 
 Para una descripción más detallada del algoritmo, revisar los trabajos de \cite{Hansen2016} y \cite{Mykel2019}.
 
+\begin{figure}[ht]
+  \centering
+  \includegraphics[scale=0.5]{image/theory/CMA.png}
+   \caption{Visualización del proceso de optimización de $g(x, y)$ usando CMA-ES.}
+  \label{fig:cma}
+\end{figure}
+
+\leonidas{
+En la \autoref{fig:cma} se visualiza como CMA-ES optimiza $g(x, y)$ 
+generando puntos dentro de la hyperelipse para explorar el espacio de búsqueda.
+En siguientes iteraciones, de acuerdo a la exploración realizada la hyperelipse puede desplazarse y
+contraerse o expandirse. Esto proceso es repetido iterativamente hasta que la hyperelipse termina 
+reduciéndose a prácticamente un punto.
+}
+
+
 \subsection{\emph{Gradient Descent} (GD)}\label{sec:gradient-descent}
 
 Este algoritmo comienza desde un punto inicial, en nuestro caso la matriz $\boldsymbol{P}$.
@@ -758,25 +844,93 @@ sin embargo, en realidad debemos trabajar con la matriz $\boldsymbol{P}$ despué
 para que las operaciones de esta ecuación estén bien definidas.
 Mayores detalles del algoritmo se pueden encontrar en \cite{Demidova2020}.
 
+\begin{figure}[ht]
+  \centering
+  \includegraphics[scale=0.5]{image/theory/GD.png}
+   \caption{Visualización del proceso de optimización de $g(x, y)$ usando GD.}
+  \label{fig:gd}
+\end{figure}
+
+\leonidas{
+En la \autoref{fig:gd} se visualiza como GD optimiza $g(x, y)$ 
+El algoritmo comienza desde un punto y se mueve en dirección de la gradiente.
+Como se observa, este algoritmo puede moverse eficientemente hacia
+posiciones más óptimas; sin embargo, el algoritmo podría quedarse estancado en
+óptimos locales.
+}
+
 
 \subsection{\emph{Method of Moving asymptotes} (MMA)}\label{sec:mma}
 
 \emph{Method of moving asymptotes} (MMA) es un algoritmo de optimización
-local basado en la gradiente, es decir, de primer orden.
-La idea del algoritmo es comenzar en un punto $\boldsymbol{P}$ y formar
-una aproximación de $f$ alrededor de $\boldsymbol{P}$ utilizando:
-(i) la gradiente de $f$,
-(ii) los límites de los valores de $P$ y
-(iii) una función de penalidad cuadrática.
-Lo interesante de esta aproximación es que es convexa y separable, lo cual permite
-resolverla de forma sencilla.
-Así, el algoritmo comienza calculando la aproximación, luego resuelve la optimización
-utilizando la aproximación.
-De este modo, surgen dos posibles escenarios:
-(i) la aproximación encuentra un buen elemento que se usa como punto de inicio para repetir el procedimiento o
-(ii) se repite el proceso limitando la contribución de la función de penalidad.
+local basado en la gradiente, es decir, de primer orden. En esta sección usaremos
+$\boldsymbol{\boldsymbol{x^{(i)}}}$ para representar la linealización de la $i-$ésima parametrización 
+calculada ($\boldsymbol{P_i}$). Además, en este algoritmo se asume que tenemos $j = 1, 2, \dots, m^{+}$ inecuaciones 
+($f_j(\boldsymbol{x}) < \overline{f_j}$) que deben cumplirse y la función a optimizar se denota como $f_0$.
 
-En realidad en el presente trabajo usaremos una versión mejorada del algoritmo
+
+Como se detalla en \cite{Svanberg1987}, el algoritmo se resume en estos 5 pasos:
+
+
+\begin{enumerate}
+
+  \item El escoge un punto inicial $\boldsymbol{x^{(0)}}$ y se inicializa $i \gets 0$.
+    La elección de $\boldsymbol{x^{(0)}}$ puede ser un punto aleatorio.
+
+  \item Se verifica que $\boldsymbol{x^{(0)}}$ no satisfaga criterios de convergencia, sino el programa
+    termina.
+
+  \item Se calcula $f_j(\boldsymbol{x^{(i)}})$ y $\nabla f_j(\boldsymbol{x^{(i)}})$ para $j = 0, 1, \dots, m^{+}$.
+
+  \item Se utiliza multiplicadores de Lagrange a los resultados del paso anterior para plantear un
+    nuevo subproblema.
+
+  \item Se resuelve el subproblema obteniendo como solución $\boldsymbol{x^{(i)}}$.
+        Se actualiza $i \gets i + 1$ y se regresa al paso 2.
+
+\end{enumerate}
+
+En la iteración $i$, para cada $f_j$ se escogen los parámetros
+$L_t^{(i)}$ y $U_t^{(i)}$ tal que $L_t^{(i)} < x_t^{(i)} < U_t^{(i)}$ para $t = 1, 2, \dots,
+n = dim(\boldsymbol{x^{(i)}})$. Luego, para $j = 0, 1, \dots, m^{+}$, se define:
+
+\begin{equation}
+  f_j^{(i)}(\boldsymbol{x}) = r_j^{(k)} + \displaystyle\sum_{t=1}^n\left(\frac{p_{jt}^{(i)}}{U_t^{(i)} - x_t}
+  + \frac{q_{jt}^{(i)}}{x_t - L_t^{(i)}} \right),
+\end{equation}
+
+donde
+
+\begin{equation}
+  p_{jt}^{(i)} = \begin{cases*}
+    (U_t^{(i)} - x_t^{(i)})^2 \partial f_j / \partial x_t, & si $0 < \partial f_j / \partial x_t$\\
+    0, & en otro caso
+  \end{cases*},
+\end{equation}
+
+\begin{equation}
+  q_{jt}^{(i)} = \begin{cases*}
+    -(x_t^{(u)} - L_t^{(i)})^2 \partial f_j / \partial x_t, & si $\partial f_j / \partial x_t < 0$\\
+    0, & en otro caso
+  \end{cases*},
+\end{equation}
+
+
+\begin{equation}
+  r_j^{(i)} =  f_j(\boldsymbol{x^{(i)}}) + \displaystyle\sum_{t=1}^n\left(\frac{p_{jt}^{(i)}}{U_t^{(i)} - x_t^{(i)}}
+  + \frac{q_{jt}^{(i)}}{x_t^{(i)} - L_t^{(i)}} \right),
+\end{equation}
+
+donde $\partial f_j / \partial x_t$ son evaluados en $\boldsymbol{x^{(i)}}$.
+Es importante señalar que entre más cercanos a $x_t^{(i)}$ se encuentren $L_t^{(i)}$ y $U_t^{(i)}$,
+entonces la segunda derivada toma un mayor valor, lo cual implica que la aproximación se vuelve más 
+cercana al valor real. 
+Los valores de estos parámetros van cambiando en cada iteración, esto es llamado mover asíntotas, de ahí el
+nombre del algoritmo. Los detalles de como escoger estos parámetros son desarrollados en detalle
+en \cite{Svanberg1987}.
+
+
+En realidad en el presente trabajo usaremos una versión mejorada del MMA
 conocida como \emph{Conservative Convex Separable Approximation} (CCSA) 
 debido a su popularidad en optimización topológica, pero nos seguiremos refiriendo
 al algoritmo como MMA por convención.
@@ -786,14 +940,117 @@ del punto inicial. Los detalles se pueden revisar en \cite{Svanberg2002}.
 \subsection{\emph{Limited-memory Broyden–Fletcher–Goldfarb–Shanno with boundaries} (L-BFGS-B)}\label{sec:lbfgsb}
 
 \emph{Limited-memory Broyden–Fletcher–Goldfarb–Shanno with boundaries} (L-BFGS-B) es un algoritmo
-de optimización que se caracteriza por estimar la inversa de la matriz hessiana utilizando 
-una cantidad de memoria de orden lineal.
-El algoritmo comienza con un punto inicial $\boldsymbol{P}$.
-Luego, internamente mantiene el historial de las últimas evaluaciones de la función $f$ y $\nabla f$
-para determinar una dirección para actualizar $\boldsymbol{P}$.
-Esto es posible precondicionando la gradiente con información de curvatura obtenida por
-la aproximación de la matriz hessiana.
-El lector interesado puede revisar los detalles del algoritmo en \cite{Liu1989}.
+de optimización de primer orden que suele utilizarse cuando no es práctico el cálculo de la matriz
+Hesiana.
+
+Sea $\boldsymbol{x_i}$ la parametrización $\boldsymbol{P}$ evaluada en la iteración $i$ 
+luego de que esta matriz se linealice (i.e. se unieran sus vectores filas de manera consecutiva para 
+formar un solo vector). Se define el siguiente modelo cuadrático:
+
+\begin{equation}
+m_i(\boldsymbol{x}) = f(\boldsymbol{x_i}) + (\nabla f(\boldsymbol{x_i}))^{T}(\boldsymbol{x_i}
+- \boldsymbol{x}) + \frac{1}{2} (\boldsymbol{x_i}
+- \boldsymbol{x})^{T} \boldsymbol{B_i} (\boldsymbol{x_i} - \boldsymbol{x}),
+\end{equation}
+
+\noindent donde $\boldsymbol{B_i}$ es una aproximación de la matriz Hesiana que usa una cantidad de memoria de orden
+lineal.
+
+El algoritmo L-BFGS-B aproximadamente minimiza $m_i(\boldsymbol{x})$ de forma iterativa.
+La idea general del algoritmo se resume en los siguientes ocho pasos:
+
+\begin{enumerate}
+
+\item Dado un punto inicial $\boldsymbol{x_0}$, se inicializa $i \gets 0$ y 
+  $\boldsymbol{B_0} \gets \boldsymbol{\mathbf{I}}$. Adicionalmente, se calcula
+    $f(\boldsymbol{x_0})$ y $\nabla f(\boldsymbol{x_0})$. La elección de $x_0$ puede ser un punto aleatorio.
+
+\item Si $||\boldsymbol{x_i} - \nabla f({\boldsymbol{x_i}})||_{\infty} < pgtol$, entonces el programa termina.
+  El valor $pgtol$ es un parámetro del algoritmo, se recomienda que sea mayor a la raíz cuadrada de la
+    precisión del computador donde se ejecute.
+
+\item Se calcula el punto generalizado de Cauchy, este punto se define como el primer mínimo local 
+  del camino definido por $\boldsymbol{x_i} - t \nabla f(\boldsymbol{x_i}), t \in \mathbb{R}$. 
+    Los detalles de este cálculo se pueden encontrar en \cite{Byrd1995}.
+
+\item Utilizando el resultado del anterior paso, se fijan ciertas dimensiones y se minimiza sobre las
+  restantes. Producto de esta minimización se obtiene una solución aproximada $\overline{x}_{i+1}$.
+    Así se define la direción de búsqueda $\boldsymbol{d_i} = \boldsymbol{\overline{x}_{i+1}} - \boldsymbol{x_i}$.
+  Los detalles de los métodos de minimización sobre este subespacio se explican en \cite{Byrd1995}.
+
+\item Se realiza una búsqueda en el camino definido por $\boldsymbol{x_i} - t \boldsymbol{d_i}, t \in \mathbb{R}$.
+      La solución encontrada ($\lambda_i$) se utiliza para definir 
+      $\boldsymbol{x_{i+1}} \gets \boldsymbol{x_{i}} + \lambda_i \boldsymbol{d_i}$.
+      Es importante señalar que esta solución satisface
+
+      \begin{equation}
+      f(\boldsymbol{x_{i+1}}) \leq f(\boldsymbol{x_{i}}) + \alpha \lambda_i \nabla (f(\boldsymbol{x_{i}}))^T
+        \boldsymbol{d_i},
+      \end{equation}
+      e intenta cumplir con la inecuación
+      \begin{equation}
+        |(\nabla f(\boldsymbol{x_{i+1}}))^T \boldsymbol{d_i}| < \beta |(\nabla f(\boldsymbol{x_{i}}))^T
+        \boldsymbol{d_i}|,
+      \end{equation}
+
+      donde $\alpha$ y $\beta$ son parámetros del algoritmo. En el trabajo de \cite{Byrd1995} se
+      utilizó $\alpha = 10^{-5}$ y $\beta = 0.9$ y se muestran los detalles de la búsqueda.
+
+
+\item Se calcula $\nabla f(\boldsymbol{x_{i+1}})$.
+
+\item Se calcula $\boldsymbol{B_{i+1}}$. Los detalles de este paso se pueden encontrar en \cite{Byrd1995}.
+
+\item Se actualiza $i \gets i + 1$ y se regresa al paso 2.
+
+\end{enumerate}
+
+
+Adicionalmente, para el cálculo de la aproximación $\boldsymbol{B}$ el algoritmo recibe un parámetro
+$\overline{m}$ para guardar información relacionada con la gradiente de solo las últimas $\overline{m}$ 
+iteraciones. Para este párametro valores pequeños ($3 \leq \overline{m} \leq 20$) son recomendados.
+Así, el algoritmo es adecuado para problemas con dimensiones elevadas debido a que
+ha mostrado buen desempeño en distintos problemas utilizando bajos recursos de memoria
+($O(\overline{m}n)$) y de tiempo de ejecución por iteración ($O(\overline{m}^2n)$) 
+\citep{Zhu1997}.
+
+Para una descripción más detallada del algoritmo, revisar los trabajos de \cite{Byrd1995} y \cite{Zhu1997}.
+
+\subsection{G-CMA-ES}\label{sec:g-cma-es}
+
+Esta es una variación de la \autoref{sec:cma-es}. El algoritmo es el mismo que el CMA-ES,
+pero antes de ejecutar la línea 3 del Algoritmo \ref{alg:CMA}, se calcula la
+gradiente de la actual media (i.e., $\nabla f(\mu)$). Con este valor se busca guíar
+mejor las operaciones de la hyperelipse.
+Los detalles a profundidad se pueden encontrar en \cite{Nikolaus2021}.
+
+\subsection{G-PSO}\label{sec:g-pso}
+
+Esta es una variación propuesta en la presente tesis.
+Basándonos en el trabajo de \cite{Demidova2020}, después de cada iteración
+del Algoritmo \ref{alg:PSO} (i.e., línea 4), añadimos los siguientes pasos:
+
+\begin{enumerate}
+  \item Se ejecuta el algoritmo GD (\autoref{sec:gradient-descent}) tomando como punto inicial
+       $\boldsymbol{P_{b}}$. Este algoritmo se ejecuta por $k\_gd$ iteraciones con un 
+       parámetro inicial de $\gamma$. El algoritmo se guarda como $\boldsymbol{P_{b}^{+}}$. 
+  \item Se actualiza la mejor posición encontrada globalmente entre $\boldsymbol{P_{b}^{+}}$ y 
+       $\boldsymbol{P_{b}}$.
+\end{enumerate}
+
+La idea detrás de esta variante es asegurar que la mejor solución global alcance un mejor resultado
+y que guie a las demás partículas.
+Así, manteniendo el enfoque de un algoritmo de optimización global, se espera que este algoritmo
+no se estanque fácilmente en óptimos locales.
+
+
+\subsection{G-GA}\label{sec:g-ga}
+
+Similar al G-PSO, después de cada iteración del Algoritmo \ref{alg:GA} (i.e. 5), se escoge dos
+elementos aleatorios para actualizarlos aplicándoles GD por $k\_gd$ iteraciones con un parámetro inicial
+de $\gamma$.
+Se escoge dos elementos y no solo uno para asegurar que los resultados de aplicar GD
+se compartan con los demás individuos en pocas iteraciones, similar a lo que sucede en \autoref{sec:g-pso}.
 
 
 En el presente capítulo se ha descrito la teoría necesaria para optimizar el diseño de un
@@ -801,12 +1058,8 @@ un \emph{bend} y WDM.
 Esto ha implicado la explicación de la parametrización basada en píxeles,
 el uso de SPINS-B y transformaciones utilizadas en la optimización topológica robusta.
 Además, se ha desarrollado la explicación de tres algoritmos que no necesitan calcular la gradiente:
-(i) GA, (ii) PSO y (iii) CMA-ES. Asimismo, se describió tres algoritmos de primer orden 
-(que usan la gradiente): (i) GD, (ii) MMA y (iii) L-BFGS-B.
-Los conceptos presentados serán de utilidad para entender la propuesta de esta tesis descrita en el
+(i) GA, (ii) PSO y (iii) CMA-ES. Asimismo, se describió seis algoritmos de primer orden 
+(que usan la gradiente): (i) GD, (ii) MMA y (iii) L-BFGS-B, (iv) G-CMA-ES, (v) G-PSO y (vi) G-GA.
+Siendo los últimos dos algoritmos contribuciones del presente trabajo de investigación.
+Los conceptos presentados en este capítulo serán de utilidad para entender la metodología descrita en el
 \autoref{chapter:methodology}.
-
-
-%\leonidas{Hablar en más detalle de esto y acompañarlo con una imagen de conversión de una curva al 
-%formato GDSII similar al paper de Lukas \citep{Bogaerts2018} o hacer mención de esto en los 
-%resultados directamente}

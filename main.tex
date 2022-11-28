@@ -46,6 +46,7 @@
 \usepackage{notoccite}  % Librería necesaria para arreglar el orden de referencias en overleaf.com
 \usepackage{hyperref} % Librería para hacer 'clickable' todas las referencias. OPCIONAL.
 \usepackage{svg} % Librería para imagenes en formato .svg
+\usepackage{mathtools}
 
 % For Spanish
 %\usepackage[utf8]{inputenc}
@@ -59,11 +60,7 @@
 \department{CIENCIA DE LA COMPUTACIÓN}
 \degree{Licenciado en Ciencia de la Computación}
 
-\title{Evaluación de Algoritmos de Optimización de Primer Orden para la Optimización Topológica 
-Robusta de Dispositivos Nanofotónicos}
-%\title{Diseño de dispositivos nanofotónicos resilientes a errores de fabricación usando algoritmos de
-%optimización}
-%\title{Estudio de Cinco Algoritmos de Optimización usando HPC para Fabricar Dos Dispositivos Nanofotónicos: \emph{bend-90°} y \emph{WDM}}
+\title{Evaluación de Algoritmos de Optimización de Primer Orden para la Optimización Topológica Robusta de Dispositivos Nanofotónicos}
 \author{José Leonidas García Gonzales}
 \authorid{201720102}
 \supervisor{Jorge Luis Gonzalez Reaño}
@@ -72,10 +69,8 @@ Robusta de Dispositivos Nanofotónicos}
 \maketitle
 \setstretch{1.5}
 
-% TODO: DESCOMENTAR PARA PFC3
 %\input{header/approvement.tex}
-%\input{header/dedicatory.tex}
-%\input{header/acknowledgements.tex}
+\input{header/acknowledgements.tex}
 
 \tableofcontents
 \newpage
@@ -90,7 +85,7 @@ Robusta de Dispositivos Nanofotónicos}
 \pagestyle{fancy}
 
 \input{section/resumen}
-%\input{section/abstract}
+\input{section/abstract}
 \input{section/introduction}
 \input{section/theory}
 \input{section/related-works}

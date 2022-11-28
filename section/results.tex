@@ -170,6 +170,42 @@ y de 0.034 para el diseño nominal tras eliminar regiones no conexas.
 \end{figure}
 
 
+\leonidas{
+Adicionalmente, de la figura \autoref{fig:bestbend}d es destacable señalar que la región
+inferior derecha está conectada con el resto del dispositivo por una región delgada.
+El hecho que esta región sea considerada conexa es debido a que como se detalló en el
+\autoref{chapter:methodology}, para determinar la región compacta hacemos un recorrido entre celdas
+adyacentes de la matriz $\widetilde{\widetilde{\boldsymbol{P}}}$ con valores mayores a 0.5 y 
+no realizamos más verificaciones pues
+el diseño debería poder ser dibujado por una circunferencia de radio $r_f = 80nm$ debido al proceso
+$\boldsymbol{P} \mathrel{\leadsto}  \widetilde{\boldsymbol{P}}$. Sin embargo, para entender mejor
+el impacto de la región inferior derecha de este diseño en el desempeño del dispositivo, se realizó
+el proceso $\boldsymbol{P} \mathrel{\leadsto}  \widetilde{\boldsymbol{P}}$, pero con $r_f = 100nm$.
+En la \autoref{fig:bestbend100nm}, se observa que el diseño resultante es compacto, pero tiene menor transmitancia
+que los diseños de la \autoref{fig:bestbend}. Así, parece sensato concluir que esta región 
+influye en el desempeño del
+dispositivo. Mas, en el mejor de mi conocimiento, no puedo explicar como es dicha contribución.
+Probablemente, esta región este funcionando como un punto de \"rebote\".
+}
+
+\begin{figure}[htp]
+  \centering
+
+  % 1° row
+  \subfigure[Diseño.]
+  {\includegraphics[width=0.40\textwidth]{image/results/bend/best/bend_eps_rf_100nm.png}}
+  %\hfill
+  \subfigure[Campo $|\boldsymbol{E}|^2$-]
+  {\includegraphics[width=0.40\textwidth]{image/results/bend/best/bend_field_rf_100nm}}
+
+  \caption{Posprocesamiento del diseño del \emph{bend} mejor optimizado tras eliminar regiones no conexas
+  usando $r_f = 100nm$.}
+  \label{fig:bestbend100nm}
+
+\end{figure}
+
+
+
 \section{Resultados de Optimización del WDM}\label{sec:results-wdm}
 
 En la \autoref{fig:wdm-cont}, \autoref{fig:wdm-disc} y \autoref{fig:wdm-fab} se observa 
