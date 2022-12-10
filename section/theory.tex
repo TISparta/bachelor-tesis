@@ -190,7 +190,7 @@ métodos numéricos para realizar los cálculos (\autoref{sec:simulation}).
 \section{Simulación}\label{sec:simulation}
 
 Una vez tenemos definido un dispositivo con regiones fijas (guías de onda) y una
-región de diseño descrita por la parametrización, es necesario incorporar
+región de diseño descrita por la parametrización es necesario incorporar
 tres componentes adicionales \citep{Oskooi2010, Su2020}:
 
 \begin{enumerate}
@@ -739,7 +739,7 @@ por
 \label{cma-average}
 \end{equation}
 
-donde $w_i$ son valores fijos y escogidos de tal manera que proporcionen mayor
+\noindent donde $w_i$ son valores fijos y escogidos de tal manera que proporcionen mayor
 contribución a los puntos con menor valor al evaluarlos en $f$. 
 Esto permite mover la media $\boldsymbol{\mu}$ en una dirección favorable.
 
@@ -761,7 +761,7 @@ este valor mediante las ecuaciones
 \label{cma-E}
 \end{equation}
 
-donde $\boldsymbol{p_{\sigma}}$ es una variable que acumula los pasos llevados,
+\noindent donde $\boldsymbol{p_{\sigma}}$ es una variable que acumula los pasos llevados,
 $c_{\sigma} \in [0, 1]$ es una variable que determina el tiempo acumulado para $p_{\sigma}$ y 
 $d_{\sigma} \approx 1$ es un parámetro que determina el ratio de posibilidad de cambio de $\sigma^{(t + 1)}$. 
 La principal parte de la \autoref{cma-control} es el término \emph{evolution path comparison}, 
@@ -780,7 +780,7 @@ Finalmente, en la línea 6 cambiamos $\boldsymbol{C}$ a una dirección favorable
 \label{cma-adapt}
 \end{multline}
 
-donde $c_{\mu} \leq 1$ es el radio de aprendizaje para el término \emph{rank-$\mu$ update}, 
+\noindent donde $c_{\mu} \leq 1$ es el radio de aprendizaje para el término \emph{rank-$\mu$ update}, 
 $c_1 \leq 1 - c_{\mu}$ es el radio de aprendizaje para el término \emph{rank-one update}, 
 $c_c \in [0, 1]$ es el radio de aprendizaje para el término \emph{cumulative update}, 
 $h_{\sigma}$ es la evaluación bajo la función unitaria usado para actualizar
@@ -827,7 +827,7 @@ esto lo realiza mediante la siguiente ecuación:
   \label{eq:gd-point}
 \end{equation}
 
-donde $t$ representa la iteración actual y $\gamma$ (conocido como el ratio de aprendizaje)
+\noindent donde $t$ representa la iteración actual y $\gamma$ (conocido como el ratio de aprendizaje)
 determina la magnitud de como actualizar $\boldsymbol{P^{(t)}}$. 
 Particularmente, un enfoque razonable para buscar convergencia a 
 un mínimo local es actualizar $\gamma$ en cada iteración mediante la ecuación
@@ -921,7 +921,7 @@ donde
   + \frac{q_{jt}^{(i)}}{x_t^{(i)} - L_t^{(i)}} \right),
 \end{equation}
 
-donde $\partial f_j / \partial x_t$ son evaluados en $\boldsymbol{x^{(i)}}$.
+\noindent donde $\partial f_j / \partial x_t$ son evaluados en $\boldsymbol{x^{(i)}}$.
 Es importante señalar que entre más cercanos a $x_t^{(i)}$ se encuentren $L_t^{(i)}$ y $U_t^{(i)}$,
 entonces la segunda derivada toma un mayor valor, lo cual implica que la aproximación se vuelve más 
 cercana al valor real. 
@@ -1020,7 +1020,7 @@ Para una descripción más detallada del algoritmo, revisar los trabajos de \cit
 
 Esta es una variación de la \autoref{sec:cma-es}. El algoritmo es el mismo que el CMA-ES,
 pero antes de ejecutar la línea 3 del Algoritmo \ref{alg:CMA}, se calcula la
-gradiente de la actual media (i.e., $\nabla f(\mu)$). Con este valor se busca guíar
+gradiente de la actual media (i.e., $\nabla f(\mu)$) y usando este valor se busca guíar
 mejor las operaciones de la hyperelipse.
 Los detalles a profundidad se pueden encontrar en \cite{Nikolaus2021}.
 
@@ -1033,24 +1033,24 @@ del Algoritmo \ref{alg:PSO} (i.e., línea 4), añadimos los siguientes pasos:
 \begin{enumerate}
   \item Se ejecuta el algoritmo GD (\autoref{sec:gradient-descent}) tomando como punto inicial
        $\boldsymbol{P_{b}}$. Este algoritmo se ejecuta por $k\_gd$ iteraciones con un 
-       parámetro inicial de $\gamma$. El algoritmo se guarda como $\boldsymbol{P_{b}^{+}}$. 
+       parámetro inicial de $\gamma$. El resultado se guarda como $\boldsymbol{P_{b}^{+}}$. 
   \item Se actualiza la mejor posición encontrada globalmente entre $\boldsymbol{P_{b}^{+}}$ y 
        $\boldsymbol{P_{b}}$.
 \end{enumerate}
 
 La idea detrás de esta variante es asegurar que la mejor solución global alcance un mejor resultado
 y que guíe a las demás partículas.
-Así, manteniendo el enfoque de un algoritmo de optimización global, se espera que este algoritmo
+Así, manteniendo el enfoque de un algoritmo de optimización global se espera que este algoritmo
 no se estanque fácilmente en óptimos locales.
 
 
 \subsection{G-GA}\label{sec:g-ga}
 
-Similar al G-PSO, después de cada iteración del Algoritmo \ref{alg:GA} (i.e. 5), se escoge dos
+Similar al G-PSO, después de cada iteración del Algoritmo \ref{alg:GA} (i.e. línea 5), se escoge dos
 elementos aleatorios para actualizarlos aplicándoles GD por $k\_gd$ iteraciones con un parámetro inicial
 de $\gamma$.
 Se escoge dos elementos y no solo uno para asegurar que los resultados de aplicar GD
-se compartan con los demás individuos en pocas iteraciones, similar a lo que sucede en \autoref{sec:g-pso}.
+se compartan con los demás individuos en pocas iteraciones, similar a lo que sucede en la \autoref{sec:g-pso}.
 
 
 En el presente capítulo se ha descrito la teoría necesaria para optimizar el diseño de un
